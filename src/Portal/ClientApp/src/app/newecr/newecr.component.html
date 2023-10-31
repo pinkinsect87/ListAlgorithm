@@ -1,0 +1,192 @@
+<div class="portal-component-fullscreen">
+  <div class="portal-container">
+    <app-header [hideOverviewLink]=true [hideCompanyUsersLink]=true></app-header>
+    <div class="portal-body-content">
+      <!--<div class="portal-form-title">Create a New ECR</div>-->
+      <div class="container survey__items-item-radio">
+        <div class="child-level1">
+          Create a New Engagement
+        </div>
+      </div>
+
+      <div class="survey__items-item">
+        <div class="portal-question-child">
+          <div class="container survey__items-item-radio">
+            <div class="child-level2">
+              <h2 class="survey__items-item-name portal-parent-item portal-question-title">
+                Affiliate Id
+              </h2>
+              <kendo-dropdownlist class="dropdown-select shadow-gray" autofocus style="width:350px;"
+                                  [data]="affiliates"
+                                  textField="affiliateName"
+                                  valueField="affiliateId"
+                                  (selectionChange)="affiliateSelectionChanged($event)"
+                                  [(ngModel)]="myAffiliate" [popupSettings]="{width: 5}">
+              </kendo-dropdownlist>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="survey__items-item">
+        <div class="portal-question-child">
+          <div class="container survey__items-item-radio">
+            <div class="child-level2">
+              <h2 class="survey__items-item-name portal-parent-item portal-question-title">
+                ClientId
+              </h2>
+              <input class="portal-text-box shadow-gray input" #clientControl name="inputClientId" type="text" [(ngModel)]="createECRRequestData.clientId" (focusout)="verifyClientId()" size="10" />
+              <div *ngIf="!this.clientRangeOK" class="error-textbox-entry">
+                {{message}}
+              </div>
+              <div *ngIf="preValidationOnEcrCreationMessage.length > 0" class="error-textbox-entry">
+                {{preValidationOnEcrCreationMessage}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="survey__items-item">
+        <div class="portal-question-child">
+          <div class="container survey__items-item-radio">
+            <div class="child-level2">
+              <h2 class="survey__items-item-name portal-parent-item portal-question-title">
+                Company Name
+              </h2>
+              <input class="portal-text-box shadow-gray input" #companyNameControl type="text" [(ngModel)]="createECRRequestData.clientName" (keyup)=onKeyupEvent() (focusout)="verifyClientName()" size="48">
+              <div [className]="waitingForCompanyNameCallToFinish ? 'waitingForCompanyNameCallToFinish' : 'CompanyNameCallFinished'"></div>
+              <div *ngIf="!this.companyNameEntered" class="error-textbox-entry">
+                Please enter Company Name
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--<div class="survey__items-item">
+        <div class="portal-question-child">
+          <div class="container survey__items-item-radio">
+            <div class="child-level2">
+              <h2 class="survey__items-item-name portal-parent-item portal-question-title">
+                Total Employees in Country of application:
+              </h2>
+              <input class="portal-text-box shadow-gray input" type="text" [(ngModel)]="createECRRequestData.totalEmployees" (keyup)=onKeyupEvent() (focusout)="focusOut()" size="10">
+            </div>
+          </div>
+        </div>
+      </div>-->
+
+      <div class="survey__items-item">
+        <div class="portal-question-child">
+          <div class="container survey__items-item-radio">
+            <div class="child-level2">
+              <h2 class="survey__items-item-name portal-parent-item portal-question-title">
+                Product Type
+              </h2>
+              <kendo-dropdownlist class="dropdown-select shadow-gray" #productControl style="width:450px;" [data]="dropdownAnswerOptions" textField="name" valueField="value" [(ngModel)]="selectedItem" [popupSettings]="{width: 350}" (selectionChange)="productSelected($event)">
+              </kendo-dropdownlist>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!--<app-countries (countryCode)="setCountryCode($event)" (numberOfEmployees)="setNumEmp($event)"></app-countries>-->
+      <div class="survey__items-item">
+        <div class="portal-question-child">
+          <div class="container survey__items-item-radio">
+            <div class="child-level2">
+              <h2 class="survey__items-item-name portal-parent-item portal-question-title">
+                Country:
+              </h2>
+              <kendo-dropdownlist class="dropdown-select shadow-gray" #countriesControl style="width:450px;" [data]="countries" textField="countryName" valueField="countryCode" [(ngModel)]="myCountry" [popupSettings]="{width: 350}" (selectionChange)="countrySelected($event)">
+              </kendo-dropdownlist>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="survey__items-item">
+        <div class="portal-question-child">
+          <div class="container survey__items-item-radio">
+            <div class="child-level2">
+              <h2 class="survey__items-item-name portal-parent-item portal-question-title">
+                Total Employees in Country of application:
+              </h2>
+              <input class="portal-text-box shadow-gray input" #numberEmpControl type="text" (focusout)="employeesChanged()" size="10">
+              <div *ngIf="EmpNan" class="error-textbox-entry">
+                Number of Employees must be a valid number >= 10
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <div class="portal-question-parent">
+        <div class="container survey__items-item-radio">
+          <div class="child-level2">
+            Primary Contact
+          </div>
+        </div>
+      </div>
+
+      <div class="survey__items-item">
+        <div class="portal-question-child">
+          <div class="container survey__items-item-radio">
+            <div class="child-level3">
+              <h2 class="survey__items-item-name portal-parent-item portal-question-title">
+                Email
+              </h2>
+              <input class="portal-text-box shadow-gray input" #pcEmail type="text" [(ngModel)]="contactEmail" (focusout)="validateEmail()" size="40">
+              <div *ngIf="invalidEmail" class="error-textbox-entry">
+                {{this.invalidEmailMessage}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="survey__items-item">
+        <div class="portal-question-child">
+          <div class="container survey__items-item-radio">
+            <div class="child-level3">
+              <h2 class="survey__items-item-name portal-parent-item portal-question-title">
+                First Name
+              </h2>
+              <input class="portal-text-box shadow-gray input" #pcFirstName type="text" [(ngModel)]="contactFirstName" (keyup)=onKeyupEvent() size="40">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="survey__items-item">
+        <div class="portal-question-child">
+          <div class="container survey__items-item-radio">
+            <div class="child-level3">
+              <h2 class="survey__items-item-name portal-parent-item portal-question-title">
+                Last Name
+              </h2>
+              <input class="portal-text-box shadow-gray input" #pcLastName type="text" [(ngModel)]="contactLastName" (keyup)=onKeyupEvent() size="40">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div [className]="waitingForCreateECR ? 'waitingForCreateECR' : ''" style="color:red;" class="portal-form-result-message">
+        {{createECRResultMessage}}
+      </div>
+      <div>
+        <div>
+          <div style="padding-top:20px;" class="text-center">
+            <button kendoButton (click)="onButtonClick()" [disabled]="shouldCreateButtonBeDisabled() || forceDisableCreateButton" class="btn btn--primary btn--medium btn-auto-size shadow">Create Engagement</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+
+</div>
+

@@ -1,0 +1,70 @@
+<div class="portal-component-fullscreen">
+  <div class="portal-container">
+    <app-header></app-header>
+    <div class="portal-body-content">
+      <div class="container">
+
+        <div class="portal-page-title">List Recognition</div>
+
+        <div *ngIf="isLoading; else isLoaded" class="loading-container">
+          <div [className]="isLoading ? 'progressIndicator' : ''"></div>
+          <div class="loading-message">Loading...</div>
+        </div>
+
+        <ng-template #isLoaded>
+          <div *ngIf="clientRecognitionInfoDetails.length > 0; else noRecognitionMessage">
+            <div class="recognition-sub-heading">View your incredible achievements here! Below you'll see all your Best Workplace rankings, along with marketing materials to promote and get the most from your distinction. Kudos!</div>
+          </div>
+
+          <ng-template #noRecognitionMessage>
+            <div class="recognition-sub-heading-no-recognition">You don’t have any Best Workplace rankings yet.</div>
+          </ng-template>
+
+          <div *ngIf="clientRecognitionInfoDetails.length > 0">
+            <ul *ngFor="let clientRecognitionInfoDetail of clientRecognitionInfoDetails; index as i">
+              <li>
+                <div class="recognition-list-wrapper">
+                  <div class="recognition-list-item">
+                    <div class="recognition-list-item-inner-wrap recognition-list-list-col recognition-list-col-1 with-padding">
+                      <div class="recognition-list-item-info relative">
+                        <img src="./assets/images/acclaim.svg" />
+                      </div>
+                    </div>
+                    <span class="recognition-list-item-inner-wrap recognition-list-list-col recognition-list-col-2 with-padding">
+                      <span *ngIf="!isEmbargoed(clientRecognitionInfoDetail); else listRankEmbargoed">#{{clientRecognitionInfoDetail.rank}}</span>
+                      <ng-template #listRankEmbargoed><span title="Your rank will be published on {{getFormattedPublicationDate(clientRecognitionInfoDetail)}}">TBA</span></ng-template>
+                    </span>
+                    <span class="recognition-list-item-inner-wrap recognition-list-list-col recognition-list-col-3 with-padding">
+                      <a href="{{getToolkitUrl(clientRecognitionInfoDetail)}}" target="_blank" alt="View Winner's Toolkit" title="View Winner's Toolkit"><span class="recognition-list-name">{{clientRecognitionInfoDetail.list_name}}</span></a>
+                      <br />
+                      <span *ngIf="!isEmbargoed(clientRecognitionInfoDetail); else listLinkEmbargoed1">
+                        <a href="{{getListUrl(clientRecognitionInfoDetail)}}" target="_blank" alt="View List" title="View List"><span class="recognition-list-publication-date">Published on {{getFormattedPublicationDate(clientRecognitionInfoDetail)}}</span></a>
+                      </span>
+                      <ng-template #listLinkEmbargoed1>
+                        <span class="recognition-list-publication-date">To be published on {{getFormattedPublicationDate(clientRecognitionInfoDetail)}}</span>
+                      </ng-template>
+                    </span>
+                    <span class="recognition-list-item-inner-wrap recognition-list-list-col recognition-list-col-4 with-padding">
+                      <span *ngIf="!isEmbargoed(clientRecognitionInfoDetail); else listLinkEmbargoed2">
+                        <a href="{{getListUrl(clientRecognitionInfoDetail)}}" target="_blank"><img class="recognition-list-image" src="./assets/images/recognition_view_list.png" height="30" width="30" alt="View List" title="View List" /></a>
+                      </span>
+                      <ng-template #listLinkEmbargoed2>
+                        <span><img class="recognition-list-image-disabled" src="./assets/images/recognition_view_list.png" height="30" width="30" alt="View List" title="To be published on {{getFormattedPublicationDate(clientRecognitionInfoDetail)}}" /></span>
+                      </ng-template>
+                    </span>
+                    <span class="recognition-list-item-inner-wrap recognition-list-list-col recognition-list-col-5 with-padding">
+                      <a href="{{getToolkitUrl(clientRecognitionInfoDetail)}}" target="_blank"><img class="recognition-toolkit-image" src="./assets/images/wrench.svg" height="30" width="30" alt="View Winner's Toolkit" title="View Winner's Toolkit" /></a>
+                      <!--<img class="recognition-toolkit-image" src="./assets/images/recognition_view_toolkit.png" alt="View Winner's Toolkit" title="View Winner's Toolkit" height="30" width="30" (click)="onViewcertificationtoolkitClick(clientRecognitionInfoDetail.yearlyListId)" />-->
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </ng-template>
+
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

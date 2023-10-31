@@ -1,0 +1,21 @@
+<div class="dataextractrequest-company-container">
+  <div class="dataextractrequest-company-section">
+    <img width="24" height="24" src="assets/images/minus.png" alt="" *ngIf="isShowRemove" class="" (mouseup)="remove()">
+  </div>
+  <div class="dataextractrequest-company-section">
+    <input #client type="number" class="portal-text-box shadow-gray input" [(ngModel)]="clientId" (focusout)="clientIdChanged()" size="10" />
+  </div>
+  <div class="dataextractrequest-company-section">
+    <kendo-dropdownlist #engagementId class="dropdown-select shadow-gray" [popupSettings]="{width: 250}"
+                        (selectionChange)="engagementIdSelectionChanged($event)" [data]="dataExtractCompanyInfo"
+                        textField="engagementId" valueField="engagementId"
+                        [(ngModel)]="engagement">
+    </kendo-dropdownlist>
+  </div>
+  <div class="dataextractrequest-company-section">
+    <input #company type="text" class="portal-text-box shadow-gray input" readonly="readonly" [(ngModel)]="companyName" size="25" />
+  </div>
+  <div *ngIf="!isValid" class="company-error">
+    <p>Please select a valid company.</p>
+  </div>
+</div>

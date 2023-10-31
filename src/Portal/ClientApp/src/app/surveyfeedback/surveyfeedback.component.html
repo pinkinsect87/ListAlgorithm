@@ -1,0 +1,148 @@
+<div class="portal-component-fullscreen">
+  <div class="portal-container">
+
+    <div class="header">
+      <section class="survey__hero show-lg language-background">
+        <header class="survey__hero-header show-lg">
+          <div class="container relative z2 header-container">
+            <div class="justifize">
+              <div class="justifize__box-left">
+                <div class="user-menu-holder justifize">
+                  <div class="justifize__box-left">
+                    <a href="https://www.greatplacetowork.com"><img class="site-logo-img" alt="Great Place to Work" src="./assets/images/gptw_logo.svg"></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+      </section>
+    </div>
+
+    <div class="portal-body-content">
+      <div class="container">
+
+        <div class="portal-page-title">Survey Feedback</div>
+
+        <div>
+          <p>We need some explanatory content here...</p>
+        </div>
+
+        <div class="question-line" style="padding-top: 10px">
+          <h2 class="survey__items-item-name">
+            Name
+          </h2>
+        </div>
+
+        <div class="survey__items-item-field">
+          <div class="openendedquestion">
+            <div class="openendedquestion__input">
+              <div class="input-wrap">
+                <input class="openendedquestion__input-text shadow-gray input" type="text" [(ngModel)]="name" size="50">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-line" style="padding-top: 10px">
+          <h2 class="survey__items-item-name">
+            Email
+          </h2>
+        </div>
+
+        <div class="survey__items-item-field">
+          <div class="openendedquestion">
+            <div class="openendedquestion__input">
+              <div class="input-wrap">
+                <input class="openendedquestion__input-text shadow-gray input" type="text" [(ngModel)]="email" size="50">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-line" style="padding-top: 10px">
+          <h2 class="survey__items-item-name">
+            Company Name
+          </h2>
+        </div>
+
+        <div class="survey__items-item-field">
+          <div class="openendedquestion">
+            <div class="openendedquestion__input">
+              <div class="input-wrap">
+                <input class="openendedquestion__input-text shadow-gray input" type="text" [(ngModel)]="company" size="50">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-line" style="padding-top: 10px">
+          <h2 class="survey__items-item-name">
+            Phone
+          </h2>
+        </div>
+
+        <div class="survey__items-item-field">
+          <div class="openendedquestion">
+            <div class="openendedquestion__input">
+              <div class="input-wrap">
+                <input class="openendedquestion__input-text shadow-gray input" type="text" [(ngModel)]="phone" size="50">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-line" style="padding-top: 10px">
+          <h2 class="survey__items-item-name">
+            Comment
+          </h2>
+        </div>
+
+        <div class="survey__items-item-field" style="margin-top: 4px">
+          <div class="openendedquestion">
+            <div class="openendedquestion__input">
+              <div class="input-wrap">
+                <textarea kendoTextArea [(ngModel)]="comment" class="openendedquestion__input-text shadow-gray input input--textarea" name="" style="overflow: hidden; overflow-y: scroll; overflow-wrap: break-word;"></textarea>
+                <div style="color: red">*required</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="comment.length > 0" style="padding-top:30px;" class="text-center">
+          <button kendoButton (click)="onButtonClick()" [look]="'outline'" class="btn btn--primary btn--medium btn-auto-size shadow">Submit</button>
+        </div>
+
+        <div *ngIf="comment.length == 0" disabled style="padding-top:30px;" class="text-center survey-disabled">
+          <button kendoButton (click)="onButtonClick()" [look]="'outline'" class="btn btn--primary btn--medium btn-auto-size shadow">Submit</button>
+        </div>
+
+        <kendo-dialog [width]="450" *ngIf="submitted" (close)="closeConfirmationDialog()">
+          <kendo-dialog-titlebar class="dialog-confirmation-title">
+            Feedback Confirmation
+          </kendo-dialog-titlebar>
+          <p style="font-size: 16px; text-align: center;">
+            Thank you for your feedback.  Your comments will be reviewed by our staff.
+          </p>
+          <kendo-dialog-actions>
+            <button kendoButton style="font-size: 16px" (click)="closeConfirmationDialog()">Close</button>
+          </kendo-dialog-actions>
+        </kendo-dialog>
+
+        <kendo-dialog [width]="450" *ngIf="submissionError" (close)="closeConfirmationDialog()">
+          <kendo-dialog-titlebar class="dialog-confirmation-title" style="background-color: #E40000">
+            Feedback Confirmation
+          </kendo-dialog-titlebar>
+          <p style="font-size: 16px; text-align: center;">
+            We're sorry. An error occurred while processing your feedback. Please try again later.
+          </p>
+          <kendo-dialog-actions>
+            <button kendoButton style="font-size: 16px" (click)="closeConfirmationDialog()">Close</button>
+          </kendo-dialog-actions>
+        </kendo-dialog>
+
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

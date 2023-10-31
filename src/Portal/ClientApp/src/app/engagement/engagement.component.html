@@ -1,0 +1,561 @@
+
+
+<kendo-window title="Certification Profile" [(top)]="infoDialogTop" *ngIf="infoDialogOpened" (close)="close('dialog')" [minWidth]="250" [width]="450">
+  <p style="margin: 30px; text-align: center;">{{infoDialogMessage}}</p>
+</kendo-window>
+
+
+<div class="portal-component-fullscreen">
+  <div class="portal-container">
+    <app-header [hideOverviewLink]=true></app-header>
+    <div class="portal-body-content">
+      <div class="container">
+
+        <div *ngIf="showResults">
+          <div class="portal-page-title" style="padding-bottom: 20px">Great Place to Work<span style="font-weight:400">&#174;</span> Certification<span style="font-weight:400">&trade;</span></div>
+
+          <div *ngIf="!isMNCCID">
+            <div *ngIf="!isLatestECR" class="engagement-action-bar" style="cursor: pointer; background-color:#E40000; margin-bottom: 12px" (click)="onClickRoute('latestEngagement')">
+              <div class="inprogress-submission-status">YOU HAVE A NEWER ENGAGEMENT. CLICK HERE TO CONTINUE WHERE YOU LEFT OFF.</div>
+              <div class="inprogress-submission-status-arrow" style="color:#E40000;">
+                <i style="vertical-align:middle;" class="material-icons">arrow_forward</i>
+              </div>
+            </div>
+
+            <div *ngIf="isLatestECR && isCurrentCertificationExpired" class="engagement-action-bar" style="cursor: pointer; background-color:#E40000; margin-bottom: 12px" (click)="onClickRoute('latestEngagement')">
+              <div class="inprogress-submission-status">THIS CERTIFICATION ATTEMPT HAS EXPIRED. YOU DO NOT HAVE A CURRENT ATTEMPT.</div>
+              <div class="inprogress-submission-status-arrow" style="color:#E40000;">
+                <i style="vertical-align:middle;" class="material-icons">arrow_forward</i>
+              </div>
+            </div>
+          </div>
+
+          <!-- In progress screen -->
+          <div *ngIf="certificationStatus == '' || certificationStatus == 'pending'" style="display:flex">
+            <!-- Left-side panel block (Intro, TI, CB, Optional CA) -->
+
+            <div class="engagement-inprogress-left-side" style="padding-bottom: 15px;">
+              <!-- Newly added code for MNC work on Jan 20,2023--> 
+              <div class="engagement-task-panel-wrapper" style="padding-bottom: 20px;">
+                <div class="inprogress-title-1" style="text-align:left;">Application Information</div>
+                <div style="display: flex; padding-bottom:5px" class="inprogress-submission-title1">
+                  <div style="float:left;flex-grow:2">
+                    Country / Region(s):
+</div>
+                  <div style="float:right;">
+                    Created: {{ecrCreationDate}} 
+                  </div>
+                </div>
+                
+                <div class="inprogress-highlight-info" id="divCountryNames" style="padding-bottom:10px">({{countriesCount}}) {{ecrCountries}}</div>
+                <div class="inprogress-highlight-info" style="font-style:italic">* Surveying only (not certification eligible)</div>
+              </div>
+              <!-- Newly added code for MNC work on Jan 20,2023-->
+              <div style="padding-top: 15px;">
+                <!-- In-progress status panels (Intro, TI, CB) -->
+                <app-hero-message [eInfo]=eInfo></app-hero-message>
+                </div>
+                <div class="inprogress-title">Required Submissions</div>
+
+                <!-- Required submissions panels -->
+                <div style="display:flex; justify-content:space-between">
+
+                  <!-- TI panel -->
+                  <div *ngIf="showTIPanel; else disabledTIPanel" class="engagement-task-panel-wrapper engagement-task-panel-clickable engagement-inprogress-ti-cb-panel" style="margin-right:4px;" (click)="onClickRoute('ti')">
+                    <div style="float:left;">
+                      <div class="inprogress-submission-title">Trust Index<span style="font-weight:400">&trade;</span><br />Employee<br />Survey</div>
+                    </div>
+                    <div class="inprogress-submission-image-container"><img width="82" height="91" src="./assets/images/TIImage.png" /></div>
+                    <div style="margin:0px; padding:0px; clear: both;"></div>
+                    <div class="inprogress-highlight-info" style="padding-top:0px; padding-bottom:8px;">
+                      Design and launch your employee experience survey.
+                    </div>
+                    <div class="engagement-action-bar" [style.background-color]="part1Color">
+                      <div class="inprogress-submission-status">{{tIStatus}}</div>
+                      <div [style.color]="part1Color" class="inprogress-submission-status-arrow">
+                        <i style="vertical-align:middle" class="material-icons">arrow_forward</i>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Disabled TI panel-->
+                  <ng-template #disabledTIPanel>
+                    <div class="engagement-task-panel-wrapper engagement-task-panel-disabled engagement-inprogress-ti-cb-panel" style="margin-right:4px;">
+                      <div style="float:left;">
+                        <div class="inprogress-submission-title">Trust Index<span style="font-weight:400">&trade;</span><br />Employee<br />Survey</div>
+                      </div>
+                      <div class="inprogress-submission-image-container"><img width="82" height="91" src="./assets/images/TIImage.png" /></div>
+                      <div style="margin:0px; padding:0px; clear: both;"></div>
+                      <div class="inprogress-highlight-info" style="padding-top:0px; padding-bottom:8px;">
+                        Design and launch your employee experience survey.
+                      </div>
+                      <div class="engagement-action-bar" style="background-color:#cccccc;">
+                        <div class="inprogress-submission-status">NOT APPLICABLE</div>
+                        <div class="background-color:#cccccc; inprogress-submission-status-arrow">
+                          <i style="vertical-align:middle" class="material-icons">arrow_forward</i>
+                        </div>
+                      </div>
+                    </div>
+
+                  </ng-template>
+
+                  <!-- CB panel -->
+                  <div *ngIf="showCBPanel" class="engagement-task-panel-wrapper engagement-task-panel-clickable engagement-inprogress-ti-cb-panel" style="margin-left:4px;" (click)="onClickRoute('cb')">
+                    <div style="float:left;">
+                      <div class="inprogress-submission-title">Culture<br />Brief<span style="font-weight:400">&trade;</span></div>
+                    </div>
+                    <div class="inprogress-submission-image-container"><img width="90" height="88" src="./assets/images/CultureBriefImage.png" /></div>
+                    <div style="margin:0px; padding:0px; clear: both;"></div>
+                    <div class="inprogress-highlight-info" style="padding-top:0px; padding-bottom:8px;">
+                      Tell us a little about your company's people, programs and practices.
+                    </div>
+                    <div class="engagement-action-bar" [style.background-color]="part2Color">
+                      <div class="inprogress-submission-status">{{cBStatus}}</div>
+                      <div [style.color]="part2Color" class="inprogress-submission-status-arrow">
+                        <i style="vertical-align:middle;" class="material-icons">arrow_forward</i>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- CA panel -->
+                <div *ngIf="showCAPanel">
+                  
+                  <!--Moving optional submission from here to down under div which says- style="flex-grow: 2 as per new MNC requirement Jan 19,2023-->
+                  <div class="inprogress-title"></div>
+
+                  <div class="engagement-task-panel-wrapper engagement-task-panel-clickable" (click)="onClickRoute('ca')">
+                    <div style="display: flex">
+                      <div style="flex-grow: 2; padding-bottom: 6px;">
+                        <div class="inprogress-title-1">Optional Submission</div>
+                        <div class="inprogress-submission-title">Culture Audit<span style="font-weight:400">&trade;</span></div>
+                        <!--Changing the text as per new MNC work Jan 19,2023-->
+                        <!--<div class="inprogress-highlight-info" style="padding-top:12px; padding-bottom:8px" *ngIf="isUS">-->
+                          <!--If you’d like to apply for the <i>Fortune</i> 100 Best Companies to Work For&#174; list, please submit the additional Culture Audit questions by {{bestCompDeadline}}.-->
+                          <!--If you’d like to apply for our national Best Workplaces list(s), please submit the additional Culture Audit questions on or before the published deadline.
+                        </div>-->
+                        <div class="inprogress-highlight-info" style="padding-top:12px; padding-bottom:8px">
+                          If you’d like to apply for our national Best Workplaces list(s), please submit the additional Culture Audit questions on or before the published deadline.
+                        </div>
+                        <div class="engagement-action-bar" [style.background-color]="optionalPartColor" style="width:336px">
+                          <div class="inprogress-submission-status">{{cAStatus}}</div>
+                          <div [style.color]="optionalPartColor" class="inprogress-submission-status-arrow">
+                            <i style="vertical-align:middle;" class="material-icons">arrow_forward</i>
+                          </div>
+                        </div>
+
+                      </div>
+                      <!-- Commented out the fortune 100 best image as per new MNC requirement Jan 19,2023-->
+                      <!--<div *ngIf="isUS">
+            <div style="flex-grow:1; padding-left:10px;padding-right:30px;"><img height="100" style="float:right" src="./assets/images/Fortune100BestImage.png" /></div>
+          </div>-->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right-side panel (Certification) -->
+              <div class="engagement-inprogress-right-side">
+                <div *ngIf="currentOrRecentlyCertified" class="engagement-task-panel-wrapper" style='text-align: center; margin-bottom: 20px;'>
+
+                  <div class="portal-page-subhead engagement-certification-heading" style="text-align:center;">
+                    <div style="position:relative">
+                      {{certCurrentPreviousStatus}} Certification
+                      <div *ngIf="showCertificationDetails" class="{{imageContainerRemoveClass}}" (click)="onClickHideCertificationDetails()" style="z-index:9999; position:absolute; right:0; top:0; cursor:pointer"><img src="assets/images/remove.png" class="image-remove" title="Hide details" /></div>
+                    </div>
+                  </div>
+
+                  <div class="inprogress-highlight-info" style="padding-bottom:10px">{{certExpiresExpiredStatus}} {{certExpiryDate}}</div>
+                  <div *ngIf="!showCertificationDetails" class="inprogress-btn--link" style="text-align:center;font-size:16px;padding-bottom:8px;" (click)="onClickShowCertificationDetails()">
+                    View Details
+                    <div style="height:10px;"><i class="material-icons icon-color-inherit" style="font-size:28px;line-height:10px;">expand_more</i></div>
+                  </div>
+
+                  <div *ngIf="showCertificationDetails" style="padding-bottom:10px;">
+                    <div style="height:140px; width:100%; background-image: url('./assets/images/certified-badge-blank.svg'); background-position: center top; background-repeat:no-repeat">
+                      <img height="140" src="{{getCurrentBadgeForInProgressUrl('svg', 0)}}" />
+                    </div>
+
+                    <div class="inprogress-highlight-info" style="padding-top:10px; "><button class="inprogress-btn--link" style="background-color: #fff;" title="Access your certification badge and celebrate your great workplace" (click)="onClickRoute('certToolkit')">Certification Toolkit</button></div>
+                    <div *ngIf="this.isUS">
+                      <div class="inprogress-highlight-info" style="padding-top:10px; "><button class="inprogress-btn--link" style="background-color: #fff;" title="View your certified company profile on greatplacetowork.com" (click)="onClickRoute('certProfile')">Certification Profile</button></div>
+                      <div class="inprogress-highlight-info" style="padding-top:10px; "><button class="inprogress-btn--link" style="background-color: #fff;" title="Highlight your certification with one of the best-selling items from our store" (click)="onClickRoute('store')">Store</button></div>
+                      <div class="inprogress-highlight-info" style="padding-top:10px; "><button class="inprogress-btn--link" style="background-color: #fff;" title="View your rankings on recently published Best Workplaces lists" (click)="onClickRoute('recognition')">List Recognition</button></div>
+                    </div>
+
+
+                    <hr style="margin-left:10px; margin-right:10px;" />
+                    <div style="padding-top:0px;"><button class="inprogress-btn--link" style="background-color: #fff;" (click)="onClickRoute('ti1')"><img height="30" src="./assets/images/EmprisingBW.png" /></button></div>
+                    <div class="inprogress-highlight-info" style="padding-top:8px; "><button class="inprogress-btn--link" style="background-color: #fff;" title="Visit Emprising to check out the feedback collected from your employees" (click)="onClickRoute('ti1')">Online Results</button></div>
+                    <div class="inprogress-highlight-info" style="padding-top:4px; "><button class="inprogress-btn--link" style="background-color: #fff;" title="Visit Emprising to check out the feedback collected from your employees" (click)="onClickRoute('ti1')">{{empResultsDate}}</button></div>
+
+                    <div *ngIf="this.isUS">
+                      <hr style="margin-left:10px; margin-right:10px;" />
+                      <div style="padding-top:0px;"><button class="inprogress-btn--link" style="" (click)="onClickRoute('reportDownloads')"><img height="40" src="./assets/images/ReportDownloadsImage.png" /></button></div>
+                      <div class="inprogress-highlight-info" style="padding-top:4px; "><button class="inprogress-btn--link" style="background-color: #fff;" (click)="onClickRoute('reportDownloads')">Report Downloads</button></div>
+                      <div class="inprogress-highlight-info" style="padding-top:4px; "><button class="inprogress-btn--link" style="background-color: #fff;" (click)="onClickRoute('reportDownloads')">{{reportDownloadsDate}}</button></div>
+                    </div>
+                  </div>
+                </div>
+
+                <app-quick-links [clientId]=clientId [isUS]=isUS></app-quick-links>
+
+                <!-- marketing panel -->
+                <div *ngIf="!currentlyCertified || !showCertificationDetails">
+                  <a target="_blank" href="https://www.greatplacetowork.com/worlds-best-workplaces"><img src="./assets/images/marketing/Worlds_Best_Workplaces_Portal_Sidebar_Banner.gif" width="200" style="border-radius: 8px;" /></a>
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+          <!-- Certified screen -->
+          <div *ngIf="certificationStatus == 'certified'" style="display:flex">
+
+            <!-- Left-side panel block (Emprising results, Reports, optional CA) -->
+            <div class="engagement-certified-left-side">
+              <!-- Newly added code for MNC work on Jan 23,2023-->
+              <div class="engagement-task-panel-wrapper engagement-task-panel-clickable" style="padding-bottom: 20px;">
+                <div class="inprogress-title-1" style="text-align:left;">Application Information</div>
+                <div style="display: flex; padding-bottom:5px" class="inprogress-submission-title1">
+                  <div style="float:left;flex-grow:2">
+                    Country / Region(s):
+                  </div>
+                  <div style="float:right;">
+                    Created: {{ecrCreationDate}}
+                  </div>
+                </div>
+                <div class="inprogress-highlight-info" id="divCountryNames" style="padding-bottom:10px">({{countriesCount}}) {{ecrCountries}}</div>
+                <div class="inprogress-highlight-info" style="font-style:italic">* Surveying only (not certification eligible)</div>
+              </div>
+              <div style="padding-bottom:20px"></div>
+              <!-- Newly added code for MNC work on Jan 20,2023-->
+              <div style="display:flex; justify-content:space-between">
+                <div class="engagement-certified-emprising-reports-panel" style="display:flex; flex-direction:column; justify-content:space-between; margin-right:8px;">
+                  <!-- TI results (emprising) panel --> 
+                  <div class="engagement-task-panel-wrapper engagement-task-panel-clickable" style="flex: 1 1 auto; padding-bottom: 20px;" (click)="onClickRoute('ti')">
+                    <div style="display: flex; flex-direction:column; justify-content:space-between; height:100%">
+                      <div style="flex: 1 1 auto">
+                        <div style="display: flex">
+                          <div style="flex-grow:2">
+                            <div class="inprogress-submission-title">Trust Index<span style="font-weight:400">&trade;</span><br />Employee<br />Survey Results</div>
+                            <img height="40" style="padding-top:8px;" src="./assets/images/EmprisingColor.png" />
+                          </div>
+                          <div style="flex-grow:1; padding-right:10px;">
+                            <div style="padding-left:13px; float: right;">
+                              <img height="140" src="./assets/images/emprising_reports_140.png" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="inprogress-highlight-info" style="flex:initial; padding-top:24px; padding-bottom:8px">
+                        Review and analyze the feedback collected from your employees on Emprising<span style="font-weight:400">&trade;</span>.
+                      </div>
+                      <div class="engagement-action-bar" style="flex:initial; background-color:rgb(48, 63, 86);">
+                        <div class="inprogress-submission-status">VISIT EMPRISING</div>
+                        <div style="color:rgb(48, 63, 86);" class="inprogress-submission-status-arrow">
+                          <i style="vertical-align:middle;" class="material-icons">arrow_forward</i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Reports panel -->
+                  <div *ngIf="this.isUS">
+                    <div class="engagement-task-panel-wrapper engagement-task-panel-clickable" style="flex: 0 1 auto; padding-bottom: 20px; margin-top: 12px" (click)="onClickRoute('reportDownloads')">
+                      <div style="display: flex">
+                        <div style="flex-grow:2">
+                          <div class="inprogress-submission-title">Reports</div>
+                          <div class="inprogress-highlight-info" style="padding-top:12px; padding-bottom:8px">
+                            Download your survey reports to share with your employees offline.
+                          </div>
+                        </div>
+                        <div style="flex-grow:1; padding-left:10px;padding-right:10px;padding-bottom:6px;"><img height="120" style="float:right" src="./assets/images/ReportDownloadsImage.png" /></div>
+                      </div>
+                      <div class="engagement-action-bar" style="background-color:rgb(48, 63, 86)">
+                        <div class="inprogress-submission-status">DOWNLOAD REPORTS</div>
+                        <div style="color:rgb(48, 63, 86);" class="inprogress-submission-status-arrow">
+                          <i style="vertical-align:middle;" class="material-icons">arrow_forward</i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- You're certified, Share your achievement -->
+                <div class="engagement-certified-achievement-panel" style="display:flex; flex-direction:column; justify-content:space-between; margin-left:8px;">
+                  <div class="engagement-task-panel-wrapper engagement-task-panel-clickable" style="margin-bottom: 12px" (click)="onClickRoute('certToolkit')">
+                    <div style="display: flex">
+                      <div style="flex-grow:2">
+                        <div class="inprogress-submission-title engagement-certification-heading">You're Certified!</div>
+                        <div class="inprogress-highlight-info" style="padding-right:12px; padding-bottom:0px">Your certification is valid through <span [innerHTML]="certExpiryDateHTML"></span>.</div>
+                      </div>
+                      <div style="flex-grow:1">
+                        <div style="text-align:center; height:150px; width:88px; background-image: url('./assets/images/certified-badge-blank.svg'); background-repeat:no-repeat">
+                          <img height="150" src="{{getBadgeUrl('svg', 0)}}" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="engagement-task-panel-wrapper">
+                    <div class="inprogress-submission-title" style="padding-bottom:1px; padding-bottom:8px; font-weight:bold; text-align:left;">Promote Your Certification</div>
+
+                    <div class="engagement-certified-share-item" (click)="onClickRoute('certToolkit')">
+                      <div class="inprogress-highlight-info" style="padding-bottom:6px">Download your certification badge and celebrate your great workplace.</div>
+                      <div class="engagement-action-bar">
+                        <div class="inprogress-submission-status">CERTIFICATION TOOLKIT</div>
+                        <div style="color:rgb(48, 63, 86);" class="inprogress-submission-status-arrow">
+                          <i style="vertical-align:middle;" class="material-icons">arrow_forward</i>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div *ngIf="this.isUS">
+                      <div class="engagement-certified-share-item" (click)="onClickRoute('certProfile')">
+                        <div class="inprogress-highlight-info" style="padding-bottom:6px">View your Certified Company Profile on our website.</div>
+                        <div class="engagement-action-bar">
+                          <div class="inprogress-submission-status">CERTIFICATION PROFILE</div>
+                          <div style="color:rgb(48, 63, 86);" class="inprogress-submission-status-arrow">
+                            <i style="vertical-align:middle;" class="material-icons">arrow_forward</i>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="engagement-certified-share-item" (click)="onClickRoute('store')">
+                        <div class="inprogress-highlight-info" style="padding-bottom:6px">Celebrate with Certification swag from our store.</div>
+                        <div class="engagement-action-bar">
+                          <div class="inprogress-submission-status">STORE</div>
+                          <div style="color:rgb(48, 63, 86);" class="inprogress-submission-status-arrow">
+                            <i style="vertical-align:middle;" class="material-icons">arrow_forward</i>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="engagement-certified-share-item" (click)="onClickRoute('recognition')" style="margin-bottom:0">
+                        <div class="inprogress-highlight-info" style="padding-bottom:6px">View your Best Workplaces<span style="font-weight:400">&trade;</span> list rankings, badges and toolkits.</div>
+                        <div class="engagement-action-bar">
+                          <div class="inprogress-submission-status">LIST RECOGNITION</div>
+                          <div style="color:rgb(48, 63, 86);" class="inprogress-submission-status-arrow">
+                            <i style="vertical-align:middle;" class="material-icons">arrow_forward</i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div style="padding-bottom:20px"></div>
+              <!-- CA panel -->
+              <div *ngIf="showCAPanel" style="padding-bottom: 20px; padding-bottom: 20px">
+                <div class="engagement-task-panel-wrapper engagement-task-panel-clickable" (click)="onClickRoute('ca')">
+                  <div style="display: flex">
+                    <div style="flex-grow:2; padding-bottom: 6px;">
+                      <div class="inprogress-title-1">Optional Submission</div>
+                      <div class="inprogress-submission-title">Culture Audit<span style="font-weight:400">&trade;</span></div>
+                      <!--<div class="inprogress-highlight-info" style="padding-top:12px; padding-bottom:8px" *ngIf="isUS">
+                        If you’d like to apply for our national Best Workplaces list(s), please submit the additional Culture Audit questions on or before the published deadline.-->
+                        <!--If you’d like to apply for the <i>Fortune</i> 100 Best Companies to Work For&#174; list, please submit the additional Culture Audit questions by {{bestCompDeadline}}.-->
+                      <!--</div>-->
+                      <div class="inprogress-highlight-info" style="padding-top:12px; padding-bottom:8px">
+                        If you'd like to apply for our national Best Workplaces list(s), please submit the additional Culture Audit questions on or before the published deadline.
+                      </div>
+                      <div class="engagement-action-bar" [style.background-color]="optionalPartColor" style="width: 344px">
+                        <div class="inprogress-submission-status">{{cAStatus}}</div>
+                        <div [style.color]="optionalPartColor" class="inprogress-submission-status-arrow">
+                          <i style="vertical-align:middle;" class="material-icons">arrow_forward</i>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Commented out the fortune 100 best image as per new MNC requirement Jan 19,2023-->
+                    <!--<div *ngIf="isUS">
+          <div style="flex-grow:1; padding-left:10px;padding-right:30px;"><img height="100" style="float:right" src="./assets/images/Fortune100BestImage.png" /></div>
+        </div>-->
+                  </div>
+                </div>
+              </div>
+
+              <!--Adding CB  Panel here as per new MNC Work 01/23/2023-->
+              <!-- CB panel -->
+              <div *ngIf="showCBPanel" class="engagement-task-panel-wrapper engagement-task-panel-clickable engagement-inprogress-ti-cb-panel" (click)="onClickRoute('cb')">
+                <div style="padding-bottom: 8px;">
+                  <div style="padding-bottom: 6px;">
+                    <div class="inprogress-submission-title">Culture Brief<span style="font-weight:400">&trade;</span></div>
+                  </div>
+                  <!--<div class="inprogress-submission-image-container"><img width="90" height="88" src="./assets/images/CultureBriefImage.png" /></div>-->
+                  <div style="margin:0px; padding:0px; clear: both;"></div>
+                  <!--<div class="inprogress-highlight-info" style="padding-top:0px; padding-bottom:8px;">-->
+                  <div class="inprogress-highlight-info" style="padding-top:12px; padding-bottom:8px">
+                    Tell us a little about your company's people, programs and practices.
+                  </div>
+                  <div class="engagement-action-bar" [style.background-color]="part2Color" style="width: 344px">
+                    <div class="inprogress-submission-status">{{cBStatus}}</div>
+                    <div [style.color]="part2Color" class="inprogress-submission-status-arrow">
+                      <i style="vertical-align:middle;" class="material-icons">arrow_forward</i>
+                    </div>
+                  </div>
+                </div>
+                </div>
+
+
+            </div>
+
+            <!-- blank right column left for marketing content -->
+            <div class="engagement-certified-right-side">
+              <div>
+                <a target="_blank" href="https://www.greatplacetowork.com/worlds-best-workplaces"><img src="./assets/images/marketing/Worlds_Best_Workplaces_Portal_Sidebar_Banner.gif" width="200" style="border-radius: 8px;" /></a>
+              </div>
+            </div>
+
+          </div>
+
+
+
+          <!-- Not certified screen -->
+          <div *ngIf="certificationStatus == 'notcertified'" style="display:flex;">
+
+            <!-- Left-side panel block (Emprising results, Reports) -->
+            <div class="engagement-notcertified-left-side">
+              <!-- Newly added code for MNC work on Jan 20,2023-->
+              <div class="engagement-task-panel-wrapper" style="padding-bottom: 20px;">
+                <div class="inprogress-title-1" style="text-align:left;">Application Information</div>
+                <div style="display: flex; padding-bottom:5px" class="inprogress-submission-title1">
+                  <div style="float:left;flex-grow:2">
+                    Country / Region(s):
+                  </div>
+                  <div style="float:right;">
+                    Created: {{ecrCreationDate}}
+                  </div>
+                </div>
+                <div class="inprogress-highlight-info" id="divCountryNames" style="padding-bottom:10px">({{countriesCount}}) {{ecrCountries}}</div>
+                <div class="inprogress-highlight-info" style="font-style:italic">* Surveying only (not certification eligible)</div>
+              </div>
+              <div style="padding-bottom:20px"></div>
+              <!-- Newly added code for MNC work on Jan 20,2023-->
+              <div style="display:flex; justify-content:space-between;">
+                <div class="engagement-certified-emprising-reports-panel" style="display:flex; flex-direction:column; justify-content:space-between; margin-right:8px;">
+
+                  <!-- TI results (emprising) panel -->
+                  <div *ngIf="showTIPanel; else disabledTIPanelNotCertified" class="engagement-task-panel-wrapper engagement-task-panel-clickable" style="flex: 1 1 auto; margin-bottom: 12px; padding-bottom: 20px; height: 100%" (click)="onClickRoute('ti')">
+                    <div style="display: flex; flex-direction:column; justify-content:space-between; height:100%">
+                      <div style="flex: 1 1 auto">
+                        <div style="display: flex">
+                          <div style="flex-grow:2">
+                            <div class="inprogress-submission-title">Trust Index<span style="font-weight:400">&trade;</span><br />Employee<br />Survey Results</div>
+                            <img height="40" style="padding-top:8px;" src="./assets/images/EmprisingColor.png" />
+                          </div>
+                          <div style="flex-grow:1; padding-right:10px;">
+                            <div style="padding-left:13px; float: right;">
+                              <img height="140" src="./assets/images/emprising_reports_140.png" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="inprogress-highlight-info" style="flex:initial; padding-top:24px; padding-bottom:8px">
+                        Review and analyze the feedback collected from your employees on Emprising<span style="font-weight:400">&trade;</span>.
+                      </div>
+                      <div class="engagement-action-bar" style="flex:initial; background-color:rgb(48, 63, 86);">
+                        <div class="inprogress-submission-status">VISIT EMPRISING</div>
+                        <div style="color:rgb(48, 63, 86);" class="inprogress-submission-status-arrow">
+                          <i style="vertical-align:middle;" class="material-icons">arrow_forward</i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <ng-template #disabledTIPanelNotCertified>
+                    <div class="engagement-task-panel-wrapper engagement-task-panel-disabled" style="flex: 1 1 auto; margin-bottom: 12px; padding-bottom: 20px; height: 100%">
+                      <div style="display: flex; flex-direction:column; justify-content:space-between; height:100%">
+                        <div style="flex: 1 1 auto">
+                          <div style="display: flex">
+                            <div style="flex-grow:2">
+                              <div class="inprogress-submission-title">Trust Index<span style="font-weight:400">&trade;</span><br />Employee<br />Survey Results</div>
+                              <img height="40" style="padding-top:8px;" src="./assets/images/EmprisingColor.png" />
+                            </div>
+                            <div style="flex-grow:1; padding-right:10px;">
+                              <div style="padding-left:13px; float: right;">
+                                <img height="140" src="./assets/images/emprising_reports_140.png" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="inprogress-highlight-info" style="flex:initial; padding-top:24px; padding-bottom:8px">
+                          Review and analyze the feedback collected from your employees on Emprising<span style="font-weight:400">&trade;</span>.
+                        </div>
+                        <div class="engagement-action-bar" style="flex:initial; background-color:#cccccc;">
+                          <div class="inprogress-submission-status">NOT APPLICABLE</div>
+                          <div style="color:#cccccc;" class="inprogress-submission-status-arrow">
+                            <i style="vertical-align:middle;" class="material-icons">arrow_forward</i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+
+                  <!-- Reports panel -->
+                  <div *ngIf="this.isUS">
+                    <div class="engagement-task-panel-wrapper engagement-task-panel-clickable" style="flex: 0 1 auto; padding-bottom: 20px;" (click)="onClickRoute('reportDownloads')">
+                      <div style="display: flex">
+                        <div style="flex-grow:2">
+                          <div class="inprogress-submission-title">Reports</div>
+                          <div class="inprogress-highlight-info" style="padding-top:12px; padding-bottom:8px">
+                            Download your survey reports to share with your employees offline.
+                          </div>
+                        </div>
+                        <div style="flex-grow:1; padding-left:10px;padding-right:10px;padding-bottom:6px;"><img height="120" style="float:right" src="./assets/images/ReportDownloadsImage.png" /></div>
+                      </div>
+                      <div class="engagement-action-bar" style="background-color:rgb(48, 63, 86)">
+                        <div class="inprogress-submission-status">DOWNLOAD REPORTS</div>
+                        <div style="color:rgb(48, 63, 86);" class="inprogress-submission-status-arrow">
+                          <i style="vertical-align:middle;" class="material-icons">arrow_forward</i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--Not certified discussion panel -->
+                <div class="engagement-notcertified-discussion-panel" style="margin-left: 8px;">
+                  <div class="engagement-task-panel-wrapper" style="height: 100%">
+                    <div style="display: flex; flex-direction:column; justify-content:space-between;">
+                      <div style="flex: 1 1 auto">
+                        <div style="display: flex">
+                          <div style="flex-grow:2">
+                            <div class="inprogress-submission-title engagement-certification-heading">Not Certified</div>
+                            <div class="inprogress-highlight-info" style="padding-bottom:15px">
+                              <p>While your employee feedback showed strengths in several areas, your overall results do not yet qualify you as a Great Place to Work-Certified<span style="font-weight:400">&trade;</span> company.</p>
+                              <p>View your survey results using the tools on the left to help you maximize the value of the employee experience feedback you received through your survey.</p>
+                              <p>Not sure about next steps? Talk to your Customer Success Manager.</p>
+                              <p>Our Culture Coaches are here to help you understand and make sense of your results.</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- blank right column left for marketing content -->
+            <div class="engagement-certified-right-side">
+              <div>
+                <a target="_blank" href="https://www.greatplacetowork.com/worlds-best-workplaces"><img src="./assets/images/marketing/Worlds_Best_Workplaces_Portal_Sidebar_Banner.gif" width="200" style="border-radius: 8px;" /></a>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <app-footer></app-footer>
+  </div>
+</div>
+
+

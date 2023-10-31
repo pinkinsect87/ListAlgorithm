@@ -1,0 +1,95 @@
+<div class="portal-component-fullscreen">
+  <div class="portal-container">
+    <app-header [hideOverviewLink]=true [hideCompanyUsersLink]=true></app-header>
+    <div class="portal-body-content">
+      <div class="container client-header">
+        Certification
+      </div>
+      <div class="container applications-section">
+        <div class="applications-section-header">OPEN APPLICATIONS</div>
+        <div class="applications-section-content-container" *ngFor="let app of openApplications">
+          <div class="engagement-task-panel-wrapper engagement-task-panel-clickable" (click)="blockClicked(app)">
+            <div class="applications-section-content-header">
+              <div class="client-label">
+                <img [ngClass]="app.isCA ? 'culture-audit-icon' : 'culture-brief-icon'" />
+                {{app.isCA ? 'Culture Audit' : 'T.I. Survey, Culture Brief'}}
+              </div>
+              <div class="engagement-action-bar inprogress-action-bar">
+                <div class="inprogress-submission-status">
+                  {{app.isCA ? app.caStatus.toUpperCase() : app.cbStatus.toUpperCase()}}
+                </div>
+                <div class="inprogress-submission-status-arrow inprogress-arrow">
+                  <i class="material-icons" style="vertical-align: middle;">arrow_forward</i>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="applications-section-content">
+              <div *ngIf="app.isCB" class="countries-content">
+                <div class="client-label">Country / Region(s):</div>
+                <span class="client-data">({{app.countryCount}}) {{app.countries}}</span>
+              </div>
+              <div *ngIf="app.isCA" class="countries-content">
+                <div class="client-label">Optional Submission:</div>
+                <span class="client-data">
+                  If you’d like to apply for national Best Workplaces list(s), please submit the additional Culture Audit on or before the published deadline.
+                </span>
+              </div>
+              <div class="date-content">
+                <div class="client-label">Created: <span class="client-data">{{app.createDateDisplay}}</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="openApplications?.length == 0" class="applications-section-content-container" >
+          <div class="client-label">You do not have any open applications. View your current Certification information below.</div>
+        </div>
+      </div>
+
+      <div *ngIf="submittedApplications?.length > 0" class="container applications-section">
+        <div class="applications-section-header">SUBMITTED</div>
+        <div class="applications-section-content-container" *ngFor="let app of submittedApplications">
+          <div class="engagement-task-panel-wrapper engagement-task-panel-clickable" (click)="blockClicked(app)">
+            <div class="applications-section-content-header">
+              <div class="client-label">
+                <img [ngClass]="app.isCA ? 'culture-audit-icon' : 'culture-brief-icon'" />
+                {{app.isCA ? 'Culture Audit' : 'T.I. Survey, Culture Brief'}}
+              </div>
+              <div class="engagement-action-bar" [ngClass]="app.cbStatus == 'Incomplete' ? 'incomplete-action-bar' : 'completed-action-bar'">
+                <div class="inprogress-submission-status">
+                  {{app.isCA ? app.caStatus.toUpperCase() : app.cbStatus.toUpperCase()}}
+                </div>
+                <div class="inprogress-submission-status-arrow" [ngClass]="app.cbStatus == 'Incomplete' ? 'incomplete-arrow' : 'completed-arrow'">
+                  <i class="material-icons" style="vertical-align: middle;">arrow_forward</i>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="applications-section-content">
+              <div *ngIf="app.isCB" class="countries-content">
+                <div class="client-label">Country / Region(s):</div>
+                <span class="client-data">({{app.countryCount}}) {{app.countries}}</span>
+              </div>
+              <div *ngIf="app.isCA" class="countries-content">
+                <div class="client-label">Optional Submission:</div>
+                <span class="client-data">
+                  If you’d like to apply for national Best Workplaces list(s), please submit the additional Culture Audit on or before the published deadline.
+                </span>
+              </div>
+              <div class="date-content">
+                <div class="client-label">Created: <span class="client-data">{{app.createDateDisplay}}</span></div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container applications-section-footer" *ngIf="isShowNote">
+        *Surveying only (not Certification-eligible)
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>
+

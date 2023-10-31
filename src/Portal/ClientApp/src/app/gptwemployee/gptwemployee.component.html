@@ -1,0 +1,124 @@
+
+<div class="portal-component-fullscreen">
+  <div class="portal-container">
+    <app-header [hideOverviewLink]=true [hideCompanyUsersLink]=true></app-header>
+    <div class="portal-body-content">
+      <div style="padding-left:20px; padding-right:20px; height: calc(100vh - 190px);">
+        <div class="portal-page-title">Engagements</div>
+
+        <kendo-grid style="height: 100%;" #grid
+                    [pageable]="{
+                      buttonCount: 5,
+                      info: true,
+                      type: 'numeric',
+                      pageSizes: gridSettings.pageSizes,
+                      previousNext: true}"
+                    [reorderable]="true"
+                    [skip]="gridSettings.state.skip"
+                    [pageSize]="gridSettings.pageSize"
+                    [data]="gridSettings.gridData"
+                    [sort]="gridSettings.state.sort"
+                    [filter]="gridSettings.state.filter"
+                    [sortable]="true"
+                    [columnMenu]="{ filter: true }"
+                    [resizable]="true"
+                    (columnResize)="onResize($event)"
+                    (columnReorder)="onReorder($event)"
+                    (columnVisibilityChange)="onColumnVisibilityChange($event)"
+                    (dataStateChange)="dataStateChange($event)"
+                    (pageChange)="pageChange($event)">
+
+          <ng-template kendoGridToolbarTemplate>
+            <button kendoGridAddCommand (click)="resetGridSettingsToDefaultAndSave()">Reset Grid Settings</button>
+          </ng-template>
+
+          <kendo-grid-column *ngFor="let col of gridSettings.columnsConfig"
+                             [field]="col.field" [title]="col.title" [width]="col._width" [filter]="col.filter"
+                             [filterable]="col.filterable" [hidden]="col.hidden" [format]="col.format">
+            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+            </ng-template>
+
+            <ng-container *ngIf="col.field=='cname' || col.field=='createdate' || col.field=='cid' || col.field=='eid'">
+              <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-columnIndex="columnIndex">
+
+                <div *ngIf="col.field == 'cname'">{{dataItem.cname}}</div>
+                <div *ngIf="col.field == 'cid'" style="text-align: center;">{{dataItem.cid}}</div>
+                <div *ngIf="col.field == 'eid'" style="text-align: center;">{{dataItem.eid}}</div>
+                <div *ngIf="col.field == 'createdate'" style="text-align: center;"><span>{{getDate(dataItem.createdate)}}</span></div>
+
+              </ng-template>
+            </ng-container>
+
+            <ng-container *ngIf="col.field=='tistatus'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:220px"
+                                   [data]="tiStatusItems"
+                                   (valueChange)="statusChange('tistatus', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div>{{dataItem.tistatus}}</div>
+              </ng-template>
+            </ng-container>
+
+            <ng-container *ngIf="col.field=='cbstatus'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:220px"
+                                   [data]="cbStatusItems"
+                                   (valueChange)="statusChange('cbstatus', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div>{{dataItem.cbstatus}}</div>
+              </ng-template>
+            </ng-container>
+
+
+            <ng-container *ngIf="col.field=='castatus'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:220px"
+                                   [data]="caStatusItems"
+                                   (valueChange)="statusChange('castatus', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div>{{dataItem.castatus}}</div>
+              </ng-template>
+            </ng-container>
+
+
+            <ng-container *ngIf="col.field=='cstatus'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:220px"
+                                   [data]="cStatusItems"
+                                   (valueChange)="statusChange('cstatus', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div>{{dataItem.cstatus}}</div>
+              </ng-template>
+            </ng-container>
+
+
+          </kendo-grid-column>
+
+
+        </kendo-grid>
+
+      </div>
+    </div>
+  </div>
+</div>
+

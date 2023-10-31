@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Great Place to Work Portal</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="./assets/images/favicons/favicon-gptw.png">
+  <script src="config?handler=settings" nonce="gptwT42wQ5afBy2MpteA"></script>
+  <script type="text/javascript" nonce="gptwT42wQ5afBy2MpteA">
+    var appInsights = window.appInsights || function (config) {
+      function i(config) { t[config] = function () { var i = arguments; t.queue.push(function () { t[config].apply(t, i) }) } } var t = { config: config }, u = document, e = window, o = "script", s = "AuthenticatedUserContext", h = "start", c = "stop", l = "Track", a = l + "Event", v = l + "Page", y = u.createElement(o), r, f; y.src = config.url || "https://az416426.vo.msecnd.net/scripts/a/ai.0.js"; u.getElementsByTagName(o)[0].parentNode.appendChild(y); try { t.cookie = u.cookie } catch (p) { } for (t.queue = [], t.version = "1.0", r = ["Event", "Exception", "Metric", "PageView", "Trace", "Dependency"]; r.length;)i("track" + r.pop()); return i("set" + s), i("clear" + s), i(h + a), i(c + a), i(h + v), i(c + v), i("flush"), config.disableExceptionTracking || (r = "onerror", i("_" + r), f = e[r], e[r] = function (config, i, u, e, o) { var s = f && f(config, i, u, e, o); return s !== !0 && t["_" + r](config, i, u, e, o), s }), t
+    }({
+      instrumentationKey: window.client_config.ApplicationInsightsKey
+    });
+    window.appInsights = appInsights;
+    appInsights.trackPageView();
+    function isIE() {
+      return  /*@cc_on!@*/false || !!document.documentMode; // Internet Explorer 6-11
+      //https://stackoverflow.com/questions/48182912/how-to-detect-browser-with-angular
+      //var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;// Opera 8.0+
+      //var isFirefox = typeof InstallTrigger !== 'undefined';// Firefox 1.0+
+      //var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || safari.pushNotification);
+      //var isEdge = !isIE && !!window.StyleMedia;
+      //var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+    }
+  </script>
+  <script src="widgets.js" charset="utf-8" nonce="gptwT42wQ5afBy2MpteA"></script>
+  <!--<script src="https://platform.twitter.com/widgets.js" charset="utf-8" nonce="gptwT42wQ5afBy2MpteA"></script>-->
+</head>
+<body>
+  <script type="text/javascript" nonce="gptwT42wQ5afBy2MpteA">
+    if (isIE())
+      document.write("<div style='text-align: center; font-weight: bold; font-size: 28px; margin-top:200px;' valign='middle'>Your browser (Internet Explorer) isn't supported.<br> Please use the latest version of Chrome, Firefox, Edge or Safari.</div>");
+    else
+      document.write("<app-root>Loading...</app-root>");
+  </script>
+
+</body>
+</html>

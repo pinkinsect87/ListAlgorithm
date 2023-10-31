@@ -1,0 +1,143 @@
+
+<app-header [hideOverviewLink]=true [hideCompanyUsersLink]=true></app-header>
+<div kendoTooltip class="survey__items-item question-item">
+  <div *ngIf="showErrorMessage">
+    <br /><br />
+    <div style='text-align: center'>{{errorMessage}}</div>
+  </div>
+  <div *ngIf="dataLoaded">
+    <div class="container survey__items-item-radio" id="company-images">
+
+      <div class="question-line">
+        <h2 class="survey__items-item-name">
+          <b>Profile Images:</b>&nbsp;&nbsp;Upload at least 5 but no more than 7 images (use ctrl or shift click to select multiple images). Then enter the required captions. Drag to change the order in which they will appear within your company profile.
+        </h2>
+
+
+        <!--Copied from Infobar-->
+        <div style="display: flex; font-size:16px; text-align:left;">
+
+          <div *ngIf="instructions" kendoTooltip [tooltipTemplate]="templateInstructions" tooltipClass="infoItemTooltip" filter="img[src]">
+            <ng-template #templateInstructions>
+              <span class="infobar-tooltip">
+                <span><p><b>Photo Instructions</b></p></span><span [innerHTML]="instructions"></span>
+              </span>
+            </ng-template>
+            <span class="infobar-icon-container">
+              <img width="24" height="24" src="assets/images/info.png" alt="">
+            </span>
+          </div>
+
+          <div kendoTooltip [tooltipTemplate]="templateRequired" tooltipClass="requiredItemTooltip" filter="img[src]">
+            <ng-template #templateRequired>
+              <span class="infobar-tooltip">The uploading of at least 5 profile images is required.</span>
+            </ng-template>
+            <span class="infobar-icon-container">
+              <img width="24" height="24" src="assets/images/required.png" alt="">
+            </span>
+          </div>
+
+        </div>
+        <!--Copied from Infobar-->
+
+
+      </div>
+
+      <div class="survey__items-item-field">
+        <div class="openendedquestion">
+          <div class="openendedquestion__input">
+
+            <!--<div class="input-wrap">-->
+            <div style="padding-bottom:10px;">
+              <div style="float:left;">
+                <kendo-upload style="width:270px;"
+                              [saveUrl]="uploadSaveUrl"
+                              [removeUrl]="uploadRemoveUrl"
+                              [showFileList]="false"
+                              [withCredentials]="false"
+                              [restrictions]="myRestrictions"
+                              [disabled]="isUploadDisabled"
+                              (dragEnd)="onDragEnd(sortable.data)"
+                              (upload)="uploadEventHandler($event)"
+                              (success)="successEventHandler($event)">
+                  <kendo-upload-messages select="Select Images"></kendo-upload-messages>
+                </kendo-upload>
+              </div>
+
+
+              <span style="float:right;">
+                <button kendoButton (click)="onPreviewButtonClick()" [disabled]="isPreviewDisabled()" [look]="'outline'" class="btn btn--primary btn--small btn-auto-size shadow">Preview</button>
+              </span>
+              <div style="clear: both;"></div>
+
+            </div>
+
+            <div style="font-size:16px; padding-top:0px;" *ngIf="isUploadDisabled">Note: You have reached the maximum of 7 images. To upload a new image, please delete one of your existing images.</div>
+            <kendo-sortable [kendoSortableBinding]="clientPhotos"
+                            (dragEnd)="onDragEnd($event)"
+                            [disabledIndexes]="disabledPhotoIndexes">
+              <ng-template let-item="item">
+                <div class="image-container {{draggableContainerClass}}">
+                  <div class="{{photoImageContainerClass}}"><img style="cursor:default; height:100px;" src="{{GetUri(item)}}" /></div>
+                  <div class="{{photoDragContainerClass}}">
+                    <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+                      <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg>
+                  </div>
+                  <div class="photo-caption-container">
+                    <textarea kendoTextArea placeholder="Please enter a caption" (focusout)="onFocusOut()" [(ngModel)]="item.caption" class="photo-caption-box"></textarea>
+                  </div>
+                  <div class="{{imageContainerRemoveClass}}" (mouseup)="onMouseUp(item)"><img src="assets/images/remove.png" class="image-remove" /></div>
+                  <div style="clear: both;"></div>
+                </div>
+              </ng-template>
+            </kendo-sortable>
+
+          </div>
+        </div>
+      </div>
+
+
+      <div style="padding-top:20px;" class="text-center">
+        <button kendoButton (click)="onButtonClick()" [look]="'outline'" class="btn btn--primary btn--medium btn-auto-size shadow">Save Changes and Republish Profile</button>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<kendo-dialog title="Validation Error" *ngIf="dialogOpened" (close)="close('dialog')" [minWidth]="250" [width]="450">
+  <p style="margin: 30px; text-align: center;">{{dialogMessage}}</p>
+</kendo-dialog>
+
+<kendo-dialog title="Attention" *ngIf="dialogFinalOpened" (close)="close('dialogFinal')" [minWidth]="250" [width]="450">
+  <p [className]="waitingForRepublish ? 'waitingForRepublish': ''" style="margin: 30px; text-align: center;">Your photo changes were saved and the profile republish request was successful. Click <a style="color:Highlight; cursor: pointer;" (click)="viewProfile()">here</a> to view the profile. Note: Please allow at least 15 minutes for it to publish. You can check on the status of your republish within the Operations Dashboard. You might have to clear your cache to see any new profile data appear.</p>
+</kendo-dialog>
+
+<kendo-dialog title="Republish Error" *ngIf="dialogRepublishErrorOpened" (close)="close('dialogRepublishError')" [minWidth]="250" [width]="450">
+  <p style="margin: 30px; text-align: center;">The re-publish process failed. Please contact Tech Support for help.</p>
+</kendo-dialog>
+
+<kendo-dialog title="Information" *ngIf="dialogRepublishSuccessOpened" (close)="close('dialogRepublishSuccess')" [minWidth]="250" [width]="450">
+  <p style="margin: 30px; text-align: center;">The re-publish was successful. Click <a style="color:Highlight; cursor: pointer;" (click)="viewProfile()">here</a> to view the new profile.</p>
+</kendo-dialog>
+
+<!--<kendo-dialog [class]="{'rwTxt': true}" *ngIf="confirmOpened"
+              [actions]="myActions"
+              [actionsLayout]="actionsLayout"
+              (action)="onConfirmAction($event)"
+              title="Please confirm"
+              (close)="onConfirmClose('cancel')"
+              [minWidth]="250"
+              [width]="450">
+  <p style="margin: 30px; text-align: center;">Your changes have been saved. Do you wish to have the profile republished?</p>
+</kendo-dialog>-->
+
+<kendo-dialog title="Profile Images" [width]="1000" [height]="800" *ngIf="this.bs.showImagePreview" (close)="closeImagePreview()">
+  <div style=" margin-left:20px; padding-left:0px; float:left; height:650px; padding-top:335px;"><img src="assets/images/leftarrow.png" (click)="setNextImage(-1)" width="48" height="48" class="photoarrow"></div>
+  <div style="float:left; height:650px; width:831px;"><img src="{{this.bs.photoFileName}}" style="height:100%; width:100%; object-fit:scale-down;"><br /><br /><span style="font-size:20px;">{{this.bs.photoCaption}}</span></div>
+  <div style="float:left; height:650px; padding-top:335px;"><img src="assets/images/rightarrow.png" (click)="setNextImage(1)" width="48" height="48" style="cursor: pointer;"></div>
+  <div style="clear: both;"></div>
+</kendo-dialog>

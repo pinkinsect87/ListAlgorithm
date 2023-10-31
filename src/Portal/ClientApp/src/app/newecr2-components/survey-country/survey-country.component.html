@@ -1,0 +1,27 @@
+<div class="survey-country-container">
+  <div class="survey-country-section survey-country-section-action">
+    <img width="24" height="24" src="assets/images/minus.png" alt="Remove" *ngIf="isShowRemove" (mouseup)="remove()">
+  </div>
+  <div class="survey-country-section">
+    <kendo-dropdownlist #countriesControl class="dropdown-select shadow-gray"
+                        [data]="countries" textField="countryName" valueField="countryCode"
+                        [(ngModel)]="country" [popupSettings]="{width: 350}"
+                        (selectionChange)="countrySelected($event)">
+    </kendo-dropdownlist>
+    <div *ngIf="isCountryInvalid" class="country-error">
+      {{countryErrorMessage}}
+    </div>
+  </div>
+  <div class="survey-country-section">
+    <input #employeeCountControl type="number" class="portal-text-box shadow-gray input" [(ngModel)]="employeeCount" (keyup)="employeeCountChanged()" />
+    <div *ngIf="isEmployeeCountInvalid" class="employee-count-error">
+      {{employeeCountErrorMessage}}
+    </div>
+  </div>
+  <div class="survey-country-section">
+    <input type="checkbox" [(ngModel)]="isApplyForCertification" [ngClass]="isApplyForCertificationDisabled ? 'apply-for-certification-disabled' : ''"
+           (change)="isApplyForCertificationChange($event)" />
+  </div>
+  
+  
+</div>

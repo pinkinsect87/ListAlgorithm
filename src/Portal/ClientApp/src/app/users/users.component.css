@@ -1,0 +1,85 @@
+.k-grid .k-grid-content td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+tr .first-name-column-header {
+  text-align: left;
+  font: bold 20px arial, sans-serif;
+  width: 140px;
+  min-width: 80px;
+  max-width: 140px;
+}
+
+tr .last-name-column-header {
+  text-align: left;
+  font: bold 20px arial, sans-serif;
+  width: 140px;
+  min-width: 80px;
+  max-width: 140px;
+}
+
+tr .email-column-header {
+  text-align: left;
+  font: bold 20px arial, sans-serif;
+  width: 420px;
+  min-width: 200px;
+  max-width: 420px;
+}
+
+tr .achievement-notification-column-header {
+  text-align: left;
+  font: bold 20px arial, sans-serif;
+  width: 140px;
+  min-width: 140px;
+  max-width: 140px;
+}
+
+tr .command-column-header {
+  text-align: left;
+  font: bold 20px arial, sans-serif;
+  width: 128px;
+  min-width: 128px;
+  max-width: 128px;
+}
+
+tr .first-name-column {
+  text-align: left;
+  font: 20px arial, sans-serif;
+  width: 140px;
+  min-width: 80px;
+  max-width: 140px;
+}
+
+tr .last-name-column {
+  text-align: left;
+  font: 20px arial, sans-serif;
+  width: 140px;
+  min-width: 80px;
+  max-width: 140px;
+}
+
+tr .email-column {
+  text-align: left;
+  font: 20px arial, sans-serif;
+  width: 420px;
+  min-width: 200px;
+  max-width: 420px;
+}
+
+tr .achievement-notification-column {
+  text-align: left;
+  font: 20px arial, sans-serif;
+  width: 140px;
+  min-width: 140px;
+  max-width: 140px;
+}
+
+tr .command-column {
+  text-align: left;
+  font: 20px arial, sans-serif;
+  width: 128px;
+  min-width: 128px;
+  max-width: 128px;
+}

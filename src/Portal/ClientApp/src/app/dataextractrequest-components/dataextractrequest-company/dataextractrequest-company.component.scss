@@ -1,0 +1,47 @@
+.dataextractrequest-company-container {
+  display: block;
+  margin-left: -54px;
+  padding-bottom: 10px;
+}
+
+.dataextractrequest-company-section {
+  padding-right: 30px;
+  min-width: 54px;
+  display: inline-table;
+}
+
+.dataextractrequest-company-section-action {
+  width: 54px;
+  cursor: pointer;
+}
+
+.dataextractrequest-company-section > input[type='number'] {
+    width: 138px;
+    text-align: center;
+}
+
+.dataextractrequest-company-section > input[type='number']::-webkit-inner-spin-button,
+.dataextractrequest-company-section > input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.dataextractrequest-company-section kendo-dropdownlist {
+  display: inline-block;
+  width: 150px;
+}
+
+.company-error {
+  width: 600px;
+  /*padding-top: 15px;*/
+  padding-left: 54px;
+}
+
+.company-error p {
+  color: #F05A5A;
+  font-size: 12px;
+  background-color: #EED3D9;
+  padding: 5px;
+  display: inline-block;
+  margin-bottom: 0;
+}

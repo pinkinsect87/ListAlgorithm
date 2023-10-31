@@ -1,0 +1,18 @@
+<ul>
+  <br />
+  <li #itemElement
+      *ngFor="let item of currentData; let i = index;"
+      (click)="onSelectionChange(valueAccessor(item), itemElement)"
+      [ngClass]="{'k-state-selected': isItemSelected(item)}">
+    <input type="checkbox"
+           id="chk-{{valueAccessor(item)}}"
+           (focus)="onFocus(itemElement)"
+           class="k-checkbox"
+           [checked]="isItemSelected(item)" />
+    <label class="k-multiselect-checkbox k-checkbox-label"
+           for="chk-{{valueAccessor(item)}}">
+      {{ textAccessor(item) }}
+    </label>
+    <i class="material-icons" style="padding-left:5px;">{{getIconName(textAccessor(item))}}</i>
+  </li>
+</ul>

@@ -1,0 +1,57 @@
+<div class="portal-component-fullscreen">
+  <div class="portal-container">
+    <app-header></app-header>
+
+    <router-outlet></router-outlet>
+
+    <div>
+      <div class="portal-body-content">
+        <div class="container">
+          <div class="component-title">
+            Reports
+          </div>
+          <div class="component-sub-heading">
+
+            <div *ngIf="this.noReports">You have no reports yet.</div><br />
+            <div *ngIf="!this.noReports">
+              You may download your reports by clicking on them below.<br />
+            <span style="font-size:13px;">Reports downloaded from this page only contain US survey responses.</span>
+              <br />
+              <!-->div *ngIf="this.dataIsLoading" class="k-i-loading"></div-->
+              <div *ngIf="this.dataIsLoading" class="k-loading-image"></div>
+
+            </div><br />
+
+            <kendo-treeview [nodes]="this.clientReturnTreeJson"
+                            textField="text"
+                            kendoTreeViewExpandable
+                            kendoTreeViewHierarchyBinding
+                            KendoTreeViewSelectable
+                            childrenField="items"
+                            [isExpanded]="expanded"
+                            (selectionChange)="handleSelection($event)"
+                            (expand)="handleExpand($event)"
+                            (collapse)="handleCollapse($event)">
+              <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                <div *ngIf="dataItem">
+                  <div *ngIf="dataItem.hasChildren">
+                    {{dataItem.text}}
+                  </div>
+                  <div *ngIf="!dataItem.hasChildren" style="cursor: pointer;vertical-align:middle">
+                    {{dataItem.text}}
+                    &nbsp;
+                    <i class="material-icons icon-color-inherit" style="vertical-align:top;font-size:20px">save_alt</i>
+                  </div>
+                </div>
+              </ng-template>
+            </kendo-treeview>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-footer></app-footer>
+  </div>
+</div>
+
+

@@ -1,0 +1,1044 @@
+{
+  [
+    {
+      "module": "GetCompanyData",
+      "module_parameters": "$engagement_id",
+      "qa_steps": "NOTZERO_ERROR;NOTNEGATIVE_ERROR;INTEGER_ERROR",
+      "output_variable": "$eid",
+      "notes": "",
+      "sql": "csp_GetEngagementIdForListRequest"
+    },
+    {
+      "module": "GetCompanyData",
+      "module_parameters": "$client_id",
+      "qa_steps": "NOTZERO_ERROR;NOTNEGATIVE_ERROR;INTEGER_ERROR",
+      "output_variable": "$cid",
+      "notes": "",
+      "sql": "csp_GetClientIdForListRequest"
+    },
+    {
+      "module": "GetCompanyData",
+      "module_parameters": "$survey_ver_id",
+      "qa_steps": "",
+      "output_variable": "$svid",
+      "notes": "",
+      "sql": "csp_GetClientIdForListRequest"
+    },
+    {
+      "module": "GetCompanyData",
+      "module_parameters": "$ECRClientName",
+      "qa_steps": "NOTEMPTYSTRING_ERROR",
+      "output_variable": "$company_name",
+      "notes": "",
+      "sql": "csp_GetCompanyNameForListRequest"
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "$ca1_GEN_sites_COUNTRY[$countryregion_id]",
+      "qa_steps": "NOTNEGATIVE_ERROR;INTEGER_ERROR",
+      "output_variable": "$num_locations",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "ca1_GEN_NAICSCode",
+      "qa_steps": "NOTEMPTYSTRING_ERROR",
+      "output_variable": "$industry",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "$sr_Employees_COUNTRY[$countryregion_id]",
+      "qa_steps": "INTEGER;INTEGER(>10);INTEGER(<1000000)",
+      "output_variable": "$num_employees_cb_country",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "4 * (log($num_employees_cb_country,10) -2)",
+      "qa_steps": "",
+      "output_variable": "$company_size_adjustment",
+      "notes": ""
+    },
+    {
+      "module": "GetTrustIndexScore",
+      "module_parameters": {
+        "stmts": "ALL_CORE_STATEMENTS",
+        "respondent_filter": "ALL_RESPONDENTS",
+        "cid": "$cid",
+        "eid": "$eid"
+      },
+      "qa_steps": "DOUBLE(>=0)_ERROR;DOUBLE(<=100)_ERROR;DOUBLE(>=50)_WARN",
+      "output_variable": "$trust_index_score",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$trust_index_score + $company_size_adjustment",
+      "qa_steps": "",
+      "output_variable": "$TrustScore",
+      "notes": "NEED TO THINK ABOUT HOW WE COULD QA THIS VALUE?"
+    },
+    {
+      "module": "GetBLSData",
+      "module_parameters": "BLSIndustryGenderVer2018[$industry]",
+      "qa_steps": "",
+      "output_variable": "$IndustryFemalePct",
+      "notes": ""
+    },
+    {
+      "module": "StaticValue",
+      "module_parameters": "0.4",
+      "qa_steps": "",
+      "output_variable": "$gender_target_pct",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "$sr_FT_Female_Total_COUNTRY[$countryregion_id]",
+      "qa_steps": "NOTZERO_ERROR;NOTNEGATIVE_ERROR;INTEGER_ERROR",
+      "output_variable": "$num_female_employees",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "$sr_FT_Male_Total_COUNTRY[$countryregion_id]",
+      "qa_steps": "NOTZERO_ERROR;NOTNEGATIVE_ERROR;INTEGER_ERROR",
+      "output_variable": "$num_male_employees",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$num_female_employees / ($num_female_employees + $num_male_employees)",
+      "qa_steps": "DOUBLE(>=0)_ERROR;DOUBLE(<=1)_ERROR",
+      "output_variable": "$pct_female_employees",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "100 * min(min($pct_female_employees, 1 - $pct_female_employees) / $gender_target_pct, 1)",
+      "qa_steps": "DOUBLE(>=0)_ERROR;DOUBLE(<=100)_ERROR",
+      "output_variable": "$gender_workforce_score",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "min($IndustryFemalePct/100, 1 - $IndustryFemalePct/100, $gender_target_pct)",
+      "qa_steps": "",
+      "output_variable": "$IndustryGenderTargetPct",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "min($pct_female_employees, 1 - $pct_female_employees, $gender_target_pct) - $IndustryGenderTargetPct",
+      "qa_steps": "",
+      "output_variable": "$GenderVsIndustryTarget",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$GenderVsIndustryTarget * 30",
+      "qa_steps": "",
+      "output_variable": "$GenderIndustryBonusOrPenalty",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "ca1_DEMO_clevelMinorities_COUNTRY[$countryregion_id]",
+      "qa_steps": "",
+      "output_variable": "$minority_execs",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "CB$ca1_DEMO_MgntExecLeader_COUNTRY[$countryregion_id]",
+      "qa_steps": "NOTNEGATIVE_ERROR;INTEGER_ERROR",
+      "output_variable": "$total_execs",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "CB$ca1_DEMO_clevelWomen_COUNTRY[$countryregion_id]",
+      "qa_steps": "Double<=1_ERROR",
+      "output_variable": "$women_execs",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$women_execs / $total_execs",
+      "qa_steps": "",
+      "output_variable": "$women_execs_pct",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "100 * min(min($women_execs_pct, 1 - $women_execs_pct) / $gender_target_pct, 1)",
+      "qa_steps": "",
+      "output_variable": "$gender_exec_score",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "ca1_DEMO_midLevelWomen_COUNTRY[$countryregion_id]",
+      "qa_steps": "Double<=1_ERROR",
+      "output_variable": "$women_midlevel",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "ca1_DEMO_frntLineSupervisorWomen_COUNTRY[$countryregion_id]",
+      "qa_steps": "Double<=1_ERROR",
+      "output_variable": "$women_frontsup",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "ca1_DEMO_MgntMiddleLevel_COUNTRY[$countryregion_id]",
+      "qa_steps": "Double<=1_ERROR",
+      "output_variable": "$total_midlevel",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "ca1_DEMO_MgntFrontSupervisor_COUNTRY[$countryregion_id]",
+      "qa_steps": "Double<=1_ERROR",
+      "output_variable": "$total_frontsup",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$total_frontsup + $total_midlevel + $total_execs",
+      "qa_steps": "",
+      "output_variable": "$total_managers",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$women_frontsup + $women_midlevel + $women_execs",
+      "qa_steps": "",
+      "output_variable": "$female_managers",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$female_managers / $total_managers",
+      "qa_steps": "",
+      "output_variable": "$pct_female_managers",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "100 * min(min($pct_female_managers, 1 - $pct_female_managers) / $gender_target_pct, 1)",
+      "qa_steps": "",
+      "output_variable": "$GenderManagementScore",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "100 * min($women_execs_pct / $pct_female_employees, 1)",
+      "qa_steps": "",
+      "output_variable": "$GenderExecConsistencyScore",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "100 * min($pct_female_managers / $pct_female_employees, 1)",
+      "qa_steps": "",
+      "output_variable": "$GenderManagementConsistencyScore",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "mean($gender_exec_score, $GenderManagementScore, $GenderExecConsistencyScore, $GenderManagementConsistencyScore)",
+      "qa_steps": "",
+      "output_variable": "$gender_mgt_execs_score",
+      "notes": "if there are no execs, just scored on the 2 management sections"
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "$cb_numCEOs_COUNTRY[$countryregion_id]",
+      "qa_steps": "",
+      "output_variable": "$NumCEOs",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "$cb_numCEOsWomen_COUNTRY[$countryregion_id]",
+      "qa_steps": "",
+      "output_variable": "$NumWomenCEOs",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "$cb_numBOD",
+      "qa_steps": "",
+      "output_variable": "$cb_num_bod_total",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "$cb_numBODWomen",
+      "qa_steps": "",
+      "output_variable": "$cb_num_bod_women",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$cb_num_bod_women / $cb_num_bod_total",
+      "qa_steps": "",
+      "output_variable": "$cb_pct_bod_women",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "min(10, ($cb_pct_bod_women * 40) - 10)",
+      "qa_steps": "",
+      "output_variable": "$women_bod_bonus_pct",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "0",
+      "qa_steps": "",
+      "output_variable": "$women_bod_bonus_absolute",
+      "notes": "NO BOARD"
+    },
+    {
+      "module": "DynamicMath",
+      "module_if_condition": "($cb_num_bod_women = 0) and ($cb_num_bod_total >=1)",
+      "module_parameters": "-5.0",
+      "qa_steps": "",
+      "output_variable": "$women_bod_bonus_absolute",
+      "notes": "there is a board but no women on the board"
+    },
+    {
+      "module": "DynamicMath",
+      "module_if_condition": "$cb_num_bod_women = 1",
+      "module_parameters": "2.5",
+      "qa_steps": "",
+      "output_variable": "$women_bod_bonus_absolute",
+      "notes": "one woman on the board"
+    },
+    {
+      "module": "DynamicMath",
+      "module_if_condition": "$cb_num_bod_women >= 2",
+      "module_parameters": "5",
+      "qa_steps": "",
+      "output_variable": "$women_bod_bonus_absolute",
+      "notes": "two women on the board"
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$women_bod_bonus_absolute + $women_bod_bonus_pct",
+      "qa_steps": "",
+      "output_variable": "$WomenBoDBonus",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$NumWomenCEOs / $NumCEOs * 10",
+      "qa_steps": "",
+      "output_variable": "$WomenCEOBonus",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$WomenCEOBonus + $WomenBoDBonus",
+      "qa_steps": "",
+      "output_variable": "$women_ceo_BoD_Bonus_Penalty",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "(.5 * $gender_workforce_score) + (.5 * $gender_mgt_execs_score) + $women_ceo_BoD_Bonus_Penalty",
+      "qa_steps": "",
+      "output_variable": "$GenderRepresentationScore",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$minority_execs / $total_execs",
+      "qa_steps": "",
+      "output_variable": "$minority_execs_pct",
+      "notes": ""
+    },
+    {
+      "module": "StaticValue",
+      "module_parameters": "0.375",
+      "qa_steps": "",
+      "output_variable": "$minority_target_pct",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "100 * min($minority_execs_pct / $minority_target_pct, 1)",
+      "qa_steps": "",
+      "output_variable": "$minority_exec_score",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "ca1_DEMO_midLevelMinorities_COUNTRY[$countryregion_id]",
+      "qa_steps": "Double<=1_ERROR",
+      "output_variable": "$minorities_midlevel",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "ca1_DEMO_frntLineSupervisorMinorities_COUNTRY[$countryregion_id]",
+      "qa_steps": "Double<=1_ERROR",
+      "output_variable": "$minorities_frontsup",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$minority_execs + $minorities_midlevel + $minorities_frontsup",
+      "qa_steps": "",
+      "output_variable": "$minority_managers",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$minority_managers / $total_managers",
+      "qa_steps": "",
+      "output_variable": "$minority_managers_pct",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "100 * min($minority_managers_pct / $minority_target_pct, 1)",
+      "qa_steps": "",
+      "output_variable": "$minority_management_score",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "ca1_DEMO_IndeContributorMinorities_COUNTRY[$countryregion_id]",
+      "qa_steps": "",
+      "output_variable": "$minority_indiv_contrib",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "ca1_DEMO_IndeContributor_COUNTRY[$countryregion_id]",
+      "qa_steps": "",
+      "output_variable": "$total_indiv_contrib",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "($minority_managers + $minority_indiv_contrib) / ($total_indiv_contrib + $total_managers)",
+      "qa_steps": "",
+      "output_variable": "$minority_workforce_pct",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "100 * min($minority_workforce_pct / $minority_target_pct, 1)",
+      "qa_steps": "",
+      "output_variable": "$minority_national_workforce_score",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "ca1_GEN_coState_REQ_COUNTRY[$countryregion_id]",
+      "qa_steps": "",
+      "output_variable": "$HQ_State",
+      "notes": ""
+    },
+    {
+      "module": "GetBLSData",
+      "module_parameters": "BLSWorkforceMinorityVer2018[$HQ_State]",
+      "qa_steps": "",
+      "output_variable": "$State_Minority_pct",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "100 * min($minority_workforce_pct / $State_Minority_pct, 1)",
+      "qa_steps": "",
+      "output_variable": "$minority_state_workforce_score",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "1/($num_locations + 1)",
+      "qa_steps": "",
+      "output_variable": "$state_diversity_weight",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$minority_state_workforce_score * $state_diversity_weight + $minority_national_workforce_score * (1-$state_diversity_weight)",
+      "qa_steps": "",
+      "output_variable": "$minority_combined_state_national_workforce_score",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$minority_combined_state_national_workforce_score * 50 - 25",
+      "qa_steps": "",
+      "output_variable": "$minority_workforce_bonus_penalty",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "100 * min($minority_execs_pct / $minority_workforce_pct, 1)",
+      "qa_steps": "",
+      "output_variable": "$MinorityExecConsistencyScore",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "100 * min($minority_managers_pct / $minority_workforce_pct, 1)",
+      "qa_steps": "",
+      "output_variable": "$MinorityManagementConsistencyScore",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "mean($minority_exec_score, $minority_management_score, $MinorityExecConsistencyScore, $MinorityManagementConsistencyScore)",
+      "qa_steps": "",
+      "output_variable": "$minority_mgt_execs_score",
+      "notes": "if there are no execs, just scored on the 2 management sections"
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$minority_mgt_execs_score * 50 - 25",
+      "qa_steps": "",
+      "output_variable": "$minority_mgt_execs_bonus_penalty",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "cb_numCEOsMinorities_COUNTRY[$countryregion_id]",
+      "qa_steps": "",
+      "output_variable": "$NumMinorityCEOs",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$NumMinorityCEOs / $NumCEOs * 10",
+      "qa_steps": "",
+      "output_variable": "MinorityCEOBonus",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureBriefVariable",
+      "module_parameters": "cb_numBODMinorities",
+      "qa_steps": "",
+      "output_variable": "$cb_num_bod_minorities",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$cb_num_bod_minorities / $cb_num_bod_total",
+      "qa_steps": "",
+      "output_variable": "$pct_bod_minorities",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "min(10, ($pct_bod_minorities * 20/$minority_target_pct) - 10)",
+      "qa_steps": "",
+      "output_variable": "$minority_bod_bonus_pct",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "0",
+      "qa_steps": "",
+      "output_variable": "$minority_bod_bonus_absolute",
+      "notes": "NO BOARD"
+    },
+    {
+      "module": "DynamicMath",
+      "module_if_condition": "($cb_num_bod_minorities = 0) AND ($cb_num_bod_total >=1)",
+      "module_parameters": "-5.0",
+      "qa_steps": "",
+      "output_variable": "$minority_bod_bonus_absolute",
+      "notes": "there is a board but no minorities on the board"
+    },
+    {
+      "module": "DynamicMath",
+      "module_if_condition": "$cb_num_bod_minorities = 1",
+      "module_parameters": "2.5",
+      "qa_steps": "",
+      "output_variable": "$minority_bod_bonus_absolute",
+      "notes": "one URM on the board"
+    },
+    {
+      "module": "DynamicMath",
+      "module_if_condition": "$cb_num_bod_minorities >= 2",
+      "module_parameters": "5",
+      "qa_steps": "",
+      "output_variable": "$minority_bod_bonus_absolute",
+      "notes": "two URMs on the board"
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$minority_bod_bonus_absolute + $minority_bod_bonus_pct",
+      "qa_steps": "",
+      "output_variable": "$MinorityBoDBonus",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$MinorityCEOBonus + $MinorityBoDBonus",
+      "qa_steps": "",
+      "output_variable": "$minority_ceo_BoD_Bonus_Penalty",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$GenderIndustryBonusOrPenalty + $minority_mgt_execs_bonus_penalty + $minority_workforce_bonus_penalty + $minority_ceo_BoD_Bonus_Penalty",
+      "qa_steps": "",
+      "output_variable": "$total_US_representation_bonus_penalty",
+      "notes": ""
+    },
+    {
+      "module": "GetDemographicTIPenalty",
+      "module_parameters": {
+        "stmts": "ALL_60_STMTS",
+        "respondent_filter": "ALL_RESPONDENTS",
+        "header_to_skip": "None",
+        "header_ans_to_skip": "LGBT = Prefer Not Say, Disabilities = Prefer Not To Say",
+        "weightings": "Race/Ethnicity = 1.0, PayType = 0.33, LGBT = .33, Disabilities = .33",
+        "cid": "$cid",
+        "eid": "$eid"
+      },
+      "qa_steps": "DOUBLE(>=0)_ERROR;DOUBLE(<=100)_ERROR;DOUBLE(>=50)_WARN",
+      "output_variable": "$US_supplement_consistency_penalty",
+      "notes": ""
+    },
+    {
+      "module": "GetDemographicTIPenalty",
+      "module_parameters": {
+        "stmts": "ALL_60_STMTS",
+        "respondent_filter": "ALL_RESPONDENTS",
+        "header_to_skip": "None",
+        "header_ans_to_skip": "Gender = Another gender not listed",
+        "weightings": "Gender = 1.0, ManagerialLevel = 1.0, WorkStatus = .33, Tenure = .33, Age = .33",
+        "cid": "$cid",
+        "eid": "$eid"
+      },
+      "qa_steps": "DOUBLE(>=0)_ERROR;DOUBLE(<=100)_ERROR;DOUBLE(>=50)_WARN",
+      "output_variable": "$consistency_penalty",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "(.6 * $US_supplement_consistency_penalty) - (.4 * $consistency_penalty)",
+      "qa_steps": "",
+      "output_variable": "$US_consistency_penalty_adjustment",
+      "notes": "reduces consistency penalty by 40% because the new US demographics are 40% of the penalty"
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$trust_index_score - $consistency_penalty",
+      "qa_steps": "",
+      "output_variable": "$DemographicConsistencyScore",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$GenderRepresentationScore * 1/15 + $DemographicConsistencyScore * 14/15 + $company_size_adjustment",
+      "qa_steps": "",
+      "output_variable": "$GlobalMHPScore",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$GlobalMHPScore - ($US_consistency_penalty_adjustment * 14/15) + ($total_US_representation_bonus_penalty * 1/15)",
+      "qa_steps": "",
+      "output_variable": "$USMHPScore",
+      "notes": ""
+    },
+    {
+      "module": "GetDemographicTIPenalty",
+      "module_parameters": {
+        "stmts": "35, 12211, 32",
+        "respondent_filter": "ALL_RESPONDENTS",
+        "header_to_skip": "None",
+        "header_ans_to_skip": "LGBT = Prefer Not Say, Disabilities = Prefer Not To Say",
+        "weightings": "Race/Ethnicity = 1.0, PayType = 0.33, LGBT = .33, Disabilities = .33",
+        "cid": "$cid",
+        "eid": "$eid"
+      },
+      "qa_steps": "DOUBLE(>=0)_ERROR;DOUBLE(<=100)_ERROR;DOUBLE(>=50)_WARN",
+      "output_variable": "$US_supplement_values_index_penalty",
+      "notes": ""
+    },
+    {
+      "module": "GetDemographicTIPenalty",
+      "module_parameters": {
+        "stmts": "35, 12211, 32",
+        "respondent_filter": "ALL_RESPONDENTS",
+        "header_to_skip": "None",
+        "header_ans_to_skip": "Gender = Another gender not listed",
+        "weightings": "Gender = 1.0, ManagerialLevel = 1.0, WorkStatus = .33, Tenure = .33, Age = .33",
+        "cid": "$cid",
+        "eid": "$eid"
+      },
+      "qa_steps": "DOUBLE(>=0)_ERROR;DOUBLE(<=100)_ERROR;DOUBLE(>=50)_WARN",
+      "output_variable": "$values_index_penalty",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "(.6 * $US_supplement_values_index_penalty) - (.4 * $values_index_penalty)",
+      "qa_steps": "",
+      "output_variable": "$US_values_penalty_adjustment",
+      "notes": "reduces consistency penalty by 40% because the new US demographics are 40% of the penalty"
+    },
+    {
+      "module": "StaticValue",
+      "module_parameters": "1",
+      "qa_steps": "",
+      "output_variable": "$ValuesIndexScore",
+      "notes": ""
+    },
+    {
+      "module": "StaticValue",
+      "module_parameters": "1",
+      "qa_steps": "",
+      "output_variable": "$ValuesIndexPenalty",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$ValuesIndexScore - $ValuesIndexPenalty",
+      "qa_steps": "",
+      "output_variable": "$UnadjustedValuesScore",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$UnadjustedValuesScore + $company_size_adjustment",
+      "qa_steps": "",
+      "output_variable": "$adjustedValuesScore",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$adjustedValuesScore - $US_values_penalty_adjustment",
+      "qa_steps": "",
+      "output_variable": "$USValuesScore",
+      "notes": ""
+    },
+    {
+      "module": "GetDemographicTIPenalty",
+      "module_parameters": {
+        "stmts": "16, 22, 12212",
+        "respondent_filter": "ALL_RESPONDENTS",
+        "header_to_skip": "None",
+        "header_ans_to_skip": "LGBT = Prefer Not Say, Disabilities = Prefer Not To Say",
+        "weightings": "Race/Ethnicity = 1.0, PayType = 0.33, LGBT = .33, Disabilities = .33",
+        "cid": "$cid",
+        "eid": "$eid"
+      },
+      "qa_steps": "DOUBLE(>=0)_ERROR;DOUBLE(<=100)_ERROR;DOUBLE(>=50)_WARN",
+      "output_variable": "$US_supplement_innovation_index_penalty",
+      "notes": ""
+    },
+    {
+      "module": "GetDemographicTIPenalty",
+      "module_parameters": {
+        "stmts": "16, 22, 12212",
+        "respondent_filter": "ALL_RESPONDENTS",
+        "header_to_skip": "None",
+        "header_ans_to_skip": "Gender = Another gender not listed",
+        "weightings": "Gender = 1.0, ManagerialLevel = 1.0, WorkStatus = .33, Tenure = .33, Age = .33",
+        "cid": "$cid",
+        "eid": "$eid"
+      },
+      "qa_steps": "DOUBLE(>=0)_ERROR;DOUBLE(<=100)_ERROR;DOUBLE(>=50)_WARN",
+      "output_variable": "$innovation_index_penalty",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "(.6 * $US_supplement_innovation_index_penalty) - (.4 * $innovation_index_penalty)",
+      "qa_steps": "",
+      "output_variable": "$US_innovation_index_penalty_adjustment",
+      "notes": "reduces consistency penalty by 40% because the new US demographics are 40% of the penalty"
+    },
+    {
+      "module": "GetDemographicNetPenalty",
+      "module_parameters": {
+        "respondent_filter": "ALL_RESPONDENTS",
+        "demogHeader": "Meaningful Innovation Opportunities",
+        "confidenceAnswerOption": "A lot",
+        "nonConfidenceAnswerOption": "None",
+        "demogHeaderToSkip": null,
+        "demogHeaderAnswerOptionToSkip": "LGBT = Prefer Not Say, Disabilities = Prefer Not To Say",
+        "demogWeightingList": "Race/Ethnicity = 1.0, PayType = 0.33, LGBT = .33, Disabilities = .33",
+        "cid": "$cid",
+        "eid": "$eid"
+      },
+      "qa_steps": "",
+      "output_variable": "$US_supplement_innovation_net_confidence_penalty",
+      "notes": ""
+    },
+    {
+      "module": "GetDemographicNetPenalty",
+      "module_parameters": {
+        "respondent_filter": "ALL_RESPONDENTS",
+        "demogHeader": "Meaningful Innovation Opportunities",
+        "confidenceAnswerOption": "A lot",
+        "nonConfidenceAnswerOption": "None",
+        "demogHeaderToSkip": null,
+        "demogHeaderAnswerOptionToSkip": "Gender = Another gender not listed",
+        "demogWeightingList": "Gender = 1.0, ManagerialLevel = 1.0, WorkStatus = .33, Tenure = .33, Age = .33",
+        "cid": "$cid",
+        "eid": "$eid"
+      },
+      "qa_steps": "",
+      "output_variable": "$innovation_net_confidence_penalty",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "(.6 * $US_supplement_innovation_net_confidence_penalty) - (.4 * $innovation_net_confidence_penalty)",
+      "qa_steps": "",
+      "output_variable": "$US_innovation_net_confidence_penalty_adjustment",
+      "notes": "reduces consistency penalty by 40% because the new US demographics are 40% of the penalty"
+    },
+    {
+      "module": "GetTrustIndexScore",
+      "module_parameters": {
+        "stmts": "16, 22, 12212",
+        "respondent_filter": "ALL_RESPONDENTS",
+        "cid": "$cid",
+        "eid": "$eid"
+      },
+      "qa_steps": "DOUBLE(>=0)_ERROR;DOUBLE(<=100)_ERROR;DOUBLE(>=50)_WARN",
+      "output_variable": "$innovation_index_score",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$innovation_index_score - $innovation_index_penalty",
+      "qa_steps": "",
+      "output_variable": "$innovation_index_adjusted_ti_score",
+      "notes": ""
+    },
+    {
+      "module": "GetNetDemographicScore",
+      "module_parameters": {
+        "respondent_filter": "ALL_RESPONDENTS",
+        "demogHeader": "Meaningful Innovation Opportunities",
+        "confidenceAnswerOption": "A lot",
+        "nonConfidenceAnswerOption": "None",
+        "cid": "$cid",
+        "eid": "$eid"
+      },
+      "qa_steps": "",
+      "output_variable": "$innovation_net_confidence",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$innovation_net_confidence - $innovation_net_confidence_penalty",
+      "qa_steps": "",
+      "output_variable": "$innovation_confidence_score",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "($innovation_index_adjusted_ti_score * 0.75) + ($innovation_confidence_score * 0.25)",
+      "qa_steps": "",
+      "output_variable": "$innovation_confidence_score_combined",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$innovation_confidence_score_combined + $company_size_adjustment",
+      "qa_steps": "",
+      "output_variable": "$InnovationScore",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$InnovationScore - (.75 * $US_innovation_index_penalty_adjustment) - .25 * ($US_innovation_net_confidence_penalty_adjustment)",
+      "qa_steps": "",
+      "output_variable": "USInnovationScore",
+      "notes": ""
+    },
+    {
+      "module": "GetDemographicTIPenalty",
+      "module_parameters": {
+        "stmts": "14, 20, 45, 50",
+        "respondent_filter": "ALL_RESPONDENTS",
+        "header_to_skip": "None",
+        "header_ans_to_skip": "LGBT = Prefer Not Say, Disabilities = Prefer Not To Say",
+        "weightings": "Race/Ethnicity = 1.0, PayType = 0.33, LGBT = .33, Disabilities = .33",
+        "cid": "$cid",
+        "eid": "$eid"
+      },
+      "qa_steps": "DOUBLE(>=0)_ERROR;DOUBLE(<=100)_ERROR;DOUBLE(>=50)_WARN",
+      "output_variable": "$US_supplement_leadership_index_penalty",
+      "notes": ""
+    },
+    {
+      "module": "GetDemographicTIPenalty",
+      "module_parameters": {
+        "stmts": "14, 20, 45, 50",
+        "respondent_filter": "ALL_RESPONDENTS",
+        "header_to_skip": "None",
+        "header_ans_to_skip": "Gender = Another gender not listed",
+        "weightings": "Gender = 1.0, ManagerialLevel = 1.0, WorkStatus = .33, Tenure = .33, Age = .33",
+        "cid": "$cid",
+        "eid": "$eid"
+      },
+      "qa_steps": "DOUBLE(>=0)_ERROR;DOUBLE(<=100)_ERROR;DOUBLE(>=50)_WARN",
+      "output_variable": "$leadership_index_penalty",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "(.6 * $US_supplement_leadership_index_penalty) - (.4 * $leadership_index_penalty)",
+      "qa_steps": "",
+      "output_variable": "$US_leadership_index_penalty_adjustment",
+      "notes": "reduces consistency penalty by 40% because the new US demographics are 40% of the penalty"
+    },
+    {
+      "module": "GetDemographicNetPenalty",
+      "module_parameters": {
+        "respondent_filter": "ALL_RESPONDENTS",
+        "demogHeader": "Confidence",
+        "confidenceAnswerOption": "Great deal",
+        "nonConfidenceAnswerOption": "Very little or none",
+        "demogHeaderToSkip": null,
+        "demogHeaderAnswerOptionToSkip": "LGBT = Prefer Not Say, Disabilities = Prefer Not To Say",
+        "demogWeightingList": "Race/Ethnicity = 1.0, PayType = 0.33, LGBT = .33, Disabilities = .33",
+        "cid": "$cid",
+        "eid": "$eid"
+      },
+      "qa_steps": "",
+      "output_variable": "$US_supplement_leadership_net_confidence_penalty",
+      "notes": ""
+    },
+    {
+      "module": "GetDemographicNetPenalty",
+      "module_parameters": {
+        "respondent_filter": "ALL_RESPONDENTS",
+        "demogHeader": "Confidence",
+        "confidenceAnswerOption": "Great deal",
+        "nonConfidenceAnswerOption": "Very little or none",
+        "demogHeaderToSkip": null,
+        "demogHeaderAnswerOptionToSkip": "Gender = Another gender not listed",
+        "demogWeightingList": "Gender = 1.0, ManagerialLevel = 1.0, WorkStatus = .33, Tenure = .33, Age = .33",
+        "cid": "$cid",
+        "eid": "$eid"
+      },
+      "qa_steps": "",
+      "output_variable": "$leadership_net_confidence_penalty",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "(.6 * $US_supplement_leadership_net_confidence_penalty) - (.4 * $leadership_net_confidence_penalty)",
+      "qa_steps": "",
+      "output_variable": "$US_leadership_net_confidence_penalty_adjustment",
+      "notes": "reduces consistency penalty by 40% because the new US demographics are 40% of the penalty"
+    },
+    {
+      "module": "GetTrustIndexScore",
+      "module_parameters": {
+        "stmts": "14, 20, 45, 50",
+        "respondent_filter": "ALL_RESPONDENTS",
+        "cid": "$cid",
+        "eid": "$eid"
+      },
+      "qa_steps": "DOUBLE(>=0)_ERROR;DOUBLE(<=100)_ERROR;DOUBLE(>=50)_WARN",
+      "output_variable": "$leadership_index_score",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$leadership_index_score - $leadership_index_penalty",
+      "qa_steps": "",
+      "output_variable": "$leadership_index_adjusted_ti_score",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$leadership_index_adjusted_ti_score * 2 - 1",
+      "qa_steps": "",
+      "output_variable": "$leadership_index_adjusted_ti_net_promotor_score",
+      "notes": ""
+    },
+    {
+      "module": "GetNetDemographicScore",
+      "module_parameters": {
+        "respondent_filter": "ALL_RESPONDENTS",
+        "demogHeader": "Confidence",
+        "confidenceAnswerOption": "Great deal",
+        "nonConfidenceAnswerOption": "Very little or none",
+        "cid": "$cid",
+        "eid": "$eid"
+      },
+      "qa_steps": "",
+      "output_variable": "$leadership_net_confidence",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$leadership_net_confidence - $leadership_net_confidence_penalty",
+      "qa_steps": "",
+      "output_variable": "$leadership_confidence_score",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "($leadership_index_adjusted_ti_net_promotor_score * 0.8) + ($leadership_confidence_score * 0.2)",
+      "qa_steps": "",
+      "output_variable": "$leadership_confidence_score_combined",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$leadership_confidence_score_combined + $company_size_adjustment",
+      "qa_steps": "",
+      "output_variable": "$LeadershipScore",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "$LeadershipScore - (1.6 * $US_leadership_index_penalty_adjustment) - (.2 * $US_leadership_net_confidence_penalty_adjustment)",
+      "qa_steps": "",
+      "output_variable": "USLeadershipScore",
+      "notes": "the index penalty is doubled only for leadership because we use net promotor scoring for the global leadership score"
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "($TrustScore * .25) + ($USMHPScore * .6) + (.05 * $USValuesScore) + ($USLeadershipScore * .05) + ($USInnovationScore * .05)",
+      "qa_steps": "",
+      "output_variable": "OverallUSTIScore",
+      "notes": ""
+    },
+    {
+      "module": "GetCultureAuditScore",
+      "module_parameters": "$eid, $cid",
+      "qa_steps": "",
+      "output_variable": "$CultureAuditScore",
+      "notes": ""
+    },
+    {
+      "module": "DynamicMath",
+      "module_parameters": "($OverallUSTIScore * .75) + (.25 * $CultureAuditScore)",
+      "qa_steps": "",
+      "output_variable": "OverallUSScore_TI_CA",
+      "notes": ""
+    },
+    {
+      "module": "ProduceRank",
+      "module_parameters": "",
+      "qa_steps": "",
+      "output_variable": "OverallUSScore_Rank",
+      "notes": ""
+    }
+  ]
+}
+ 

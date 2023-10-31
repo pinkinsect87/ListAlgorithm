@@ -1,0 +1,102 @@
+
+
+<div class="header">
+  <section class="survey__hero show-lg language-background">
+    <header class="survey__hero-header show-lg">
+      <div class="container relative z2 header-container">
+        <div class="justifize">
+
+          <div class="justifize__box-left">
+            <div class="user-menu-holder justifize">
+              <div class="justifize__box-left">
+                <a href="{{this.baseurl}}"><img class="site-logo-img" alt="Great Place to Work" src="./assets/images/gptw_logo.svg"></a>
+              </div>
+              <div class="justifize__box-right header-wrap">
+                <span class="header-company-name" style="color:black;">{{this.bs.headerInfo.clientName}}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="justifize__box-right">
+            <div class="user-menu-holder justifize">
+
+              <div class="justifize__box-left header-nav-button">
+                <div *ngIf="showViewDataRequests" style="float:left; padding-left:10px;">
+                  <a (click)="onClickRoute('dataextractrequest')" title="View Data Requests">
+                    <i class="material-icons icon-color-inherit">summarize</i>
+                  </a>
+                </div>
+
+                <div *ngIf="isEmployee" style="float:left; padding-left:10px;">
+                  <a (click)="onClickRoute('dashboard')" title="Return to Engagement Dashboard">
+                    <i class="material-icons icon-color-inherit">dashboard</i>
+                  </a>
+                </div>
+                <div *ngIf="showOverviewLink" style="float:left;">
+                  <a class="btn btn--link" (click)="onClickRoute('overview')">
+                    <i class="font-icon-return-ico bottom-2 mr3"></i>
+                    <span>Overview</span>
+                  </a>
+                </div>
+                <div *ngIf="showCompanyUsersLink" style="float:left; padding-left:10px;">
+                  <a (click)="onClickRoute('users')" title="Add/Edit Users">
+                    <i class="material-icons icon-color-inherit">people</i>
+                  </a>
+                </div>
+                <div style="float:left; padding-left:10px;">
+                  <a (click)="onClickRoute('help')" title="Help">
+                    <i class="material-icons icon-color-inherit">help</i>
+                  </a>
+                </div>
+                <div style="float:left; padding-left:10px;">
+                  <a (click)="onClickRoute('logOut')" title="Log Out">
+                    <i class="material-icons icon-color-inherit">exit_to_app</i>
+                  </a>
+                </div>
+                <div style="clear:both; margin:0px; padding:0px;"> </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </header>
+  </section>
+</div>
+
+<kendo-dialog title="Data Requests"
+              *ngIf="isOpenDataExtractRequest"
+              (close)="closeDataExtractRequest()"
+              [width]="800"
+              [height]="635">
+  <div style="margin: 30px 35px;">
+    <kendo-grid id="data-extract-grid" style="height: 100%;" #grid
+                [kendoGridBinding]="dataExtractRequests"
+                [reorderable]="true"
+                [sortable]="true"
+                [resizable]="true"
+                [loading]="dataIsLoading"
+                [pageSize]="10"
+                [pageable]="true"
+                scrollable="none"
+                height="450">
+      <kendo-grid-column field="dateRequested" title="Date Requested" width="36">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{dataItem.dateRequested | date: 'MM/dd/yyyy hh:mm a'}}
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="requestor" title="Requester" width="80"> </kendo-grid-column>
+      <kendo-grid-column field="status" title="Status" width="20"> </kendo-grid-column>
+      <kendo-grid-column field="link" title="Link" width="20">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div><a style="color:Highlight; cursor: pointer;" (click)="onLinkClick(dataItem)">{{getLinkText(dataItem)}}</a></div>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
+  </div>
+  <kendo-dialog-actions>
+    <button kendoButton (click)="closeDataExtractRequest()" >Close</button>
+  </kendo-dialog-actions>
+</kendo-dialog>

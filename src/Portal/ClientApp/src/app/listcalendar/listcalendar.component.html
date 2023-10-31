@@ -1,0 +1,50 @@
+<div class="portal-component-fullscreen">
+  <div class="portal-container">
+    <app-header></app-header>
+    <div class="portal-body-content">
+      <div class="container">
+        <div class="portal-page-title">List Deadlines</div>
+        <div>
+          <p>Once Certified<span style="font-weight:400">&trade;</span>, you'll be considered for all subsequent lists while your Certification is valid.</p>
+
+          <p>
+            To be considered for a specific list, your Trust Index<span style="font-weight:400">&trade;</span> survey must close and you must submit your Culture Brief<span style="font-weight:400">&trade;</span> by end of day on the corresponding "Last Day to Get Certified".
+            To be considered for the <i>Fortune</i> 100 Best Companies to Work For® list, you’ll need to be Certified and submit your Culture Audit<span style="font-weight:400">&trade;</span> by end of day on the "Last Day to Get Certified".
+          </p>
+          <p>For more information on list requirements and deadlines, click <a target="_blank" href="https://www.greatplacetowork.com/list-calendar">here</a>.</p>
+        </div>
+        <br />
+
+        <kendo-grid [data]="listcalendar" [loading]="dataIsLoading" headerStyle="component-grid-header" [resizable]="true" scrollable="none">
+
+          <ng-template kendoGridNoRecordsTemplate>
+            <div *ngIf="!dataIsLoading">No Lists Available</div>
+            <div *ngIf="dataIsLoading">Loading...</div>
+          </ng-template>
+
+          <kendo-grid-column field="name" title="List" class="component-grid-wide" headerClass="component-grid-header-wide">
+          </kendo-grid-column>
+
+          <kendo-grid-column field="certified_by" title="Last Day To Get Certified"  headerClass="component-grid-header">
+            <ng-template kendoGridCellTemplate let-dataItem>
+
+              <div *ngIf="dataItem.italicize" class="component-grid-italics"  >{{dataItem.certified_by}}</div>
+              <div *ngIf="!dataItem.italicize" class="component-grid">{{dataItem.certified_by}}</div>
+
+            </ng-template>
+          </kendo-grid-column>
+
+
+          <kendo-grid-column field="publish_up" title="Publication Date" class="component-grid" headerClass="component-grid-header">
+          </kendo-grid-column>
+
+
+        </kendo-grid>
+
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>
+
+

@@ -1,0 +1,246 @@
+<div class="portal-component-fullscreen">
+  <div class="portal-container">
+    <app-header></app-header>
+    <div *ngIf="pageReady" class="portal-body-content">
+      <div class="container">
+
+        <div class="certification-toolkit-section-break"></div>
+        <div class="toolkit-page-section-head">Congratulations, You're Great Place to Work-Certified&trade;</div>
+
+        <div>
+
+          <p>It’s time to celebrate and tell the world you’re #GPTWcertified. Here are some ideas and tools to help you get the most from your distinction and maximize your visibility as a Great Place to Work-Certified company.</p>
+
+          <div class="certification-toolkit-section-break"></div>
+          <div class="toolkit-page-section-head">Thank Your Employees</div>
+
+          <div>
+            <div style="display: inline-block; height: 100%; width: 40%; vertical-align: top;">
+              <img src="./assets/images/toolkit/MrCooper1.JPG" style="max-width: 100%; max-height: 100%">
+            </div>
+            <div style="display: inline-block; width: 60%; vertical-align: top; padding-left: 20px; padding-bottom: 20px;">
+              <p>Share the news with your company and thank your employees for their feedback. Let everyone know the reasons why creating a great experience for all is important to your company.</p>
+              <p>Here are some ways companies share the excitement:</p>
+              <div style="margin-left: 30px">
+                <ul class="toolkit-list">
+                  <li class="toolkit-list-item">Send a quick selfie-style video from the CEO announcing the news</li>
+                  <li class="toolkit-list-item">Draft a simple, heartfelt email from your executive team</li>
+                  <li class="toolkit-list-item">Share the news in person at your next all-company meeting</li>
+                  <li class="toolkit-list-item">Throw a very special party to say thanks</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="isUSAffiliate">
+            <!--<p>To help get the party started, we’ll be sending you a <a target="_blank" href="{{celebrationKitLink}}">celebration kit</a> that includes fun Certification props. Let us know where to send it!</p>-->
+            <div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; width: 100%; height: 300px">
+              <div style="flex-grow: 1"><img style="max-width: 100%; max-height: 100%" src="./assets/images/ToolkitPhoto5.jpg"></div>
+              <div style="flex-grow: 1"><img style="max-width: 100%; max-height: 100%" src="./assets/images/ToolkitPhoto6.jpg"></div>
+              <div style="flex-grow: 1"><img style="max-width: 100%; max-height: 100%" src="./assets/images/ToolkitPhoto7.jpg"></div>
+            </div>
+            <!--<div class="certification-toolkit-button-area" style="margin-left: 0; margin-bottom: 50px; text-align: center">
+              <a (click)="onClick('celebrationToolkit')" class="certification-toolkit-button">Celebration Kit</a>
+            </div>-->
+          </div>
+
+          <div class="certification-toolkit-section-break"></div>
+          <div class="toolkit-page-section-head">Use Your Certification Badge</div>
+
+          <div>
+            <div style="display: inline-block; width: 16%; vertical-align: top; padding-right: 20px; padding-top: 5px"><img src="{{getBadgeUrl('svg', 0)}}" /></div>
+            <div style="display: inline-block; width: 40%; vertical-align: top; padding-right: 20px">
+              <p style="margin-bottom: 40px;">You've earned the right to proudly display the Great Place to Work Certification&trade; badge royalty-free for the next 12 months. When using the badge, you also agree to <a href="{{termsAndConditionsLink}}" target="_new">our terms & conditions</a> and <a href="{{usageLink}}" target="_new">usage guidelines</a>.</p>
+              <p><a (click)="onClick('badgeLinkSVG')" href="{{getBadgeUrl('svg', 1)}}">SVG</a>, <a (click)="onClick('badgeLinkJPG')" href="{{getBadgeUrl('jpg', 1)}}">JPG</a>, and <a (click)="onClick('badgeLinkPNG')" href="{{getBadgeUrl('png', 1)}}">PNG</a> Formats</p>
+              <div class="certification-toolkit-button-area" style="margin-left: 0; margin-bottom: 10px">
+                <a (click)="onClick('usageLink')" class="certification-toolkit-button">Usage Guidelines</a>
+              </div>
+              <div class="certification-toolkit-button-area" style="margin-left: 0">
+                <a (click)="onClick('badgeLinkZIP')" href="{{getBadgeZip()}}" class="certification-toolkit-button"><i class="glyphicon glyphicon-download-alt"></i> Badge ZIP File</a>
+              </div>
+            </div>
+            <div style="display: inline-block; width: 44%; vertical-align: top;">
+
+              <div *ngIf="isUSCertification">
+                <p class="portal-page-subhead" style="padding-top: 0; padding-bottom: 0; margin-bottom: 5px">Embed Code</p>
+                <p style="margin-bottom: 10px">You can embed your badge in any web property that you own, using the code below. Your badge will automatically update when you renew your Certification.</p>
+                <pre class="certification-toolkit-embed-code">&lt;a href=&quot;http://www.greatplacetowork.com/certified-company/{{clientId}}&quot; title=&quot;Rating and Review&quot; target=&quot;_blank&quot;&gt;&lt;img src=&quot;https://www.greatplacetowork.com/images/profiles/{{clientId}}/companyBadge.png&quot; alt=&quot;Review&quot; width=&quot;120&quot; /&gt;&lt;/a&gt;</pre>
+                <div class="certification-toolkit-button-area" style="margin-left: 0; margin-top: 20px; margin-bottom: 40px;">
+                  <a target="_blank" href="#" class="certification-toolkit-button" (click)="copyEmbedCode()">Copy to Clipboard</a>
+                </div>
+              </div>
+
+              <div>
+                <p class="portal-page-subhead" style="padding-top: 0; padding-bottom: 0; margin-bottom: 5px">Share Your Badge</p>
+                <p style="padding-top: 0; padding-bottom: 0; margin-bottom: 0">Need to send your badge and toolkit to someone else at your company?  Enter their email and we'll send them the details:</p>
+                <div class="question-line" style="padding-top: 10px">
+                  <div class="survey__items-item-field">
+                    <div class="openendedquestion">
+                      <div class="openendedquestion__input">
+                        <div class="input-wrap">
+                          <input class="openendedquestion__input-text shadow-gray input" type="text" style="height: 40px" [(ngModel)]="toEmail" size="44">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="certification-toolkit-button-area" style="margin-left: 0; margin-top: 0">
+                      <div *ngIf="isEmailSendError" style="color: red; font-weight: normal; font-size: 17px; margin-top: 5px;">{{sendEmailErrorMessage}}</div>
+                      <div *ngIf="isEmailSent" style="color: green; font-weight: bold; font-size: 17px; margin-top: 5px;">Your email has been sent!</div>
+                      <div style="margin-top: 20px;"><a class="certification-toolkit-button" (click)="onSendEmailButtonClick()">Share</a></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="certification-toolkit-section-break"></div>
+          <div class="toolkit-page-section-head">Share on Social Media</div>
+          <div>
+            <p style="text-align:center">Tell your culture story and feature your Great Place to Work-Certified team with the hashtag #GPTWcertified.</p>
+            <p class="portal-page-subhead" style="text-align: center">Tag Great Place to Work® to get featured:</p>
+            <div>
+              <div class="social-icon-row" style="width: 50%; margin: auto">
+                <div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-start">
+                  <div class="social-icon-item"><a href="{{facebookLink}}" target="_blank"><img class="social-icon" alt="Follow on Facebook" src="./assets/images/facebook_icon.png"></a></div>
+                  <div class="social-icon-item"><a href="{{instagramLink}}" target="_blank"><img class="social-icon" alt="Follow on Instagram" src="./assets/images/instagram_icon.png"></a></div>
+                  <div class="social-icon-item"><a href="{{linkedInLink}}" target="_blank"><img class="social-icon" alt="Follow on LinkedIn" src="./assets/images/linkedin_icon.png"></a></div>
+                  <div class="social-icon-item"><a href="{{twitterLink}}" target="_blank"><img class="social-icon" alt="Follow on Twitter" src="./assets/images/twitter_icon.png"></a></div>
+                </div>
+              </div>
+              <br />
+              <p>Feature your Certification badge front and center on your social media channels along with pictures of your people. Now’s the time to show off what it is that makes your employee experience so awesome! Don’t forget to invite your entire staff to share the excitement from their social media accounts too. </p>
+
+              <div>
+                <div style="display: inline-block; width: 50%; vertical-align: top;">
+                  <div class="portal-page-subhead">Here are a few sample posts to get you started:</div>
+                  <div style="margin-left: 30px">
+                    <ul class="toolkit-list">
+                      <li class="toolkit-list-item">It’s official! Thanks to our people, we’re proud to have earned Great Place to Work® Certification&trade;. Our company culture is our top priority! #GPTWcertified [Link to your company profile]</li>
+                      <li class="toolkit-list-item">We’re proud to be a Great Place to Work-Certified&trade; company! #GPTWcertified Check out what our employees say makes working here so great: [Link to your company profile]</li>
+                      <li class="toolkit-list-item">We just got Certified&trade; by Great Place to Work®! Couldn’t be prouder of our team – we put our people first. #GPTWcertified [Link to your company profile]</li>
+                    </ul>
+                  </div>
+                </div>
+                <div style="display: inline-block; width: 50%; padding-left: 50px; vertical-align: top;">
+                  <app-image-gallery [images]="socialImages" [width]="imageGallerySocialMediaWidth" [height]="imageGallerySocialMediaHeight"></app-image-gallery>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="certification-toolkit-section-break"></div>
+
+            <div style="padding-bottom: 30px;">
+              <div style="display: inline-block; width: 50%; vertical-align: top; padding-top: 50px">
+                <div class="portal-page-subhead">More Ideas for Celebrating Your Certification</div>
+                <p>There are so many ways to promote your Certification throughout the year.  <a target="_blank" href="{{celebrateLink}}">We've compiled a list of suggestions to help!</a></p>
+              </div>
+              <div style="display: inline-block; width: 50%; padding-left: 50px; vertical-align: middle">
+                <div class="twitter-timeline-container">
+                  <a target="_blank" class="twitter-timeline" data-width="319" data-height="540" href="https://twitter.com/GPTW_US/timelines/1113473507495747584?ref_src=twsrc%5Etfw">#GPTWcertified - Curated tweets</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="certification-toolkit-section-break"></div>
+          <div class="toolkit-page-section-head">Shareable Images</div>
+          <p>Use these to promote your Certification in a variety of ways: social media posts, email announcements, flyers, careers pages and more!</p>
+
+          <div *ngIf="isUSAffiliate">
+            <div>
+              <div style="display: inline-block; width: 50%; padding-right: 15px; vertical-align: top;">
+                <div><img src="{{getImageUrl(1,'svg', 0)}}" (error)="imageLoadFailure('ShareableImage1')" style="max-width: 100%; max-height: 100%"></div>
+                <div class="certification-toolkit-button-area" style="margin-left: 0; margin-bottom: 50px; text-align: center">
+                  <a (click)="onClick('downloadShareableImage1')" href="{{getImageUrl(1,'png', 1)}}" class="{{getShareableImageButtonCss('ShareableImage1')}}"><i class="glyphicon glyphicon-download-alt"></i> Download</a>
+                </div>
+              </div>
+              <div style="display: inline-block; width: 50%; padding-left: 15px; vertical-align: top;">
+                <div><img src="{{getImageUrl(2,'svg', 0)}}" (error)="imageLoadFailure('ShareableImage2')" style="max-width: 100%; max-height: 100%"></div>
+                <div class="certification-toolkit-button-area" style="margin-left: 0; margin-bottom: 50px; text-align: center">
+                  <a (click)="onClick('downloadShareableImage2')" href="{{getImageUrl(2,'png', 1)}}" class="{{getShareableImageButtonCss('ShareableImage2')}}"><i class="glyphicon glyphicon-download-alt"></i> Download</a>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div style="display: inline-block; width: 50%; padding-right: 15px; vertical-align: top;">
+                <div><img src="{{getImageUrl(4,'svg', 0)}}" (error)="imageLoadFailure('ShareableImage4')" style="max-width: 100%; max-height: 100%"></div>
+                <div class="certification-toolkit-button-area" style="margin-left: 0; text-align: center">
+                  <a (click)="onClick('downloadShareableImage4')" href="{{getImageUrl(4,'png', 1)}}" class="{{getShareableImageButtonCss('ShareableImage4')}}"><i class="glyphicon glyphicon-download-alt"></i> Download</a>
+                </div>
+              </div>
+              <div style="display: inline-block; width: 50%; padding-left: 15px; vertical-align: top;">
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="!isUSAffiliate">
+            <div>
+              <div style="display: inline-block; width: 50%; padding-right: 15px; vertical-align: top;">
+                <div><img src="{{getImageUrl(2,'svg', 0)}}" (error)="imageLoadFailure('ShareableImage2')" style="max-width: 100%; max-height: 100%"></div>
+                <div class="certification-toolkit-button-area" style="margin-left: 0; margin-bottom: 50px; text-align: center">
+                  <a (click)="onClick('downloadShareableImage2')" href="{{getImageUrl(2,'png', 1)}}" class="{{getShareableImageButtonCss('ShareableImage2')}}"><i class="glyphicon glyphicon-download-alt"></i> Download</a>
+                </div>
+              </div>
+              <div style="display: inline-block; width: 50%; padding-left: 15px; vertical-align: top;">
+                <div><img src="{{getImageUrl(4,'svg', 0)}}" (error)="imageLoadFailure('ShareableImage4')" style="max-width: 100%; max-height: 100%"></div>
+                <div class="certification-toolkit-button-area" style="margin-left: 0; text-align: center">
+                  <a (click)="onClick('downloadShareableImage4')" href="{{getImageUrl(4,'png', 1)}}" class="{{getShareableImageButtonCss('ShareableImage4')}}"><i class="glyphicon glyphicon-download-alt"></i> Download</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="certification-toolkit-section-break"></div>
+          <div class="toolkit-page-section-head">Recruit top talent with the Badge & Company Profile</div>
+
+          <div *ngIf="isUSAffiliate">
+            <div style="display: inline-block; width: 50%; padding-right: 30px; vertical-align: top;">
+              <app-image-gallery [images]="profileImages" [width]="imageGalleryProfilesWidth" [height]="imageGalleryProfilesHeight"></app-image-gallery>
+            </div>
+            <div style="display: inline-block; width: 50%; vertical-align: top;">
+              <p>Employees prefer to work for Certified companies. Use your badge on your careers page, job postings, speaking engagement slides and anywhere you’re recruiting talent to gain a competitive advantage.</p>
+              <p>Your <a target="_blank" href="https://www.greatplacetowork.com/certified-companies">Certified company profile</a> provides reliable third-party validation that you have built a high-trust, positive workplace culture. Link to your profile anywhere you’d like to build your brand and reputation as an employer of choice.</p>
+            </div>
+          </div>
+          <div *ngIf="!isUSAffiliate">
+            <div style="display: inline-block; width: 100%; vertical-align: top;">
+              <p>Employees prefer to work for Certified companies. Use your badge on your careers page, job postings, speaking engagement slides, and anywhere you’re recruiting talent to gain a competitive advantage.</p>
+              <p>Your Certified company profile provides reliable third-party validation that you have built a high-trust, positive workplace culture. Link to your profile anywhere you’d like to build your brand and reputation as an employer of choice.</p>
+            </div>
+          </div>
+
+          <div *ngIf="isUSAffiliate">
+            <div class="certification-toolkit-section-break"></div>
+            <div class="toolkit-page-section-head">Publish a Press Release</div>
+
+            <div style="text-align: center">
+              <p>This win is newsworthy!  We’ve made it easy for you to get the word out: download, customize and share.</p>
+              <div class="certification-toolkit-button-area">
+                <a (click)="onClick('pressRelease')" class="certification-toolkit-button">Download</a>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="isUSAffiliate">
+            <div class="certification-toolkit-section-break"></div>
+            <div class="toolkit-page-section-head">Order Decals and Swag</div>
+
+            <div style="text-align: center">
+              <p>Display your Certification badge proudly in your physical workplace for employees and customers to see. You might want to treat your teams to a co-branded gift, or get a plaque, award or pop-up banner to boast your distinction. You may receive 10% off your order for using #GPTWcertified hashtag on social media by submitting a link to your social media post under ‘Special Offers.’</p>
+              <p>Contact: <a href="mailto:info@f4c.co">info@f4c.co</a> with questions or custom order requests.</p>
+              <img src="./assets/images/toolkit/swag.png">
+            </div>
+
+            <div style="text-align: center">
+              <div class="certification-toolkit-button-area">
+                <a (click)="onClick('storeLink')" class="certification-toolkit-button">Visit Store</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

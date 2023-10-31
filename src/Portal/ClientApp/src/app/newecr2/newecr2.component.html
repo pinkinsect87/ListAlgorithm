@@ -1,0 +1,189 @@
+<!--<div class="example-inner">
+  <div class="k-loading-panel test" *ngIf="loadingPanelVisible">
+    <div class="k-loading-panel-mask"></div>
+    <div class="k-loading-panel-wrapper">
+      <kendo-loader type="infinite-spinner"
+                    themeColor="dark"
+                    size="large">
+      </kendo-loader>
+    </div>
+  </div>
+</div>-->
+<div *ngIf="isWaitingForCreateEcr" class="loading-panel">
+  <div class="loading-panel-mask"></div>
+  <div class="waitingForCreateEcr">
+  </div>
+</div>
+
+<div class="portal-component-fullscreen">
+  <div class="portal-container">
+    <app-header [hideOverviewLink]=true [hideCompanyUsersLink]=true></app-header>
+    <div class="portal-body-content">
+      <div class="container new-ecr-header">
+        Create a New Engagement
+      </div>
+
+      <div class="container new-ecr-section">
+        <div class="new-ecr-section-header">Licensee Information</div>
+        <div class="new-ecr-section-content">
+          <h2 class="new-ecr-section-label required survey__items-item-name portal-parent-item portal-question-title">
+            LICENSEE ID
+          </h2>
+          <kendo-dropdownlist class="dropdown-select shadow-gray" autofocus style="width:350px;"
+                              [data]="affiliates"
+                              textField="affiliateName"
+                              valueField="affiliateId"
+                              (selectionChange)="affiliateSelectionChanged($event)"
+                              [(ngModel)]="myAffiliate" [popupSettings]="{width: 5}">
+          </kendo-dropdownlist>
+        </div>
+      </div>
+
+      <div class="container new-ecr-section">
+        <div class="new-ecr-section-header">Customer Information</div>
+        <div class="new-ecr-section-content">
+          <h2 class="new-ecr-section-label required survey__items-item-name portal-parent-item portal-question-title">
+            CLIENT ID
+          </h2>
+          <input class="portal-text-box shadow-gray input" #clientIdControl name="inputClientId" type="text"
+                 [(ngModel)]="createECRRequestData.clientId" (focusout)="verifyClientId()" size="15" />
+          <div *ngIf="!this.isClientRangeOk" class="error-textbox-entry">
+            {{message}}
+          </div>
+          <!--<div *ngIf="preValidationOnEcrCreationMessage.length > 0" class="error-textbox-entry">
+            {{preValidationOnEcrCreationMessage}}
+          </div>-->
+        </div>
+        <div class="new-ecr-section-content">
+          <h2 class="new-ecr-section-label required survey__items-item-name portal-parent-item portal-question-title">
+            CLIENT NAME
+          </h2>
+          <input class="portal-text-box shadow-gray input" #companyNameControl type="text" [(ngModel)]="createECRRequestData.clientName"
+                 (focusout)="verifyClientName()" size="15">
+          <div [className]="isWaitingForCompanyNameCallToFinish ? 'waitingForCompanyNameCallToFinish' : 'CompanyNameCallFinished'"></div>
+          <div *ngIf="!this.isCompanyNameEntered" class="error-textbox-entry">
+            Please enter client name
+          </div>
+        </div>
+      </div>
+
+      <div class="container new-ecr-section">
+        <div class="new-ecr-section-header">Primary Contact</div>
+        <div class="new-ecr-section-content">
+          <h2 class="new-ecr-section-label required survey__items-item-name portal-parent-item portal-question-title">
+            EMAIL
+          </h2>
+          <input class="portal-text-box shadow-gray input" #pcEmail type="text" [(ngModel)]="contactEmail" (focusout)="validateEmail()" size="35">
+          <div *ngIf="isInvalidEmail" class="error-textbox-entry">
+            {{this.invalidEmailMessage}}
+          </div>
+        </div>
+        <div class="new-ecr-section-content">
+          <h2 class="new-ecr-section-label required survey__items-item-name portal-parent-item portal-question-title">
+            FIRST NAME
+          </h2>
+          <input class="portal-text-box shadow-gray input" #pcFirstName type="text" [(ngModel)]="contactFirstName" size="15">
+        </div>
+        <div class="new-ecr-section-content">
+          <h2 class="new-ecr-section-label required survey__items-item-name portal-parent-item portal-question-title">
+            LAST NAME
+          </h2>
+          <input class="portal-text-box shadow-gray input" #pcLastName type="text" [(ngModel)]="contactLastName" size="15">
+        </div>
+      </div>
+
+      <div class="container new-ecr-section">
+        <div class="new-ecr-section-header">Product Information</div>
+        <div class="new-ecr-section-content">
+          <h2 class="new-ecr-section-label required survey__items-item-name portal-parent-item portal-question-title">
+            SUBSCRIPTION
+          </h2>
+          <kendo-dropdownlist class="dropdown-select shadow-gray" #productControl style="width:350px;"
+                              [data]="dropdownProductSubscriptionOptions" textField="name" valueField="value"
+                              [(ngModel)]="selectedProductSubscription" [popupSettings]="{width: 350}"
+                              (selectionChange)="productSubscriptionSelected($event)">
+          </kendo-dropdownlist>
+        </div>
+      </div>
+
+      <div class="container new-ecr-dynamic-section">
+        <div class="new-ecr-section-content">
+          <h2 class="new-ecr-section-label required survey__items-item-name portal-parent-item portal-question-title">
+            SURVEYING COUNTRY / REGION(S)
+          </h2>
+          <div class="new-ecr-section-country-container">
+            <div>
+              <label class="new-ecr-section-country-header-country">Country / Region</label>
+              <label class="new-ecr-section-country-header-employee-count">Employee Count</label>
+              <label class="new-ecr-section-country-header-apply-cert">Apply for Certification</label>
+              <div kendoTooltip [tooltipTemplate]="templateInstructions" tooltipClass="survey-country-tooltip" filter="img[src]" class="survey-country-tooltip-container">
+                <ng-template #templateInstructions>
+                  <span class="infobar-tooltip">
+                    <span [innerHTML]="applyCertificationInstructions"></span>
+                  </span>
+                </ng-template>
+                <span class="survey-country-icon-container">
+                  <img width="16" height="16" src="assets/images/info.png" alt="">
+                </span>
+              </div>
+            </div>
+            <ng-container #countryContainer class="dynamic-container"></ng-container>
+
+          </div>
+        </div>
+        <div kendoTooltip #addRowTooltip [tooltipTemplate]="templateAddRow" tooltipClass="new-ecr-addrow-tooltip"
+             filter="img[src]" class="new-ecr-addrow-tooltip-container" [showOn]="isAddRowDisabled ? 'hover' : 'none'">
+          <ng-template #templateAddRow>
+            <span class="infobar-tooltip">
+              <span [innerHTML]="addRowInstructions"></span>
+            </span>
+          </ng-template>
+          <div class="new-ecr-addrow-container" [ngClass]="isAddRowDisabled ? 'addrow-container-disabled' : ''">
+            <div (mouseup)="!isAddRowDisabled && addSurveyCountryRow()" class="new-ecr-addrow-section" [ngClass]="isAddRowDisabled ? 'addrow-disabled' : ''">
+              <img src="assets/images/add.png" />
+              <span>Add Row</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="selectedProductSubscription" class="container new-ecr-dynamic-section">
+        <div class="new-ecr-section-content">
+          <h2 class="new-ecr-section-label required survey__items-item-name portal-parent-item portal-question-title">
+            CULTURE AUDIT
+          </h2>
+          <label class="culture-audit-info">{{cultureAuditInfo}}</label>
+          <div *ngIf="isShowCultureAuditOptions" class="culture-audit-options">
+            <div>
+              <input id="option1" type="radio" value="Yes" [(ngModel)]="createCultureAudit" name="cultureaudit" />
+              <label for="option1">Create a Culture Audit with this Engagement.</label>
+            </div>
+            <div>
+              <input id="option2" type="radio" value="No" [(ngModel)]="createCultureAudit" name="cultureaudit" />
+              <label for="option2">Do not create a Culture Audit with this Engagement.</label>
+            </div>
+          </div>
+          <div *ngIf="isShowCultureAuditRequiredError && createCultureAudit === ''" class="culture-audit-required-error">
+            A selection is required.
+          </div>
+          <div *ngIf="isShowCertApplicationError" class="ecr-error">
+            <p>{{certApplicationErrorMessage}}</p>
+          </div>
+          <div *ngIf="isShowCultureAuditError" class="ecr-error">
+            <p>{{cultureAuditErrorMessage}}</p>
+          </div>
+          <div *ngIf="isCreateEcrError" class="ecr-error">
+            <p>{{createEcrResultMessage}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="container new-ecr-dynamic-section">
+        <div class="new-ecr-section-content">
+          <button kendoButton (click)="createEngagement()" [disabled]="shouldCreateButtonBeDisabled() || isForceDisableCreateButton" class="btn btn--primary btn--medium btn-auto-size shadow">Create Engagement</button>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>
+

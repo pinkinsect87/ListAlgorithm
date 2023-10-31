@@ -1,0 +1,9 @@
+<div class="engagement-task-panel-wrapper" style='text-align: center; margin-bottom: 20px;'>
+  <div class="portal-page-subhead engagement-certification-heading" style="text-align:center;">
+    Quick Links
+  </div>
+  <div class="quick-links-first-item"><button class="inprogress-btn--link" style="background-color: #fff;" title="Getting Started" (click)="onClickRoute('tourofthePortal')">Getting Started</button></div>
+  <div class="quick-links-item"><button class="inprogress-btn--link" style="background-color: #fff;" title="Onboarding Video" (click)="onClickRoute('onboardingVideo')">Onboarding Video</button></div>
+  <div class="quick-links-item"><button class="inprogress-btn--link" style="background-color: #fff;" title="Knowledge Base" (click)="onClickRoute('knowledgeBase')">Knowledge Base</button></div>
+  <div *ngIf="this.isUS" class="quick-links-item"><button class="inprogress-btn--link" style="background-color: #fff;" title="List Deadlines" (click)="onClickRoute('listDeadlines')">List Deadlines</button></div>
+</div>

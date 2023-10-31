@@ -1,0 +1,97 @@
+<div class="engagement-task-panel-wrapper">
+
+  <div *ngIf="heroMessageSelector=='complete-your-cb-no-ti'">
+    <div class="portal-page-subhead" style="text-align:left;">
+      Complete your Culture Brief&trade;
+    </div>
+    <div style="line-height:1.2em; padding-bottom:10px">
+      <div class="hero-message-item">The Culture Brief is a questionnaire about your company, workforce demographics, and benefits.</div>
+      <div class="hero-message-item">Read the <button class="inprogress-btn--link" style="background-color: #fff;" title="Culture Brief Section" (click)="onClickRoute('readCBSection')">Culture Brief</button> section of the Knowledge Base for more guidance.</div>
+    </div>
+  </div>
+
+  <div *ngIf="heroMessageSelector=='lets-get-started'">
+    <div class="portal-page-subhead" style="text-align:left;">
+      Let's get started.
+    </div>
+    <div style="line-height:1.2em; padding-bottom:10px">
+      <div class="hero-message-item">Watch our 10-minute <button class="inprogress-btn--link" style="background-color: #fff;" title="Onboarding Video" (click)="onClickRoute('onboardingVideo')">onboarding video</button>.</div>
+      <div class="hero-message-item"><button class="inprogress-btn--link" style="background-color: #fff;" title="Set your tentative survey dates" (click)="onClickRoute('emprisingDeepLinkSetSurveyDates')">Set your tentative survey dates</button> so we can help you stay on track.</div>
+      <div class="hero-message-item">You can change your survey dates any time before it launches. Your survey will not go live until you’ve completed the setup and approved it for launch.</div>
+      <div class="hero-message-item">Learn more about <button class="inprogress-btn--link" style="background-color: #fff;" title="Choosing your survey dates" (click)="onClickRoute('setStartDates')">choosing your survey dates</button>.</div>
+    </div>
+  </div>
+
+  <div *ngIf="heroMessageSelector=='set-up-survey'">
+    <div class="portal-page-subhead" style="text-align:left;">
+      It's time to set up your survey.
+    </div>
+    <div style="line-height:1.2em; padding-bottom:0px">
+      <div class="hero-message-item"><button class="inprogress-btn--link" style="background-color: #fff;" title="Choosing your survey dates" (click)="onClickRoute('emprisingDeepLinkSurveySetup')">Complete your survey setup</button> and approve it for launch.</div>
+      <div class="hero-message-item">To help you get started, learn <button class="inprogress-btn--link" style="background-color: #fff;" title="Who to Include" (click)="onClickRoute('whoToInclude')">who to include</button> in your survey and plan <button class="inprogress-btn--link" style="background-color: #fff;" title="How to Communicate" (click)="onClickRoute('howToCommunicate')">how you'll communicate</button> to your employees.</div>
+      <div class="hero-message-item">Be sure to <button class="inprogress-btn--link" style="background-color: #fff;" title="Set Up Your Technology" (click)="onClickRoute('setUpYourTechnology')">set up your technology</button> and test your email invitation.</div>
+    </div>
+  </div>
+
+  <div *ngIf="heroMessageSelector=='start-your-cb'">
+    <div class="portal-page-subhead" style="text-align:left;">
+      Start your Culture Brief&trade;
+    </div>
+    <div style="line-height:1.2em; padding-bottom:10px">
+      <div class="hero-message-item">The <button class="inprogress-btn--link" style="background-color: #fff;" title="Culture Brief" (click)="onClickRoute('cbDirectLink')">Culture Brief</button> is a questionnaire about your company, workforce demographics, and benefits.</div>
+      <div class="hero-message-item">Completing this step before your survey closes allows us to notify you of your Certification status as soon as possible.</div>
+      <div class="hero-message-item">Read the <button class="inprogress-btn--link" style="background-color: #fff;" title="Culture Brief Section" (click)="onClickRoute('readCBSection')">Culture Brief</button> section of the Knowledge Base for more guidance.</div>
+    </div>
+  </div>
+
+  <div *ngIf="heroMessageSelector=='survey-is-live'">
+    <div class="portal-page-subhead" style="text-align:left;">
+      Congratulations, your survey is live!
+    </div>
+    <div style="line-height:1.2em; padding-bottom:10px">
+      <div class="hero-message-item"><button class="inprogress-btn--link" style="background-color: #fff;" title="Monitor Survey Participation" (click)="onClickRoute('emprisingDeepLinkMonitorSurvey')">Monitor survey participation</button> to view real-time survey response counts. <button class="inprogress-btn--link" style="background-color: #fff;" title="Monitor Survey Participation" (click)="onClickRoute('monitorSurveyParticipation')">Learn why this matters</button>.</div>
+      <div class="hero-message-item"><button class="inprogress-btn--link" style="background-color: #fff;" title="Manage email invitation errors and email reminders" (click)="onClickRoute('emprisingDeepLinkCommunications')">Manage email invitation errors and email reminders</button> to ensure you have enough participation to be eligible for Certification.</div>
+      <div class="hero-message-item">Read the <button class="inprogress-btn--link" style="background-color: #fff;" title="Manage Live Survey" (click)="onClickRoute('manageLiveSurvey')">Manage a Live Survey</button> section of the Knowledge Base for more guidance.</div>
+    </div>
+  </div>
+
+  <div *ngIf="heroMessageSelector=='complete-your-certification'">
+    <div class="portal-page-subhead" style="text-align:left;">
+      Complete your Certification&trade;
+    </div>
+    <div style="line-height:1.2em; padding-bottom:10px">
+      <div class="hero-message-item">You’re one step away! Submit the Culture Brief&trade; to find out your Certification status.</div>
+      <div class="hero-message-item">Read the <button class="inprogress-btn--link" style="background-color: #fff;" title="Culture Brief Section" (click)="onClickRoute('readCBSection')">Culture Brief</button> section of the Knowledge Base for more guidance.</div>
+    </div>
+  </div>
+
+  <div *ngIf="heroMessageSelector=='completed-submission'">
+    <div class="portal-page-subhead" style="text-align:left;">
+      Thank you for completing your Certification&trade; submission.
+    </div>
+    <div style="line-height:1.2em; padding-bottom:10px">
+      <div class="hero-message-item">There is nothing more you need to do. We’re processing your results and calculating your Certification status.</div>
+      <div class="hero-message-item">We will notify you of your status within 48 hours. If you have any questions, contact support@greatplacetowork.com.</div>
+    </div>
+  </div>
+
+  <div *ngIf="heroMessageSelector=='default'">
+    <div class="portal-page-subhead" style="text-align:left;">
+      Complete your Certification&trade;
+    </div>
+    <div style="line-height:1.2em; padding-bottom:10px">
+      <div class="hero-message-item">To get started, watch our Onboarding Video and take a Tour of the Portal.</div>
+      <div class="hero-message-item">For guidance and helpful advice, visit our Knowledge Base. It has everything you need to complete the Certification process quickly and easily.</div>
+    </div>
+  </div>
+
+  <div *ngIf="heroMessageSelector=='opted-out'">
+    <div class="portal-page-subhead" style="text-align:left;">
+      You have opted not to complete the Certification&trade; process.
+    </div>
+    <!--<div style="line-height:1.2em; padding-bottom:10px">
+      <div class="hero-message-item">You have opted not to complete the Certification&trade; process.</div>
+    </div>-->
+  </div>
+
+</div>

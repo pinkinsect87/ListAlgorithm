@@ -1,0 +1,92 @@
+.dataextractrequest-header {
+  padding-top: 20px;
+  padding-bottom: 35px;
+  font-size: 28px;
+}
+
+.dataextractrequest-section {
+  padding-bottom: 15px;
+}
+
+.dataextractrequest-dynamic-section {
+  padding-top: 20px;
+  padding-bottom: 15px;
+  padding-left: 0;
+}
+
+.dataextractrequest-section-header {
+  padding-bottom: 10px;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.dataextractrequest-section-content {
+  padding-bottom: 10px;
+}
+
+.dataextractrequest-section-label {
+  width: 100%;
+  display: block;
+  font-size: 16px;
+}
+
+span.required:after {
+  content: "*";
+  color: red;
+}
+
+.dataextractrequest-certification-date-section {
+  padding-top: 20px;
+}
+
+.dataextractrequest-section-content .country-data-id {
+  text-align: center;
+}
+
+.dataextractrequest-section-country-container {
+}
+
+.dataextractrequest-addrow-container {
+  cursor: pointer;
+  width: 90px;
+}
+
+.dataextractrequest-addrow-section {
+  color: deepskyblue;
+  font-size: 13px;
+}
+
+.dataextractrequest-addrow-section img {
+  width: 20px;
+  height: 20px;
+}
+
+.dataextractrequest-addrow-section span {
+  padding-left: 10px;
+}
+
+.dataextractrequest-section-country-header-clientid,
+.dataextractrequest-section-country-header-engagementid,
+.dataextractrequest-section-country-header-company {
+  display: inline-block;
+  font-size: 13px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin: 0;
+}
+
+.dataextractrequest-section-country-header-engagementid {
+  margin-left: 115px;
+}
+
+.dataextractrequest-section-country-header-company {
+  margin-left: 84px;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.not-visible {
+  visibility: hidden;
+}

@@ -1,0 +1,51 @@
+
+
+.k-grid tbody td {
+  white-space: nowrap;
+  line-height: 20px;
+  padding: 8px 12px;
+}
+
+
+
+.red-icon {
+  width: 20px;
+  height: 20px;
+  bordeR: 1px solid;
+  border-radius: 50%;
+  background-color: #DE3163;
+}
+
+.yellow-icon {
+  width: 20px;
+  height: 20px;
+  bordeR: 1px solid;
+  border-radius: 50%;
+  background-color: #FFBF00;
+}
+
+.green-icon {
+  width: 20px;
+  height: 20px;
+  bordeR: 1px solid;
+  border-radius: 50%;
+  background-color: green;
+}
+
+.k-textbox .send-button {
+  /* color: #ff6358;*/
+  color: #000000;
+  width: 60px;
+}
+
+.country-column {
+  display: flex;
+}
+
+.country-column span {
+    min-width: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-shrink: 1;
+    overflow: hidden;
+}

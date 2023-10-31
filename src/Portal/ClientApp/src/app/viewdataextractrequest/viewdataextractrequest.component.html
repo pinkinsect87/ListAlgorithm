@@ -1,0 +1,193 @@
+<div class="portal-component-fullscreen">
+  <div class="portal-container">
+    <app-header [hideOverviewLink]=true [hideCompanyUsersLink]=true></app-header>
+    <div class="portal-body-content">
+      <div class="container dataextractrequest-header">
+        DataExtract Request's Submit Detail:
+      </div>
+
+      <!--<div class="container dataextractrequest-section">
+        <div class="dataextractrequest-section-content">
+          <span class="dataextractrequest-section-label required">
+            Submitted By:
+          </span>
+          <input class="portal-text-box shadow-gray input" #fileNameControl name="inputFileName" type="text"
+                 [(ngModel)]="fileName" size="35" />
+        </div>
+        <div class="dataextractrequest-section-content">
+          <span class="dataextractrequest-section-label required">
+            Status:
+          </span>
+          <kendo-dropdownlist class="dropdown-select shadow-gray" autofocus style="width: 347px;"
+                              [data]="allCountries" textField="countryName" valueField="id"
+                              (selectionChange)="countrySelectionChanged($event)"
+                              [(ngModel)]="selectedCountry" [popupSettings]="{width: 5}">
+          </kendo-dropdownlist>
+        </div>
+      </div>
+
+      <div class="container dataextractrequest-section">
+        <div class="dataextractrequest-section-content">
+          <span class="dataextractrequest-section-label required">
+            DataExtract FileName:
+          </span>
+          <input class="portal-text-box shadow-gray input" #fileNameControl name="inputFileName" type="text"
+                 [(ngModel)]="fileName" size="35" />
+        </div>
+        <div class="dataextractrequest-section-content">
+          <span class="dataextractrequest-section-label required">
+            Country/Territory:
+          </span>
+          <kendo-dropdownlist class="dropdown-select shadow-gray" autofocus style="width: 347px;"
+                              [data]="allCountries" textField="countryName" valueField="id"
+                              (selectionChange)="countrySelectionChanged($event)"
+                              [(ngModel)]="selectedCountry" [popupSettings]="{width: 5}">
+          </kendo-dropdownlist>
+        </div>
+      </div>
+
+      <div class="container dataextractrequest-section">
+        <div class="dataextractrequest-section-header">Data to Export</div>
+        <div class="dataextractrequest-section-content">
+          <span class="dataextractrequest-section-label">
+            Country Data ID:
+          </span>
+          <input class="portal-text-box shadow-gray input country-data-id" #countryDataIdControl name="inputcountryDataId" type="text" readonly="readonly"
+                 [(ngModel)]="countryDataId" size="10" />
+        </div>
+        <div class="dataextractrequest-section-content">
+          <span class="dataextractrequest-section-label required">
+            Trust Index Data:
+          </span>
+          <kendo-dropdownlist class="dropdown-select shadow-gray" autofocus style="width: 347px;"
+                              [data]="yesNoData" [(ngModel)]="selectedTrustIndexData" [popupSettings]="{width: 5}">
+          </kendo-dropdownlist>
+        </div>
+        <div class="dataextractrequest-section-content">
+          <span class="dataextractrequest-section-label required">
+            Culture Brief Datapoints:
+          </span>
+          <kendo-dropdownlist class="dropdown-select shadow-gray" autofocus style="width: 347px;"
+                              [data]="yesNoData" [(ngModel)]="selectedCultureBriefDatapoints" [popupSettings]="{width: 5}">
+          </kendo-dropdownlist>
+        </div>
+        <div class="dataextractrequest-section-content">
+          <span class="dataextractrequest-section-label required">
+            Culture Audit Essays:
+          </span>
+          <kendo-dropdownlist class="dropdown-select shadow-gray" autofocus style="width: 347px;"
+                              [data]="cultureAuditEssaysData" [(ngModel)]="selectedCultureAuditEssays" [popupSettings]="{width: 5}">
+          </kendo-dropdownlist>
+        </div>
+        <div class="dataextractrequest-section-content">
+          <span class="dataextractrequest-section-label required">
+            Photos & Captions:
+          </span>
+          <kendo-dropdownlist class="dropdown-select shadow-gray" autofocus style="width: 347px;"
+                              [data]="yesNoData" [(ngModel)]="selectedPhotosCaptions" [popupSettings]="{width: 5}">
+          </kendo-dropdownlist>
+        </div>
+      </div>
+
+      <div class="container dataextractrequest-section">
+        <div class="dataextractrequest-section-header">Companies to Include</div>
+        <div class="dataextractrequest-section-content">
+          <span class="dataextractrequest-section-label required">
+            How to Select Companies:
+          </span>
+          <kendo-dropdownlist class="dropdown-select shadow-gray" autofocus style="width: 347px;"
+                              [data]="companyData" (selectionChange)="companyDataSelectionChanged($event)"
+                              [(ngModel)]="selectedCompanyData" [popupSettings]="{width: 5}">
+          </kendo-dropdownlist>
+        </div>
+        <div *ngIf="selectedCompanyData === 'Certification Date'" class="dataextractrequest-certification-date-section">
+          <div class="dataextractrequest-section-content">
+            <span class="dataextractrequest-section-label required">
+              Certification Expires On or After:
+            </span>
+            <input class="portal-text-box shadow-gray input" #certificationExpiry type="text" [(ngModel)]="certificationExpiryDate" size="15">
+          </div>
+          <div class="dataextractrequest-section-content">
+            <span class="dataextractrequest-section-label">
+              Completed Culture Audit:
+            </span>
+            <kendo-dropdownlist class="dropdown-select shadow-gray" autofocus style="width: 347px;"
+                                [data]="completedCultureAuditData" [(ngModel)]="selectedCompletedCultureAuditData"
+                                [popupSettings]="{width: 5}">
+            </kendo-dropdownlist>
+          </div>
+          <div class="dataextractrequest-section-content">
+            <span class="dataextractrequest-section-label">
+              Industry (1):
+            </span>
+            <kendo-dropdownlist class="dropdown-select shadow-gray" autofocus style="width: 347px;"
+                                [data]="industryData" [(ngModel)]="selectedIndustry1Data" [popupSettings]="{width: 5}">
+            </kendo-dropdownlist>
+          </div>
+          <div class="dataextractrequest-section-content">
+            <span class="dataextractrequest-section-label">
+              Industry Vertical (1):
+            </span>
+            <kendo-dropdownlist class="dropdown-select shadow-gray" autofocus style="width: 347px;"
+                                [data]="industryVerticalData" [(ngModel)]="selectedIndustryVertical1Data"
+                                [popupSettings]="{width: 5}">
+            </kendo-dropdownlist>
+          </div>
+          <div class="dataextractrequest-section-content">
+            <span class="dataextractrequest-section-label">
+              Industry (2):
+            </span>
+            <kendo-dropdownlist class="dropdown-select shadow-gray" autofocus style="width: 347px;"
+                                [data]="industryData" [(ngModel)]="selectedIndustry2Data" [popupSettings]="{width: 5}">
+            </kendo-dropdownlist>
+          </div>
+          <div class="dataextractrequest-section-content">
+            <span class="dataextractrequest-section-label">
+              Industry Vertical (2):
+            </span>
+            <kendo-dropdownlist class="dropdown-select shadow-gray" autofocus style="width: 347px;"
+                                [data]="industryVerticalData" [(ngModel)]="selectedIndustryVertical2Data"
+                                [popupSettings]="{width: 5}">
+            </kendo-dropdownlist>
+          </div>
+          <div class="dataextractrequest-section-content">
+            <span class="dataextractrequest-section-label">
+              Minimum # Employees:
+            </span>
+            <input class="portal-text-box shadow-gray input" #minEmployees type="text" [(ngModel)]="minEmployeesCount" size="15">
+          </div>
+          <div class="dataextractrequest-section-content">
+            <span class="dataextractrequest-section-label">
+              Maximum # Employees:
+            </span>
+            <input class="portal-text-box shadow-gray input" #maxEmployees type="text" [(ngModel)]="maxEmployeesCount" size="15">
+          </div>
+        </div>
+        <div [hidden]="selectedCompanyData !== 'List of Companies'">-->
+          <!--*ngIf="selectedCompanyData === 'List of Companies'" [ngClass]="selectedCompanyData === 'List of Companies' ? 'visible' : 'not-visible'"-->
+          <!--<div class="container dataextractrequest-dynamic-section">
+            <div class="dataextractrequest-section-content">
+              <div class="dataextractrequest-section-country-container">
+                <div>
+                  <label class="dataextractrequest-section-country-header-clientid">Client Id</label>
+                  <label class="dataextractrequest-section-country-header-engagementid">Engagement Id</label>
+                  <label class="dataextractrequest-section-country-header-company">Company Name</label>
+                </div>
+                <ng-container #companyContainer></ng-container>
+              </div>
+            </div>
+            <div class="dataextractrequest-addrow-container">
+              <div (mouseup)="createCompanyComponent()" class="dataextractrequest-addrow-section">
+                <img src="assets/images/add.png" />
+                <span>Add Row</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>-->
+
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>
+

@@ -1,0 +1,532 @@
+<div class="portal-component-fullscreen">
+  <div class="portal-container">
+    <app-header [hideOverviewLink]=true [hideCompanyUsersLink]=true></app-header>
+    <div class="portal-body-content">
+      <div style="padding-left:20px; padding-right:20px; height: calc(100vh - 190px);">
+        <div class="portal-page-title">Subscriptions</div>
+        <!--[groupable]="true"
+        [navigable]="true"
+        scrollable="virtual"
+        [rowHeight]="36"
+        <ng-template kendoPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+        <kendo-pager-page-sizes [pageSizes]="pagesizes"></kendo-pager-page-sizes>
+        </ng-template>
+        [group]="groups"-->
+        <kendo-grid id="dashboard-grid" style="height: 100%;" #grid
+                    [pageable]="{
+                      buttonCount: 5,
+                      info: true,
+                      type: 'numeric',
+                      pageSizes: gridSettings.pageSizes,
+                      previousNext: true
+                    }"
+                    [reorderable]="true"
+                    [skip]="gridSettings.state.skip"
+                    [pageSize]="gridSettings.pageSize"
+                    [data]="gridSettings.gridData"
+                    [sort]="gridSettings.state.sort"
+                    [filter]="gridSettings.state.filter"
+                    [sortable]="true"
+                    [columnMenu]="{ filter: true }"
+                    [resizable]="true"
+                    [loading]="dataIsLoading"
+                    (columnResize)="onResize($event)"
+                    (columnReorder)="onReorder($event)"
+                    (columnVisibilityChange)="onColumnVisibilityChange($event)"
+                    (dataStateChange)="dataStateChange($event)"
+                    (pageChange)="pageChange($event)"
+                    (cellClick)="onCellClick($event)">
+
+          <ng-template kendoGridToolbarTemplate>
+            <div style="width: 100%; display: flex; justify-content: space-between;">
+              <div>
+                <kendo-textbox *ngIf="showSearch"
+                               [style.width.px]="320"
+                               id="searchTextbox"
+                               [(ngModel)]="searchValue"
+                               placeholder="Enter a cid, eid or company name"
+                               (keydown)="onSearchKeyDown($event)"
+                               [clearButton]="true">
+                  <ng-template kendoTextBoxSuffixTemplate>
+                    <button kendoButton (click)="onSearchClick()" fillMode="clear" class="send-button">Search</button>
+                  </ng-template>
+                </kendo-textbox>
+                <button style="margin-left: 6px; margin-right: 6px;" kendoGridAddCommand (click)="navigateToCreateECR()">Add New Engagement</button>
+                <button *ngIf="showDataRequest" kendoButton (click)="onDataRequestClick()" fillMode="clear" class="send-button">Submit Data Request</button>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <kendo-switch [(ngModel)]="gridSettings.showMyFavorites"
+                              (valueChange)="showMyFavoritesValueChangeEvent($event)"
+                              onLabel="My"
+                              offLabel="All">
+                </kendo-switch>
+                <!--<kendo-dropdownlist style="width:195px; margin-right:8px;"
+                [data]="viewItems"
+                textField="text"
+                valueField="value"
+                [valuePrimitive]="true"
+                [(ngModel)]="gridSettings.viewSelectedValue"
+                (selectionChange)="viewSelectionChange($event)">-->
+                <!--<ng-template kendoDropDownListItemTemplate let-dataItem>
+                  <div *ngIf="dataItem == 'All'">All</div>
+                  <div *ngIf="dataItem == 'Green Journey Health'"><i class="material-icons green-icon" style="color: green; vertical-align: bottom; font-size: 20px !important;"></i>Journey Health</div>
+                  <div *ngIf="dataItem == 'Yellow Journey Health'"><i class="material-icons yellow-icon" style="color: #FFBF00; vertical-align: bottom; font-size: 20px !important;"></i>Journey Health</div>
+                  <div *ngIf="dataItem == 'Red Journey Health'"><i class="material-icons red-icon" style="color: #DE3163; vertical-align: bottom; font-size: 20px !important;"></i>Journey Health</div>
+                </ng-template>-->
+                <!--</kendo-dropdownlist>-->
+                <div class="journey-status-container">
+                  <div style="margin-right: 6px">Journey Health:</div>
+                  <!--<i style="margin-right:2px;" class="material-icons green-icon"></i>-->
+                  <i *ngIf="greenCheckBox == true" class="material-icons journey-status-button" style="color: green;" (click)="toggle('Green')" title="Green">check_circle</i>
+                  <i *ngIf="greenCheckBox == false" class="material-icons journey-status-button" style="color: green;" (click)="toggle('Green')" title="Green">lens</i>
+                  <!--<input (click)="toggle('Green')" class="green-icon" type="checkbox"
+                  id="greenCheckBoxComponent"
+                  [(ngModel)]="greenCheckBox" />&nbsp;-->
+                  <!--<i style="margin-right:2px;" class="material-icons yellow-icon"></i>-->
+                  <i *ngIf="yellowCheckBox == true" class="material-icons journey-status-button" style="color: #FFBF00;" (click)=" toggle('Yellow')" title="Yellow">check_circle</i>
+                  <i *ngIf="yellowCheckBox == false" class="material-icons journey-status-button" style="color: #FFBF00;" (click)=" toggle('Yellow')" title="Yellow">lens</i>
+                  <!--<input (click)="toggle('Yellow')" class="yellow-icon" type="checkbox"
+                  id="yellowCheckBoxComponent"
+                  [(ngModel)]="yellowCheckBox" />&nbsp;-->
+                  <!--<i style="margin-right:2px;" class="material-icons red-icon"></i>-->
+                  <i *ngIf="redCheckBox == true" class="material-icons journey-status-button" style="color: #DE3822;" (click)=" toggle('Red')" title="Red">check_circle</i>
+                  <i *ngIf="redCheckBox == false" class="material-icons journey-status-button" style="color: #DE3822;" (click)=" toggle('Red')" title="Red">lens</i>
+                  <!--<input (click)="toggle('Red')" class="red-icon" type="checkbox"
+                         id="redCheckBoxComponent"
+                         [(ngModel)]="redCheckBox" />
+                  &nbsp;-->
+                </div>
+                <button kendoGridAddCommand style="" (click)="refreshGrid()">Refresh</button>
+                <button style="margin-left:7px " kendoGridAddCommand (click)="resetGridSettingsToDefaultAndSave()">Reset Grid Settings</button>
+                <kendo-dropdownlist id="dashboard-affiliate-list" style="width:190px; margin-left:7px; margin-right:8px;" [data]="affiliateListItems" (selectionChange)="selectionChange($event)" [(ngModel)]="selectedValue"></kendo-dropdownlist>
+                <!--<button style="float:right" kendoGridAddCommand (click)="useTestData(5000)">Test (5000 rows)</button>-->
+              </div>
+            </div>
+          </ng-template>
+
+          <kendo-grid-column *ngFor="let col of gridSettings.columnsConfig"
+                             [field]="col.field" [title]="col.title" [width]="col._width" [filter]="col.filter"
+                             [filterable]="col.filterable" [hidden]="col.hidden" [format]="col.format">
+            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+            </ng-template>
+
+            <ng-container *ngIf="col.field=='favorite' || col.field=='duration' || col.field=='numberofsurveyrespondents' || col.field=='country' || col.field=='cname' || col.field=='createdate' || col.field=='cid' || col.field=='eid' || col.field=='certexdate' || col.field=='surveyopendate' || col.field=='surveyclosedate'">
+              <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-columnIndex="columnIndex">
+                <div *ngIf="col.field == 'favorite' && dataItem.favorite" style="text-align: center;"><span><i class="material-icons" style="cursor: pointer; margin-top: 6px;" title="Click to remove from Favorites" (click)="favoriteClick(dataItem.cid)">star</i></span></div>
+                <div *ngIf="col.field == 'favorite' && !dataItem.favorite" style="text-align: center;"><span><i class="material-icons" style="cursor: pointer; margin-top: 6px;" title="Click to add to Favorites" (click)="favoriteClick(dataItem.cid)">star_border</i></span></div>
+                <div *ngIf="col.field == 'duration'" style="text-align: center;"><span>{{getDurationDisplayValue(dataItem.duration)}}</span></div>
+                <div *ngIf="col.field == 'numberofsurveyrespondents'" style="text-align: center;"><span>{{dataItem.numberofsurveyrespondents}}</span></div>
+                <div *ngIf="col.field == 'country'" style="text-align: center;" class="country-column"><span style="cursor: pointer;" title='{{dataItem.country}}' >{{dataItem.country}}</span></div>
+                <div *ngIf="col.field == 'cname'" style="padding-top: 8px; padding-bottom: 8px;"><a style="color:Highlight; cursor: pointer;" (click)="navigateToPortal(dataItem.eid)">{{dataItem.cname}}</a></div>
+                <div *ngIf="col.field == 'cid'" style="text-align: center;"><a style="color:Highlight; cursor: pointer;" (click)="navigateToCertAppPage(dataItem.cid)">{{dataItem.cid}}</a></div>
+                <div *ngIf="col.field == 'eid'" style="text-align: center;"><span>{{dataItem.eid}}</span></div>
+                <div *ngIf="col.field == 'createdate'" style="text-align: center;"><span>{{getDate(dataItem.createdate)}}</span></div>
+                <div *ngIf="col.field == 'certexdate'" style="text-align: center;"><span>{{getDate(dataItem.certexdate)}}</span></div>
+                <div *ngIf="col.field == 'surveyopendate'" style="text-align: center;"><span>{{getDate(dataItem.surveyopendate)}}</span></div>
+                <div *ngIf="col.field == 'surveyclosedate'" style="text-align: center;"><span>{{getDate(dataItem.surveyclosedate)}}</span></div>
+              </ng-template>
+            </ng-container>
+
+            <ng-container *ngIf="col.field=='journeystatus'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:175px"
+                                   [data]="journeystatusItems"
+                                   [value]="statusFilters(filter)"
+                                   (valueChange)="statusChange('journeystatus', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons" title="{{dataItem.journeystatus}}" style="cursor: pointer; margin-top: 6px;">{{getIconName("journeystatus", dataItem.journeystatus)}}</i></div>
+              </ng-template>
+            </ng-container>
+
+            <ng-container *ngIf="col.field=='journeyhealth'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:175px"
+                                   [data]="journeyhealthItems"
+                                   [value]="statusFilters(filter)"
+                                   (valueChange)="statusChange('journeyhealth', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div *ngIf="dataItem.journeyhealth == 'Invalid'" style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons" title="Invalid" style="color: black; cursor: pointer; margin-top: 6px;">error</i></div>
+                <div *ngIf="dataItem.journeyhealth == 'White'" style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons" title="White" style="color: black; cursor: pointer; margin-top: 6px;">panorama_fish_eye</i></div>
+                <div *ngIf="dataItem.journeyhealth == 'Green'" style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons" title="Green" style="color: green; cursor: pointer; margin-top: 6px;">lens</i></div>
+                <div *ngIf="dataItem.journeyhealth == 'Yellow'" style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons" title="Yellow" style="color: #FFBF00; cursor: pointer; margin-top: 6px;">lens</i></div>
+                <div *ngIf="dataItem.journeyhealth == 'Red'" style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons" title="Red" style="color: #DE3822; cursor: pointer; margin-top: 6px;">lens</i></div>
+              </ng-template>
+            </ng-container>
+
+
+            <ng-container *ngIf="col.field=='renewalstatus'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:175px"
+                                   [data]="renewalstatusItems"
+                                   [value]="statusFilters(filter)"
+                                   (valueChange)="statusChange('renewalstatus', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div *ngIf="dataItem.renewalstatus == 'Pending'" style="text-align: center; ">
+                  <kendo-dropdownlist style="width: 92px;" (selectionChange)="StatusSelectionChange('renewalstatus',dataItem, $event)" [data]="pendingRenewalstatusItems" [value]="dataItem.renewalstatus">
+                  </kendo-dropdownlist>
+                </div>
+                <div *ngIf="dataItem.renewalstatus != 'Pending'" style="text-align: center;">
+                  <div style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons" title="{{dataItem.renewalstatus}}" style="cursor: pointer; margin-top: 6px;">{{getIconName("renewalstatus", dataItem.renewalstatus)}}</i></div>
+                </div>
+              </ng-template>
+            </ng-container>
+
+
+            <ng-container *ngIf="col.field=='renewalhealth'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:175px"
+                                   [data]="renewalhealthItems"
+                                   [value]="statusFilters(filter)"
+                                   (valueChange)="statusChange('renewalhealth', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div *ngIf="dataItem.renewalhealth == 'Invalid'" style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons" title="Invalid" style="color: black; cursor: pointer; margin-top: 6px;">error</i></div>
+                <div *ngIf="dataItem.renewalhealth == 'White'" style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons" title="White" style="color: black; cursor: pointer; margin-top: 6px;">panorama_fish_eye</i></div>
+                <div *ngIf="dataItem.renewalhealth == 'Green'" style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons green-icon" title="Green" style="color: green; cursor: pointer; margin-top: 6px;"></i></div>
+                <div *ngIf="dataItem.renewalhealth == 'Yellow'" style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons yellow-icon" title="Yellow" style="color: #FFBF00; cursor: pointer; margin-top: 6px;"></i></div>
+                <div *ngIf="dataItem.renewalhealth == 'Red'" style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons red-icon" title="Red" style="color: #DE3163; cursor: pointer; margin-top: 6px;"></i></div>
+              </ng-template>
+            </ng-container>
+
+
+            <ng-container *ngIf="col.field=='engagementstatus'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:175px"
+                                   [data]="engagementstatusItems"
+                                   [value]="statusFilters(filter)"
+                                   (valueChange)="statusChange('engagementstatus', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons" title="{{dataItem.engagementstatus}}" style="cursor: pointer; margin-top: 6px;">{{getIconName("engagementstatus", dataItem.engagementstatus)}}</i></div>
+              </ng-template>
+            </ng-container>
+
+            <ng-container *ngIf="col.field=='engagementhealth'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:175px"
+                                   [data]="engagementhealthItems"
+                                   [value]="statusFilters(filter)"
+                                   (valueChange)="statusChange('engagementhealth', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div *ngIf="dataItem.engagementhealth == 'Invalid'" style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons" title="Invalid" style="color: black; cursor: pointer; margin-top: 6px;">error</i></div>
+                <div *ngIf="dataItem.engagementhealth == 'White'" style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons" title="White" style="color: black; cursor: pointer; margin-top: 6px;">panorama_fish_eye</i></div>
+                <div *ngIf="dataItem.engagementhealth == 'Green'" style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons  green-icon" title="Green" style="color: green; cursor: pointer; margin-top: 6px;"></i></div>
+                <div *ngIf="dataItem.engagementhealth == 'Yellow'" style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons yellow-icon" title="Yellow" style="color: #FFBF00; cursor: pointer; margin-top: 6px;"></i></div>
+                <div *ngIf="dataItem.engagementhealth == 'Red'" style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons red-icon" title="Red" style="color: #DE3163; cursor: pointer; margin-top: 6px;"></i></div>
+              </ng-template>
+            </ng-container>
+
+            <ng-container *ngIf="col.field=='tier'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:100px"
+                                   [data]="tierItems"
+                                   [value]="statusFilters(filter)"
+                                   (valueChange)="statusChange('tier', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <!--<div style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons" title="{{dataItem.tier}}" style="cursor: pointer; margin-top: 6px;">{{getIconName("tier", dataItem.tier)}}</i></div>-->
+                <!--<div *ngIf="dataItem.tier == 'No TI'" style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons" title="No TI" style="cursor: pointer; margin-top: 6px;">cancel</i></div>-->
+                <div *ngIf="dataItem.tier == 'Assess'" style="text-align: left; padding-top: 0; padding-bottom: 0">
+                  <i class="material-icons" title="Assess" style="cursor: pointer; margin-top: 6px; font-size: 20px;">attach_money</i>
+                </div>
+                <div *ngIf="dataItem.tier == 'Analyze'" style="text-align: left; padding-top: 0; padding-bottom: 0; display:inline-flex">
+                  <i class="material-icons" title="Analyze" style="cursor: pointer; margin-top: 6px; margin-right: -10px; font-size: 20px;">attach_money</i>
+                  <i class="material-icons" title="Analyze" style="cursor: pointer; margin-top: 6px; font-size: 20px;">attach_money</i>
+                </div>
+                <div *ngIf="dataItem.tier == 'Accelerate'" title="Accelerate" style="text-align: left; padding-top: 0; padding-bottom: 0; display:inline-flex">
+                  <i class="material-icons" style="cursor: pointer; margin-top: 6px; margin-right: -10px; font-size: 20px;">attach_money</i>
+                  <i class="material-icons" style="cursor: pointer; margin-top: 6px; margin-right: -10px; font-size: 20px;">attach_money</i>
+                  <i class="material-icons" style="cursor: pointer; margin-top: 6px; font-size: 20px;">attach_money</i>
+                </div>
+              </ng-template>
+            </ng-container>
+
+            <ng-container *ngIf="col.field=='tistatus'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:175px"
+                                   [data]="tiStatusItems"
+                                   [value]="statusFilters(filter)"
+                                   (valueChange)="statusChange('tistatus', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons" title="{{dataItem.tistatus}}" (click)="navigateToExtLink(dataItem.tilink)" style="cursor: pointer; margin-top: 6px;">{{getIconName("tistatus", dataItem.tistatus)}}</i></div>
+              </ng-template>
+            </ng-container>
+
+            <ng-container *ngIf="col.field=='cbstatus'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:175px"
+                                   [data]="cbStatusItems"
+                                   [value]="statusFilters(filter)"
+                                   (valueChange)="statusChange('cbstatus', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons" title="{{dataItem.cbstatus}}" (click)="navigateToExtLink(dataItem.cblink)" style="cursor: pointer; margin-top: 6px;">{{getIconName("cbstatus", dataItem.cbstatus)}}</i></div>
+              </ng-template>
+            </ng-container>
+
+
+            <ng-container *ngIf="col.field=='castatus'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:175px"
+                                   [data]="caStatusItems"
+                                   [value]="statusFilters(filter)"
+                                   (valueChange)="statusChange('castatus', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div style="text-align: center; padding-top: 0; padding-bottom: 0"><i class="material-icons" title="{{dataItem.castatus}}" (click)="navigateToExtLink(dataItem.calink)" style="cursor: pointer; margin-top: 6px;">{{getIconName("castatus",dataItem.castatus)}}</i></div>
+              </ng-template>
+            </ng-container>
+
+
+            <ng-container *ngIf="col.field=='cstatus'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:175px"
+                                   [data]="cStatusItems"
+                                   [value]="statusFilters(filter)"
+                                   (valueChange)="statusChange('cstatus', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+
+                <ng-container *ngIf="dataItem.cstatus == 'Pending' && dataItem.allcountrycertification == 0; then showPending; else showText">
+                </ng-container>
+
+                <ng-template #showPending>
+                  <div style="text-align: center;">
+                    <kendo-dropdownlist style="width: 96px;" (selectionChange)="StatusSelectionChange('cstatus',dataItem, $event)" [data]="cStatusItems" [value]="dataItem.cstatus">
+                    </kendo-dropdownlist>
+                  </div>
+                </ng-template>
+
+                <ng-template #showText>
+                  <div style="text-align: center;" class="certstatus-column">
+                    <i class="material-icons" title='{{getTitleText(dataItem, "cstatus", dataItem.cstatus)}}' style="cursor: pointer; margin-top: 6px;">{{getIconName("cstatus", dataItem.cstatus)}}</i>
+                  </div>
+                </ng-template>
+
+              </ng-template>
+            </ng-container>
+
+
+            <ng-container *ngIf="col.field=='tools'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:70px"
+                                   [data]="toolsItems"
+                                   [value]="statusFilters(filter)"
+                                   (valueChange)="statusChange('cstatus', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div style="text-align: center;">
+                  <i class="material-icons" title='Tools' style="cursor: pointer; margin-top: 6px;">handyman</i>
+                </div>
+              </ng-template>
+            </ng-container>
+
+            <ng-container *ngIf="col.field=='rstatus'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:175px"
+                                   [data]="rStatusItems"
+                                   [value]="statusFilters(filter)"
+                                   (valueChange)="statusChange('rstatus', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div style="text-align: center;">
+                  <i class="material-icons" title="{{dataItem.rstatus}}">{{getIconName("rstatus",dataItem.rstatus)}}</i>
+                  <i *ngIf="showExtraCertIcons(dataItem)" class="material-icons" title="Goto Profile" (click)="navigateToProfile(dataItem.cid)" style="cursor: pointer; margin-top: 10px;">public</i>
+                  <i *ngIf="showExtraCertIcons(dataItem)" class="material-icons" title="Edit Profile Photos" (click)="navigateToPhotoEditor(dataItem.cid)" style="cursor: pointer; margin-top: 10px;">edit</i>
+                </div>
+              </ng-template>
+            </ng-container>
+
+            <ng-container *ngIf="col.field=='lstatus'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:175px"
+                                   [data]="lStatusItems"
+                                   [value]="statusFilters(filter)"
+                                   (valueChange)="statusChange('lstatus', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+
+                <ng-container *ngIf="dataItem.lstatus == 'Pending' && dataItem.allcountrylisteligiblity == 0; then showPending; else showText">
+                </ng-container>
+
+                <ng-template #showPending>
+                  <div *ngIf="dataItem.lstatus == 'Pending'" style="text-align: center; ">
+                    <kendo-dropdownlist style="width: 96px;" (selectionChange)="StatusSelectionChange('lstatus',dataItem, $event)" [data]="lStatusItems" [value]="dataItem.lstatus">
+                    </kendo-dropdownlist>
+                  </div>
+                </ng-template>
+
+                <ng-template #showText>
+                  <div *ngIf="dataItem.lstatus != 'Pending'" style="text-align: center;">
+                    <div style="text-align: center;"><i class="material-icons" title='{{getTitleText(dataItem, "lstatus", dataItem.lstatus)}}' style="cursor: pointer;">{{getIconName("lstatus",dataItem.lstatus)}}</i></div>
+                  </div>
+                </ng-template>
+
+              </ng-template>
+            </ng-container>
+
+          </kendo-grid-column>
+
+        </kendo-grid>
+
+        <kendo-contextmenu #gridmenu [target]="grid" [items]="contextMenuItems" (select)="onContextSelect($event)">
+          <ng-template kendoMenuItemTemplate let-item="item">
+            <span>{{ item.text }}</span>
+          </ng-template>
+        </kendo-contextmenu>
+
+        <kendo-popup *ngIf="showNoActionMessage == true" [offset]="contextPopupOffset">
+          <div class="context-popup">
+            No action allowed
+          </div>
+        </kendo-popup>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<kendo-dialog title="Upload Data Request Spreadsheet"
+              *ngIf="isOpenDataRequestDialog"
+              (close)="closeDataRequestDialog()"
+              [minWidth]="400"
+              [width]="450">
+  <div style="margin: 30px 40px;">
+
+    <kendo-upload style="width:350px;"
+                  [saveUrl]="uploadSaveUrl"
+                  [restrictions]="dataRequestFileRestrictions"
+                  (upload)="uploadEventHandler($event)"
+                  (success)="successEventHandler($event)">
+                  <kendo-upload-messages 
+                  select="Select File">
+                  </kendo-upload-messages>
+    </kendo-upload>
+
+  </div>
+</kendo-dialog>
+
+<kendo-dialog title="Search Request"
+              *ngIf="searchDialogVisible"
+              (close)="closeSearchDialog()"
+              [minWidth]="250"
+              [width]="450">
+  <div style="margin: 30px 35px;">
+    <!--<div style="display: block; margin-bottom: 10px;">
+      <input type="checkbox" #ca kendoCheckBox style="border-color: lightgray" [(ngModel)]="isDownloadCA" />
+      <span style="margin-left: 10px;">Culture Audit</span>
+
+    </div>
+    <div style="display: block; margin-bottom: 10px;">
+      <input type="checkbox" #cb kendoCheckBox style="border-color: lightgray" [(ngModel)]="isDownloadCB" />
+      <span style="margin-left: 10px;">Culture Brief</span>
+    </div>-->
+    <span style="margin-left: 30px; margin-bottom:10px;">Matches were found across multiple affiliates.</span>
+
+    <div style="display: block; margin-left:90px; margin-top:10px;">
+      <!--<input type="checkbox" #de kendoCheckBox style="border-color: lightgray" [(ngModel)]="isDownloadDataExtract" />-->
+      <!--<span style="margin-left: 10px; margin-right:10px;">Please Select</span>-->
+
+      <kendo-dropdownlist [data]="searchRequestAffiliates"
+                          [value]="selectedAffiliate"
+                          [defaultItem]="defaultAffiliate"
+                          textField="affiliateName"
+                          valueField="affiliateId"
+                          (valueChange)="handleSearchRequestAffiliateChange($event)">
+      </kendo-dropdownlist>
+
+      <!--<kendo-multiselect [data]="dataRequestCountries"
+               placeholder="Countries" style="width: 70%; padding-left: 20px;"></kendo-multiselect>-->
+    </div>
+  </div>
+</kendo-dialog>
+
+<kendo-dialog title="Search Request"
+              *ngIf="searchNoMatchDialogVisible"
+              (close)="closeSearchNoMatchDialog()"
+              [minWidth]="250"
+              [width]="450">
+  <div style="margin: 30px 35px;">
+    <!--<div style="display: block; margin-bottom: 10px;">
+    <input type="checkbox" #ca kendoCheckBox style="border-color: lightgray" [(ngModel)]="isDownloadCA" />
+    <span style="margin-left: 10px;">Culture Audit</span>
+
+  </div>
+  <div style="display: block; margin-bottom: 10px;">
+    <input type="checkbox" #cb kendoCheckBox style="border-color: lightgray" [(ngModel)]="isDownloadCB" />
+    <span style="margin-left: 10px;">Culture Brief</span>
+  </div>-->
+    <span style="margin-left: 80px; margin-bottom:10px;">No Matches were found.</span>
+
+    <div style="display: block; margin-left:90px; margin-top:10px;">
+      <!--<input type="checkbox" #de kendoCheckBox style="border-color: lightgray" [(ngModel)]="isDownloadDataExtract" />-->
+      <!--<span style="margin-left: 10px; margin-right:10px;">Please Select</span>-->
+
+
+      <!--<kendo-multiselect [data]="dataRequestCountries"
+             placeholder="Countries" style="width: 70%; padding-left: 20px;"></kendo-multiselect>-->
+    </div>
+  </div>
+</kendo-dialog>
+

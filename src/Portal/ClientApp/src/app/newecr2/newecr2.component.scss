@@ -1,0 +1,223 @@
+.new-ecr-header {
+  padding-top: 20px;
+  padding-bottom: 35px;
+}
+
+.new-ecr-section {
+  padding-bottom: 15px;
+}
+
+.new-ecr-dynamic-section {
+  padding-top: 20px;
+  padding-bottom: 15px;
+}
+
+.new-ecr-section-header {
+  padding-bottom: 10px;
+}
+
+.new-ecr-section-content {
+  padding-bottom: 10px;
+}
+
+.new-ecr-section-label {
+  width: 100%;
+  display: block;
+}
+
+h2.required:after {
+  content: "*";
+  color: red;
+}
+
+.new-ecr-section-country-container {
+  width: 670px;
+}
+
+.new-ecr-addrow-container {
+  margin: 15px 5px;
+  cursor: pointer;
+  width: 90px;
+}
+
+.new-ecr-addrow-section {
+  color: deepskyblue;
+  font-size: 13px;
+}
+
+.new-ecr-addrow-section img {
+  width: 20px;
+  height: 20px;
+}
+
+.new-ecr-addrow-section span {
+  padding-left: 10px;
+}
+
+.addrow-container-disabled {
+  cursor: not-allowed;
+}
+
+.addrow-disabled {
+  opacity: 0.5;
+}
+
+.addrow-disabled span {
+  pointer-events: none;
+}
+
+.new-ecr-section-country-header-country,
+.new-ecr-section-country-header-employee-count,
+.new-ecr-section-country-header-apply-cert {
+  display: inline-block;
+  font-size: 13px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin: 0;
+}
+
+.new-ecr-section-country-header-employee-count {
+  margin-left: 122px;
+}
+
+.new-ecr-section-country-header-apply-cert {
+  margin-left: 64px;
+}
+
+.survey-country-tooltip-container {
+  display: inline-block;
+}
+
+.survey-country-icon-container {
+  width: 24px;
+  margin-left: 5px;
+  padding-top: 6px;
+  cursor: default;
+}
+
+.culture-audit-info {
+  font-size: 13px;
+  display: block;
+  margin-top: 10px;
+}
+
+.culture-audit-options label {
+  font-size: 12px;
+  margin: 0;
+  vertical-align: middle;
+  padding-left: 8px;
+}
+
+.culture-audit-required-error {
+  color: #F05A5A;
+  font-size: 10px;
+  background-color: #EED3D9;
+  padding: 5px;
+  width: 120px;
+}
+
+.ecr-error {
+  width: 600px;
+  padding-top: 15px;
+}
+
+.ecr-error p {
+  color: #F05A5A;
+  font-size: 12px;
+  background-color: #EED3D9;
+  padding: 5px;
+  display: inline-block;
+}
+
+
+
+
+@keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.waitingForCompanyNameCallToFinish {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  margin-left: 5px;
+  margin-top: 5px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: #777;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+.CompanyNameCallFinished {
+  width: 0px;
+  height: 0px;
+}
+
+.clientId {
+  position: relative;
+}
+
+.content {
+  padding: 30px;
+  color: #787878;
+  background-color: #fcf7f8;
+  border: 1px solid rgba(0,0,0,.05);
+  position: absolute;
+  top: 150px;
+  left: 500px;
+  width: 250px;
+}
+
+kendo-multicolumncombobox {
+  width: 400px;
+}
+
+.contact-image {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  border-radius: 50%;
+}
+
+ /*Loader Panel */
+.loading-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.loading-panel-mask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: lightgray;
+  opacity: 0.8;
+}
+
+.waitingForCreateEcr {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: #777;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+}

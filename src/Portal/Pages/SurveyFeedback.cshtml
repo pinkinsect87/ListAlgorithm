@@ -1,0 +1,224 @@
+﻿@page
+@model Portal.Pages.SurveyFeedbackModel
+@{
+}
+<html>
+<head>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="-1">
+    <meta charset="utf-8">
+    <title>Great Place to Work Survey Feedback</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="./assets/images/favicons/favicon-gptw.png">
+    <link rel="stylesheet" type="text/css" href="./assets/styles2.css">
+</head>
+<body>
+    <script>
+        function contentKeyUp() {
+            var count = document.getElementById("commentBox").value.length;
+            var isCommentEmpty = (count == 0);
+            document.getElementById("submitButton").disabled = isCommentEmpty;
+        }
+        function closeModalAndExit() {
+            document.getElementById("nameBox").value = "";
+            document.getElementById("emailBox").value = "";
+            document.getElementById("companyBox").value = "";
+            document.getElementById("phoneBox").value = "";
+            document.getElementById("commentBox").value = "";
+            window.location.replace('https://www.greatplacetowork.com');
+            return false;
+        }
+    </script>
+    <div class="portal-component-fullscreen">
+        <div class="portal-container">
+
+            <div class="header">
+                <section class="survey__hero show-lg language-background">
+                    <header class="survey__hero-header show-lg">
+                        <div class="container relative z2 header-container">
+                            <div class="justifize">
+                                <div class="justifize__box-left">
+                                    <div class="user-menu-holder justifize">
+                                        <div class="justifize__box-left">
+                                            <a href="https://www.greatplacetowork.com"><img class="site-logo-img" alt="Great Place to Work" src="./assets/images/gptw_logo.svg"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                </section>
+            </div>
+
+            <fieldset disabled="@Model.submitted">
+
+                <div class="portal-body-content">
+                    <div class="container">
+                        <form autocomplete="off" method="post">
+
+                            <div class="portal-page-title">Survey Feedback</div>
+
+                            <div class="feedback-intro">
+                                <p>At Great Place to Work®, we believe that organizations improve when they are able to continuously collect honest feedback from their employees.  We take great pride in ensuring the integrity of our employee experience Certification designation. For our workplace benchmarks to be fair and accurate, organizations must conduct their survey according to our guidelines.</p>
+
+                                <p><b>Organizations SHOULD:</b></p>
+
+                                <ul class="feedback-bullet-list">
+                                    <li class="feedback-list-item">Encourage employees to respond honestly and openly.</li>
+                                    <li class="feedback-list-item">Reinforce that the responses to the survey are confidential.</li>
+                                    <li class="feedback-list-item">Remind employees that participation is optional and not required.</li>
+                                    <li class="feedback-list-item">Ensure all employees have the time and resources to take the survey.</li>
+                                </ul>
+
+                                <p><b>Organizations SHOULD NOT:</b></p>
+
+                                <ul class="feedback-bullet-list">
+                                    <li class="feedback-list-item">Encourage employees to respond favorably or in a certain way.</li>
+                                    <li class="feedback-list-item">Attempt to identify individual employees based on survey participation or feedback.</li>
+                                    <li class="feedback-list-item">Require employees to take the survey.</li>
+                                    <li class="feedback-list-item">Provide incentives to respond.</li>
+                                    <li class="feedback-list-item">Create conditions that allow them to monitor the response of an individual survey taker.</li>
+                                </ul>
+
+                                <p>If you have concerns about the way your company conducted the survey, the communications you have received, or have been asked to respond in a manner that does not accurately reflect the experience you are having at work, we would like to know.  We will never associate feedback you provide using this form with survey responses or any other information you provide to Great Place to Work and will only use this information to ensure surveys are conducted according to our guidelines.</p>
+
+                                <p>Note that the only required field on this form is Comments.  You may leave any comment you wish.  You are not required to provide your name or any other identifying information if you do not wish to do so.  In order for us to act on your feedback we typically need to know the name of your organization.</p>
+                            </div>
+                            <div class="question-line" style="padding-top: 10px">
+                                <h2 class="survey__items-item-name">
+                                    Name
+                                </h2>
+                            </div>
+
+                            <div class="survey__items-item-field">
+                                <div class="openendedquestion">
+                                    <div class="openendedquestion__input">
+                                        <div class="input-wrap">
+                                            <input asp-for="name" id="nameBox" class="openendedquestion__input-text shadow-gray input" type="text" size="50">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="question-line" style="padding-top: 10px">
+                                <h2 class="survey__items-item-name">
+                                    Email
+                                </h2>
+                            </div>
+
+                            <div class="survey__items-item-field">
+                                <div class="openendedquestion">
+                                    <div class="openendedquestion__input">
+                                        <div class="input-wrap">
+                                            <input asp-for="email" id="emailBox" class="openendedquestion__input-text shadow-gray input" size="50">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="question-line" style="padding-top: 10px">
+                                <h2 class="survey__items-item-name">
+                                    Company Name
+                                </h2>
+                            </div>
+
+                            <div class="survey__items-item-field">
+                                <div class="openendedquestion">
+                                    <div class="openendedquestion__input">
+                                        <div class="input-wrap">
+                                            <input asp-for="company" id="companyBox" class="openendedquestion__input-text shadow-gray input" type="text" size="50">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="question-line" style="padding-top: 10px">
+                                <h2 class="survey__items-item-name">
+                                    Phone
+                                </h2>
+                            </div>
+
+                            <div class="survey__items-item-field">
+                                <div class="openendedquestion">
+                                    <div class="openendedquestion__input">
+                                        <div class="input-wrap">
+                                            <input asp-for="phone" id="phoneBox" class="openendedquestion__input-text shadow-gray input" type="text" size="50">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="question-line" style="padding-top: 10px">
+                                <h2 class="survey__items-item-name">
+                                    Comment
+                                </h2>
+                            </div>
+
+                            <div class="survey__items-item-field" style="margin-top: 4px">
+                                <div class="openendedquestion">
+                                    <div class="openendedquestion__input">
+                                        <div class="input-wrap">
+                                            <textarea asp-for="comment" id="commentBox" onkeyup="contentKeyUp()" class="openendedquestion__input-text shadow-gray input input--textarea" style="overflow: hidden; overflow-y: scroll; overflow-wrap: break-word;" rows="8" cols="100"></textarea>
+                                            <div style="color: red">*required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="submitDiv" style="padding-top:30px;" class="text-center">
+                                <input type="submit" disabled id="submitButton" class="btn btn--primary btn--medium btn-auto-size shadow">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </fieldset>
+
+            @if (Model.submitted && Model.submissionError)
+            {
+            <div class="feedback-modal-wrapper">
+                <div id="myModal" class="feedback-modal">
+                    <div class="feedback-modal-title-bar" style="background-color: #e40000">
+                        <div class="feedback-modal-title" style="text-align:center">Feedback Failure</div>
+                        @*<div class="feedback-modal-actions">
+                            <span class="feedback-modal-action-close">&times;</span>
+                        </div>*@
+                    </div>
+                    <div class="feedback-modal-content">
+                        <p class="feedback-modal-content-paragraph" style="text-align:center">We're sorry. An error occurred while processing your feedback. Please try again later.</p>
+                    </div>
+                    <div class="feedback-modal-actions-buttongroup">
+                        <input type="button" onclick="closeModalAndExit(); return false;" class="feedback-modal-actions-button" value="Close">
+                    </div>
+                </div>
+            </div>
+            }
+
+            @if (Model.submitted && !Model.submissionError)
+            {
+            <div class="feedback-modal-wrapper">
+                <div id="myModal" class="feedback-modal">
+                    <div class="feedback-modal-title-bar" style="background-color:#005ebc">
+                        <div class="feedback-modal-title" style="text-align:center">Feedback Confirmation</div>
+                        @*<div class="feedback-modal-actions">
+                            <span class="feedback-modal-action-close">&times;</span>
+                        </div>*@
+                    </div>
+                    <div class="feedback-modal-content">
+                        <p class="feedback-modal-content-paragraph" style="text-align:center">Thank you for your feedback. Your comments will be reviewed by our staff.</p>
+                    </div>
+                    <div class="feedback-modal-actions-buttongroup">
+                        <input type="button" onclick="closeModalAndExit(); return false;" class="feedback-modal-actions-button" value="Close">
+                    </div>
+                </div>
+            </div>
+            }
+
+        <div class="portal-footer show-lg">
+            <small>©@Model.currentYear Great Place to Work®.</small>
+        </div>
+        </div>
+    </div>
+</body>
+</html>

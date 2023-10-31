@@ -1,0 +1,108 @@
+.client-header {
+  padding-top: 20px;
+  padding-bottom: 35px;
+  font-size: 28px;
+}
+
+.applications-section {
+  padding-bottom: 30px;
+}
+
+.applications-section-header {
+  padding-bottom: 10px;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.applications-section-content-container {
+  padding-bottom: 10px;
+}
+
+.applications-section-content-container hr {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.applications-section-content-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.applications-section-content-header div {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.applications-section-content {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+
+.applications-section-content .countries-content {
+  width: 600px;
+  padding-left: 10px;
+}
+
+.applications-section-content .date-content {
+  width: 130px
+}
+
+.applications-section-content-container .client-label {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.applications-section-content-container .client-data {
+  font-size: 14px;
+  font-weight: 100;
+}
+
+.applications-section-footer {
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 100;
+  margin-top: -20px;
+}
+
+.inprogress-action-bar {
+  width: 344px;
+  background-color: rgb(228, 0, 0);
+}
+
+.inprogress-arrow {
+  color: rgb(228, 0, 0);
+}
+
+.completed-action-bar {
+  width: 344px;
+  background-color: rgb(76, 187, 23);
+}
+
+.completed-arrow {
+  color: rgb(76, 187, 23);
+}
+
+.incomplete-action-bar {
+  width: 344px;
+  background-color: rgb(128, 128, 128);
+}
+
+.incomplete-arrow {
+  color: rgb(128, 128, 128);
+}
+
+.culture-audit-icon {
+  content: url("../../assets/images/bulleted-list.png");
+  height: 25px;
+  vertical-align: bottom;
+  opacity: 0.4;
+}
+
+.culture-brief-icon {
+  content: url("../../assets/images/certification.png");
+  height: 25px;
+  padding: 5px;
+  vertical-align: bottom;
+  opacity: 0.4;
+}

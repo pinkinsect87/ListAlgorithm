@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[BLSData] (
+    [BLSDataId]    INT            IDENTITY (1, 1) NOT NULL,
+    [BLSDataKey]   NVARCHAR (200) NOT NULL,
+    [BLSDataValue] NVARCHAR (200) NOT NULL,
+    CONSTRAINT [PK_BLSData] PRIMARY KEY CLUSTERED ([BLSDataId] ASC)
+);
+

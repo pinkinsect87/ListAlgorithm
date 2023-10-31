@@ -1,0 +1,23 @@
+<div class="portal-component-fullscreen">
+  <div class="portal-container">
+    <app-header [hideOverviewLink]=true [hideCompanyUsersLink]=true></app-header>
+    <div class="portal-body-content">
+      <div class="container" style="text-align:center; margin-top:100px;" [ngSwitch]="errorType">
+        <span *ngSwitchCase="'noengagement'">You are not actively participating in the certification process. <br />If you require assistance please contact support@greatplacetowork.com.</span>
+        <span *ngSwitchCase="'noportalclaim'">
+          You do not have access to the portal.  If you require assistance please contact <a href="mailto:support@greatplacetowork.com">support@greatplacetowork.com</a>
+          <br /><br />To view employee survey results in Emprising, click<a style='color: Highlight; cursor: pointer;' (click)='navigateToEmprising()'> here. </a>
+          <a (click)="navigateToEmprising()" style="cursor: pointer"><br /><br /><img alt="Emprising" src="./assets/images/emprising-logo.svg" /></a>
+        </span>
+        <span *ngSwitchCase="'noaccess'">You do not have access.  If you require assistance please contact support.</span>
+        <span *ngSwitchCase="'sessionexpired'">Your session has expired. Click <a style='color: Highlight; cursor: pointer;' (click)='navigateToTheRoot()'> here </a> to log in again.</span>
+        <span *ngSwitchCase="'general'">An error has occurred.  Please contact support for assistance.</span>
+        <span *ngSwitchCase="'notoolkitaccess'">You have no active certification or the specified certification has expired.<br />If you require assistance please contact support@greatplacetowork.com.</span>
+        <span *ngSwitchCase="'downformaintenance'">We are down for maintenance while we improve your experience.<br />Please close this window and check back later.<br />If you have questions please contact <a href="mailto:support@greatplacetowork.com">support@greatplacetowork.com</a></span>
+        <span *ngSwitchCase="'tokenexpiredatlogin'">Your computer's clock is not correct.<br />Our application security requires you to correct your time settings.</span>
+        <span *ngSwitchCase="'invalidfile'">An attempt was made to upload an invalid file. If you require assistance please contact support.</span>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<div>
+  <kendo-scrollview [data]="items" [width]="width" [height]="height" [arrows]="true" [pageable]="true" [endless]="true">
+    <ng-template let-item="item">
+      <img src='{{item}}' alt='gallery image' [ngStyle]="{minWidth: width}" draggable="false" />
+    </ng-template>
+  </kendo-scrollview>
+</div>
+
+<!--<div>
+  <kendo-scrollview [data]="items" [width]="width" [height]="height" [arrows]="true" [pageable]="true">
+    <ng-template let-item="item">
+      <h2 class="demo-title">{{item.title}}</h2>
+      <img src='{{item.url}}' alt='{{item.title}}' [ngStyle]="{minWidth: width}" draggable="false" />
+    </ng-template>
+  </kendo-scrollview>
+</div>-->

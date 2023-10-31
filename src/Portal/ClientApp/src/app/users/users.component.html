@@ -1,0 +1,155 @@
+<div class="portal-component-fullscreen">
+  <div class="portal-container">
+    <app-header></app-header>
+    <div class="portal-body-content">
+      <div class="container">
+
+        <div class="portal-page-title">Company Users</div>
+
+        <div>
+          <p>Add team members who will set up and manage your Trust Index<span style="font-weight:400">&trade;</span> survey, Culture Brief<span style="font-weight:400">&trade;</span> and Culture Audit<span style="font-weight:400">&trade;</span> submissions, review and share survey results, and promote your Certification<span style="font-weight:400">&trade;</span> and any Best Workplaces<span style="font-weight:400">&trade;</span> list wins.</p>
+          <p>We will send list win notifications and toolkits to anyone with "Achievement Notification" selected.</p>
+          <p>We occasionally send operational emails to help you complete the Certification process.  Removing a user will revoke access to the customer portal and stop these emails from being sent.</p>
+        </div>
+        <br />
+        <!--<ng-template #tooltips let-anchor>
+          <span>{{ anchor.nativeElement.innerText }}</span>
+        </ng-template>-->
+        <!-- add to div tag, below: [tooltipTemplate]="tooltips" -->
+
+        <div kendoTooltip
+             showOn="none"
+             filter=".k-grid td"
+             (mouseover)="showTooltip($event)">
+          <kendo-grid [data]="gridData"
+                      [loading]="dataIsLoading"
+                      (edit)="editHandler($event)"
+                      (cancel)="cancelHandler($event)"
+                      (save)="saveHandler($event)"
+                      (remove)="removeHandler($event)"
+                      (add)="addHandler($event)"
+                      scrollable="none">
+            <ng-template kendoGridNoRecordsTemplate>
+              {{noRecordstoDisplayText}}
+            </ng-template>
+            <ng-template kendoGridToolbarTemplate>
+              <button kendoButton kendoGridAddCommand style="font-size:20px;" [disabled]="hasTenantIdClaim">
+                <i style="padding-right:3px;" class="material-icons icon-color-inherit">add</i>Add New User
+              </button>
+
+              <!--<button kendoButton look="outline" (click)="onClickRoute('cb')" style="font-weight:bold; padding-top:2px; margin-top:5px; width:50px;">
+                GO<i class="material-icons" style="padding-top:0px;">arrow_forward</i>
+              </button>-->
+            </ng-template>
+            <kendo-grid-column field="firstName" [class]="{'first-name-column': true}" [headerClass]="{'first-name-column-header': true}" title="First Name">
+              <ng-template kendoGridHeaderTemplate>
+                <span title="Users First Name (required)">
+                  First Name
+                </span>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <span title="{{dataItem.firstName}}">
+                  {{dataItem.firstName}}
+                </span>
+              </ng-template>
+              <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" let-isNew="isNew">
+                <input #input style="font-size:20px;" class="k-textbox" [formControl]="formGroup.get(column.field)">
+              </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column field="lastName" [class]="{'last-name-column': true}" [headerClass]="{'last-name-column-header': true}" title="Last Name">
+              <ng-template kendoGridHeaderTemplate>
+                <span title="Users Last Name (required)">
+                  Last Name
+                </span>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <span title="{{dataItem.lastName}}">
+                  {{dataItem.lastName}}
+                </span>
+              </ng-template>
+              <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" let-isNew="isNew">
+                <input #input style="font-size:20px;" class="k-textbox" [formControl]="formGroup.get(column.field)">
+              </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column field="email" [class]="{'email-column': true}" [headerClass]="{'email-column-header': true}" title="Email" [editable]="editedRowIndex === undefined">
+              <ng-template kendoGridHeaderTemplate>
+                <span title="Users Email Address (required)">
+                  Email
+                </span>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <span title="{{dataItem.email}}">
+                  {{dataItem.email}}
+                </span>
+              </ng-template>
+              <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" let-isNew="isNew">
+                <input #input style="font-size:20px;" class="k-textbox" [formControl]="formGroup.get(column.field)">
+              </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column field="achievementNotification" [class]="{'achievement-notification-column': true}" [headerClass]="{'achievement-notification-column-header': true}" title="Achievement Notification">
+
+              <ng-template kendoGridHeaderTemplate>
+                <span title="Get notified when you make a Best Workplace list" style="font-size:18px; white-space: normal; word-break: break-word;">
+                  Achievement<br />Notification
+                </span>
+              </ng-template>
+
+              <ng-template kendoGridEditTemplate let-dataItem="dataItem">
+                <input style="cursor: pointer; margin-left:50px; width:20px; height:20px;" [(ngModel)]="dataItem.achievementNotification"
+                       [checked]="dataItem.achievementNotification"
+                       kendoGridFocusable name="achievementNotification"
+                       type="checkbox" />
+              </ng-template>
+
+              <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+                <input style="margin-left:50px; width:20px; height:20px;" [checked]="dataItem.achievementNotification" [disabled]="true"
+                       kendoGridFocusable
+                       name="achievementNotification"
+                       type="checkbox" />
+              </ng-template>
+
+            </kendo-grid-column>
+
+            <kendo-grid-command-column width="128" [class]="{'command-column': true}">
+              <ng-template kendoGridCellTemplate let-isNew="isNew">
+                <!--<button kendoGridEditCommand title="Edit User" class="btn btn--link"><i class="material-icons">create</i></button>-->
+                <!--<button kendoGridEditCommand title="Edit User"><span style="width:20px; height:20px" class=" k-icon k-i-edit"></span></button>-->
+                <i kendoGridEditCommand title="Edit User" class="material-icons" [disabled]="hasTenantIdClaim">create</i>
+                <i kendoGridRemoveCommand title="Remove User" class="material-icons" [disabled]="hasTenantIdClaim">clear</i>
+                <i kendoGridSaveCommand title="Save" class="material-icons" [disabled]="hasTenantIdClaim">save</i>
+                <i kendoGridCancelCommand title="Undo" class="material-icons" [disabled]="hasTenantIdClaim">undo</i>
+                <!--<button kendoGridRemoveCommand title="Remove User" class="btn btn--link"><i class="material-icons icon-color-inherit">clear</i></button>-->
+                <!--<button kendoGridSaveCommand title="Save Changes" class="btn btn--link" [disabled]="formGroup?.invalid"> <i class="material-icons icon-color-inherit">{{ isNew ? 'save' : 'save' }}</i></button>
+                <button kendoGridCancelCommand title="Cancel Changes" class="btn btn--link"><i class="material-icons icon-color-inherit">{{ isNew ? 'undo' : 'undo' }}</i></button>-->
+              </ng-template>
+            </kendo-grid-command-column>
+          </kendo-grid>
+
+        </div>
+
+        <kendo-dialog title="Error" *ngIf="dialogOpened" (close)="close('dialog')" [minWidth]="250" [width]="450">
+          <p style="margin: 30px; text-align: center;">{{errorMessage}}</p>
+        </kendo-dialog>
+
+        <kendo-dialog [class]="{'rwTxt': true}" *ngIf="confirmOpened"
+                      [actions]="myActions"
+                      [actionsLayout]="actionsLayout"
+                      (action)="onConfirmAction($event)"
+                      title="Please confirm"
+                      (close)="onConfirmClose('cancel')"
+                      [minWidth]="250"
+                      [width]="450">
+          <p style="margin: 30px; text-align: center;">Are you sure you want to delete {{emailToDelete}}?</p>
+        </kendo-dialog>
+
+      </div>
+    </div>
+    <br />
+    <app-footer></app-footer>
+  </div>
+</div>
+
+

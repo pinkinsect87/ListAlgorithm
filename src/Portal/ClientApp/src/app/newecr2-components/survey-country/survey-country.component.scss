@@ -1,0 +1,54 @@
+.survey-country-container {
+  display: block;
+  margin-left: -54px;
+  padding-bottom: 10px;
+}
+
+.survey-country-section {
+  padding-right: 30px;
+  //display: inline-block;
+  display: inline-table;
+}
+
+.survey-country-section-action {
+  width: 54px;
+  cursor: pointer;
+}
+
+.survey-country-section > input[type='number'] {
+    width: 138px;
+    text-align: center;
+}
+
+.survey-country-section > input[type='number']::-webkit-inner-spin-button,
+.survey-country-section > input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.survey-country-section kendo-dropdownlist {
+  display: inline-block;
+  width: 200px;
+}
+
+.apply-for-certification-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.employee-count-error,
+.country-error {
+  color: #F05A5A;
+  font-size: 10px;
+  background-color: #EED3D9;
+  padding: 5px;
+  font-weight: 600;
+}
+
+.employee-count-error {
+  width: 138px;
+}
+
+.country-error {
+  width: 200px;
+}

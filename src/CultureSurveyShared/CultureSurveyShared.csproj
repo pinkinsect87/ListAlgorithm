@@ -1,0 +1,97 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\2023-certification-toolkit-sample-press-release.docx" />
+    <None Remove="Resources\certified-badge-template-danish.svg" />
+    <None Remove="Resources\certified-badge-template-english.svg" />
+    <None Remove="Resources\certified-badge-template-finnish.svg" />
+    <None Remove="Resources\certified-badge-template-french.svg" />
+    <None Remove="Resources\certified-badge-template-german.svg" />
+    <None Remove="Resources\certified-badge-template-italian.svg" />
+    <None Remove="Resources\certified-badge-template-norwegian.svg" />
+    <None Remove="Resources\certified-badge-template-spanish.svg" />
+    <None Remove="Resources\certified-badge-template-swedish.svg" />
+    <None Remove="Resources\certified-badge-template.svg" />
+    <None Remove="Resources\gptw_certification_badge_guidelines.pdf" />
+    <None Remove="Resources\Shareable-Image-1-template.svg" />
+    <None Remove="Resources\Shareable-Image-2-template.svg" />
+    <None Remove="Resources\Shareable-Image-3-template.svg" />
+    <None Remove="Resources\Shareable-Image-4-template.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\2023-certification-toolkit-sample-press-release.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\certified-badge-template-danish.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\certified-badge-template-english.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\certified-badge-template-finnish.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\certified-badge-template-french.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\certified-badge-template-german.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\certified-badge-template-italian.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\certified-badge-template-norwegian.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\certified-badge-template-spanish.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\certified-badge-template-swedish.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\certified-badge-template.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\gptw_certification_badge_guidelines.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Shareable-Image-1-template.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Shareable-Image-2-template.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Shareable-Image-3-template.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Shareable-Image-4-template.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspose.SVG" Version="23.6.0" />
+    <PackageReference Include="Aspose.Words" Version="23.6.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.21.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Serilog" Version="3.0.0-dev-01958" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SharedProject2\SharedProject2.vbproj" />
+  </ItemGroup>
+
+</Project>

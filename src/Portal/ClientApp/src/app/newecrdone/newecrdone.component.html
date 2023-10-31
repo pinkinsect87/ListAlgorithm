@@ -1,0 +1,16 @@
+<app-header [hideOverviewLink]=true [hideCompanyUsersLink]=true></app-header>
+<div class="portal-body-content">
+  <br />
+  <div class="container">
+    {{newECRResult}}
+  </div>
+  <br />
+  <div class="container">
+    <ol>
+      <li><a style="cursor:pointer;" (click)="onClickRoute('dashboard')">Return to the Engagement Dashboard</a><link />
+      <li><a style="cursor:pointer;" (click)="onClickRoute('portal')">View Portal for this Engagement</a><link />
+      <li><a style="cursor:pointer;" (click)="onClickRoute('return')">Create Another Engagement</a><link />
+    </ol>
+  </div>
+</div>
+<app-footer></app-footer>

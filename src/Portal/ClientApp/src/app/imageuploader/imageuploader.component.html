@@ -1,0 +1,24 @@
+<div>
+
+  <p>
+    Kendo Uploader
+  </p>
+
+  <kendo-upload [saveUrl]="uploadSaveUrl" [withCredentials]="false" (success)="successEventHandler($event)" (upload)="uploadEventHandler($event)">
+  </kendo-upload>
+
+  <img *ngIf="userPic" src="{{userPic}}" />
+
+  <div class="container-fluid">
+    <kendo-sortable [kendoSortableBinding]="items"
+                    [navigatable]="true"
+                    [animation]="true"
+                    class="row"
+                    itemClass="item col-xs-6 col-sm-3"
+                    activeItemClass="item col-xs-6 col-sm-3 active">
+    </kendo-sortable>
+  </div>
+
+</div>
+
+

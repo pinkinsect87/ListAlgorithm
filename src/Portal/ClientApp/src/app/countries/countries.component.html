@@ -1,0 +1,25 @@
+<div class="survey__items-item">
+  <div class="portal-question-child">
+    <div class="container survey__items-item-radio">
+      <div class="child-level2">
+        <h2 >
+          Country:
+        </h2>
+        <input class="portal-text-box shadow-gray input"  type="text" [(ngModel)]="ccode"  size="10" (ngModelChange)="emitCountryCode()" >
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="survey__items-item">
+  <div class="portal-question-child">
+    <div class="container survey__items-item-radio">
+      <div class="child-level2">
+        <h2 >
+          Total Employees in Country of application:
+        </h2>
+        <input class="portal-text-box shadow-gray input"  type="text" [(ngModel)]="numEmp"  size="10" (ngModelChange)="emitNumEmp()">
+      </div>
+    </div>
+  </div>
+</div>

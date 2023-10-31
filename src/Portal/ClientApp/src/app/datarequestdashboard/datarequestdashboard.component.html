@@ -1,0 +1,76 @@
+<div class="portal-component-fullscreen">
+  <div class="portal-container">
+    <app-header [hideOverviewLink]=true [hideCompanyUsersLink]=true></app-header>
+    <div class="portal-body-content">
+      <div style="padding-left:20px; padding-right:20px; height: calc(100vh - 190px);">
+        <div class="portal-page-title">Data Requests</div>
+        <kendo-grid id="dashboard-grid" style="height: 100%;" #grid
+                    [pageable]="{
+                      buttonCount: 5,
+                      info: true,
+                      type: 'numeric',
+                      pageSizes: gridSettings.pageSizes,
+                      previousNext: true
+                    }"
+                    [reorderable]="true"
+                    [skip]="gridSettings.state.skip"
+                    [pageSize]="gridSettings.pageSize"
+                    [data]="gridSettings.gridData"
+                    [sort]="gridSettings.state.sort"
+                    [filter]="gridSettings.state.filter"
+                    [sortable]="true"
+                    [columnMenu]="{ filter: true }"
+                    [resizable]="true"
+                    [loading]="dataIsLoading"
+                    (columnResize)="onResize($event)"
+                    (columnReorder)="onReorder($event)"
+                    (columnVisibilityChange)="onColumnVisibilityChange($event)"
+                    (dataStateChange)="dataStateChange($event)"
+                    (pageChange)="pageChange($event)"
+                    (cellClick)="onCellClick($event)">
+
+          <kendo-grid-column *ngFor="let col of gridSettings.columnsConfig"
+                             [field]="col.field" [title]="col.title" [width]="col._width" [filter]="col.filter"
+                             [filterable]="col.filterable" [hidden]="col.hidden" [format]="col.format">
+            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+            </ng-template>
+
+            <ng-container *ngIf="col.field=='dateTimeOpened' || col.field=='id'">
+              <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-columnIndex="columnIndex">
+                <!--<div *ngIf="col.field == 'errorMessage'" style="text-align: center;"><span style="cursor: default;">{{dataItem.errorMessage}}</span></div>
+                <div *ngIf="col.field == 'id'" style="text-align: center;"><span style="cursor: default;">{{dataItem.id}}</span></div>
+                <div *ngIf="col.field == 'body'" style="text-align: center;"><i class="material-icons" title="View Email" (click)="viewEmail(dataItem)" style="cursor: pointer; margin-top: 6px;">{{getIconName("body")}}</i></div>
+                <div *ngIf="col.field == 'clientId'" style="text-align: center;"><span style="cursor: default;">{{dataItem.clientId}}</span></div>
+                <div *ngIf="col.field == 'engagementId'" style="text-align: center;"><span style="cursor: default;">{{dataItem.engagementId}}</span></div>
+                <div *ngIf="col.field == 'subject'" style="text-align: left; "><span style="cursor: default;">{{dataItem.subject}}</span></div>
+                <div *ngIf="col.field == 'address'" style="text-align: left; "><span style="cursor: default;">{{dataItem.address}}</span></div>
+                <div *ngIf="col.field == 'dateTimeOpened'" style="text-align: center;" title="{{getFullDateTimeOpenedTitle(dataItem)}}"><span style="cursor: default;">{{getFullDateTimeOpened(dataItem)}}</span></div>
+                <div *ngIf="col.field == 'isError' && dataItem.isError" style="text-align: center;"><span><i title="{{dataItem.errorMessage}}" class="material-icons" style="cursor: default; margin-top: 6px;">done</i></span></div>
+                <div *ngIf="col.field == 'dateTimeSent'" style="text-align: center;" title="{{getFullDateTime(dataItem.dateTimeSent)}}"><span style="cursor: default;">{{getDate(dataItem.dateTimeSent)}}</span></div>
+                <div *ngIf="col.field == 'opened' && dataItem.opened" style="text-align: center;" title=" {{getFullDateTimeOpenedTitle(dataItem)}}"><span><i class="material-icons" style="cursor: default; margin-top: 6px;">done</i></span><span style="cursor: default; vertical-align: 6px;">{{getOpened(dataItem)}}</span></div>-->
+              </ng-template>
+            </ng-container>
+
+            <!--<ng-container *ngIf="col.field=='emailType'">
+              <ng-template kendoGridFilterMenuTemplate
+                           let-column="column"
+                           let-filter="filter"
+                           let-filterService="filterService">
+                <kendo-multiselect style="width:100px"
+                                   [data]="emailTypeItems"
+                                   [value]="statusFilters(filter)"
+                                   (valueChange)="statusChange('emailType', $event, filterService)">
+                </kendo-multiselect>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <div style="text-align: left; padding-top: 0; padding-bottom: 0"><span style="cursor: default;">{{dataItem.emailType}}</span></div>
+              </ng-template>
+            </ng-container>-->
+
+          </kendo-grid-column>
+
+        </kendo-grid>
+      </div>
+    </div>
+  </div>
+</div>

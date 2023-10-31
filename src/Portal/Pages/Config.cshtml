@@ -1,0 +1,16 @@
+﻿@page
+@model ConfigModel
+@{
+    Layout = null;
+    Response.ContentType = "application/javascript; charset=utf-8";
+}
+window.client_config = {
+  AuthServerAuthority: "_appsettings.AuthServerAuthority",
+  ApplicationInsightsKey : "_appsettings.ApplicationInsightsKey",
+  GPTWWebSiteBaseUrl: "_appsettings.GPTWWebSiteBaseUrl",
+  GPTWStoreUrl: "_appsettings.GPTWStoreUrl",
+  ZendeskAPIUrl: "_appsettings.ZendeskAPIUrl",
+  EmprisingUrl: "_appsettings.EmprisingUrl",
+  IsAppMaintenanceMode: "_appsettings.IsAppMaintenanceMode",
+  ExpectedEnvironmentClaim: "_appsettings.ExpectedEnvironmentClaim"
+}
