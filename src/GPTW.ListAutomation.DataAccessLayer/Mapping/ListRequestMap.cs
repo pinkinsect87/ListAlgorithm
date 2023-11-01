@@ -66,6 +66,10 @@ namespace GPTW.ListAutomation.DataAccessLayer.Mapping
                 .WithMany()
                 .HasForeignKey(d => d.UploadStatusId);
 
+            builder.HasOne(d => d.Segment)
+                .WithMany()
+                .HasForeignKey(d => d.SegmentId);
+
             base.Configure(builder);
         }
     }

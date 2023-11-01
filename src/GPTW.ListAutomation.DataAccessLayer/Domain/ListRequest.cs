@@ -25,11 +25,15 @@ namespace GPTW.ListAutomation.DataAccessLayer.Domain
         public string? ListNameLocalLanguage { get; set; }
         public int? ListTypeId { get; set; }
         public string? AffiliateId { get; set; }
+        public string? LicenseId { get; set; }
+        public int NumberOfWinners { get; set; }
+        public int SegmentId { get; set; }
 
         public virtual Affiliate? Affiliate { get; set; }
         public virtual Status AlgorithProcessedStatus { get; set; }
         public virtual ListAlgorithmTemplate Template { get; set; }
         public virtual Status UploadStatus { get; set; }
+        public virtual Segment Segment { get; set; }
         public virtual ICollection<ListCompany> ListCompanies { get; set; }
         public virtual ICollection<ListSourceFile> ListSourceFiles { get; set; }
     }
